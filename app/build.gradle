@@ -43,7 +43,7 @@ def abiPostFix = ['universal'   : 0,
                   'x86'         : 3,
                   'x86_64'      : 4]
 
-def keystores = [ 'debug'  : loadKeystoreProperties('keystore.debug.properties') ]
+def keystoreProperties = loadKeystoreProperties('keystore.debug.properties')
 
 def selectableVariants = [
         'nightlyProdSpinner',
@@ -87,13 +87,18 @@ android {
     }
 
     signingConfigs {
-        if (keystores.debug != null) {
-            debug {
-                storeFile file("${project.rootDir}/${keystores.debug.storeFile}")
-                storePassword keystores.debug.storePassword
-                keyAlias keystores.debug.keyAlias
-                keyPassword keystores.debug.keyPassword
-            }
+        debug {
+            storeFile file("${project.rootDir}/../qianli-docs/android/qianli-android-key.jks")
+            storePassword keystoreProperties.storePassword
+            keyAlias keystoreProperties.keyAlias
+            keyPassword keystoreProperties.keyPassword
+        }
+
+        release {
+            storeFile file("${project.rootDir}/../qianli-docs/android/qianli-android-key.jks")
+            storePassword keystoreProperties.storePassword
+            keyAlias keystoreProperties.keyAlias
+            keyPassword keystoreProperties.keyPassword
         }
     }
 
@@ -150,6 +155,7 @@ android {
     }
 
     defaultConfig {
+        applicationId "chat.qianli.android"
         versionCode canonicalVersionCode * postFixSize
         versionName canonicalVersionName
 
@@ -165,7 +171,7 @@ android {
 
         buildConfigField "long", "BUILD_TIMESTAMP", getLastCommitTimestamp() + "L"
         buildConfigField "String", "GIT_HASH", "\"${getGitHash()}\""
-        buildConfigField "String", "SIGNAL_URL", "\"https://chat.signal.org\""
+        buildConfigField "String", "SIGNAL_URL", "\"https://msg.qianli.chat\""
         buildConfigField "String", "STORAGE_URL", "\"https://storage.signal.org\""
         buildConfigField "String", "SIGNAL_CDN_URL", "\"https://cdn.signal.org\""
         buildConfigField "String", "SIGNAL_CDN2_URL", "\"https://cdn2.signal.org\""
@@ -199,9 +205,9 @@ android {
         buildConfigField "org.thoughtcrime.securesms.KbsEnclave[]", "KBS_FALLBACKS", "new org.thoughtcrime.securesms.KbsEnclave[] { new org.thoughtcrime.securesms.KbsEnclave(\"0cedba03535b41b67729ce9924185f831d7767928a1d1689acb689bc079c375f\", " +
                                                                                                                                                                              "\"187d2739d22be65e74b65f0055e74d31310e4267e5fac2b1246cc8beba81af39\", " +
                                                                                                                                                                              "\"ee19f1965b1eefa3dc4204eb70c04f397755f771b8c1909d080c04dad2a6a9ba\") }"
-        buildConfigField "String", "UNIDENTIFIED_SENDER_TRUST_ROOT", "\"BXu6QIKVz5MA8gstzfOgRQGqyLqOwNKHL6INkv3IHWMF\""
-        buildConfigField "String", "ZKGROUP_SERVER_PUBLIC_PARAMS", "\"AMhf5ywVwITZMsff/eCyudZx9JDmkkkbV6PInzG4p8x3VqVJSFiMvnvlEKWuRob/1eaIetR31IYeAbm0NdOuHH8Qi+Rexi1wLlpzIo1gstHWBfZzy1+qHRV5A4TqPp15YzBPm0WSggW6PbSn+F4lf57VCnHF7p8SvzAA2ZZJPYJURt8X7bbg+H3i+PEjH9DXItNEqs2sNcug37xZQDLm7X36nOoGPs54XsEGzPdEV+itQNGUFEjY6X9Uv+Acuks7NpyGvCoKxGwgKgE5XyJ+nNKlyHHOLb6N1NuHyBrZrgtY/JYJHRooo5CEqYKBqdFnmbTVGEkCvJKxLnjwKWf+fEPoWeQFj5ObDjcKMZf2Jm2Ae69x+ikU5gBXsRmoF94GXTLfN0/vLt98KDPnxwAQL9j5V1jGOY8jQl6MLxEs56cwXN0dqCnImzVH3TZT1cJ8SW1BRX6qIVxEzjsSGx3yxF3suAilPMqGRp4ffyopjMD1JXiKR2RwLKzizUe5e8XyGOy9fplzhw3jVzTRyUZTRSZKkMLWcQ/gv0E4aONNqs4P\""
-        buildConfigField "String", "GENERIC_SERVER_PUBLIC_PARAMS", "\"AByD873dTilmOSG0TjKrvpeaKEsUmIO8Vx9BeMmftwUs9v7ikPwM8P3OHyT0+X3EUMZrSe9VUp26Wai51Q9I8mdk0hX/yo7CeFGJyzoOqn8e/i4Ygbn5HoAyXJx5eXfIbqpc0bIxzju4H/HOQeOpt6h742qii5u/cbwOhFZCsMIbElZTaeU+BWMBQiZHIGHT5IE0qCordQKZ5iPZom0HeFa8Yq0ShuEyAl0WINBiY6xE3H/9WnvzXBbMuuk//eRxXgzO8ieCeK8FwQNxbfXqZm6Ro1cMhCOF3u7xoX83QhpN\""
+        buildConfigField "String", "UNIDENTIFIED_SENDER_TRUST_ROOT", "\"CikI/5Pr3AMSIQWVOGDsxsFbrsOwLnOA/hBOEdIggte3CtmS7Sm/qWyQFxJAK+FfJk/YIqntoFAYSJMknuDHSz0dztH2aFgwWzthZfzGAOX6VNn+92aXHj/rWxN1lp8UqEY0Mbs8ogMURUOZjQ==\""
+        buildConfigField "String", "ZKGROUP_SERVER_PUBLIC_PARAMS", "\"APK4KB+XRYH77d4rQHQV6RDjJGdKBOfuCeVHEy1k56A7RJGZCNqYWic30e1pKJ29zsmTgkHxS+QYKIXnAud8DQFk+COMT1Dg3UnizFVHOf3BWyjFcnZDJED6TW06UiCRRYLuurrGKu1WpjDxhdOUh8wPGFpd3l6oAy6dJBQHutgObFdlLffYptIqWTvcCMvUvY9D+3u3H1HxSa41xRe5sVjyR4Y7Yy56RH1PuyHAvS1MrL63+ZnBnV6m80T25DZDXORLMEmD/QwM5q4TxdGhxk4ny0eu/FMKKLq+93CS0ZM7lO8DqJlQ58QzKXnNyyivS4p7cDgxzezntrwa4OliUys8fA2Ms/yfjCFaksHVHuEU7u0gX+7Vdt2vRmFgP7PdLqTttxcXbsm5g6HstDadLV7Zz4gXmhAUchJjJaYILc1TPjU/9I4zLohJAr+2I1NT5PC49dnv17rm0HItcZUl5SxMrbnOF7n1colBocW8DIwpk3gzN/3XTcRyDKTrcQyDUMKWVUux4avxV/HIK2qTNG/UXp8PV3sq3a7E/eihezQm\""
+        buildConfigField "String", "GENERIC_SERVER_PUBLIC_PARAMS", "\"AHQAzgV4gJLLpHvyDpdXwc9kwm5TS2aZtJYKvWJz+Rp83p//V+74+pHoBdSC6gAYXC6YVmFT8tY712rvoVlpWW/4V7z1dhvUIrIVObwBU0SGZmzDTOsDtadhNF5v0fJAdW6Dsic701tar5cxjZX6EBeUqoHO042KvBcmcAn/VXVIqpQ38NTHV28E9MpJrlxbwLhTwAiyEx55rEm4FnYd7gyEJgwQqeohBpC1tSM2/mziBK6TVol5Da7o6/Q11zIOEJAsbl5Mozk/uYPXbayYJNzH82E2jKonJwyC1T4YnEQQ\""
         buildConfigField "String[]", "LANGUAGES", "new String[]{\"" + autoResConfig().collect { s -> s.replace('-r', '_') }.join('", "') + '"}'
         buildConfigField "int", "CANONICAL_VERSION_CODE", "$canonicalVersionCode"
         buildConfigField "String", "DEFAULT_CURRENCIES", "\"EUR,AUD,GBP,CAD,CNY\""
@@ -237,9 +243,7 @@ android {
 
     buildTypes {
         debug {
-            if (keystores['debug'] != null) {
-                signingConfig signingConfigs.debug
-            }
+            signingConfig signingConfigs.debug
             isDefault true
             minifyEnabled false
             proguardFiles getDefaultProguardFile('proguard-android.txt'),
@@ -288,6 +292,7 @@ android {
         }
 
         release {
+            signingConfig signingConfigs.release
             minifyEnabled true
             proguardFiles = buildTypes.debug.proguardFiles
             buildConfigField "String", "BUILD_VARIANT_TYPE", "\"Release\""
@@ -334,7 +339,7 @@ android {
 
         website {
             dimension 'distribution'
-            ext.websiteUpdateUrl = "https://updates.signal.org/android"
+            ext.websiteUpdateUrl = "https://updates.qianli.chat/android"
             buildConfigField "boolean", "PLAY_STORE_DISABLED", "true"
             buildConfigField "String", "NOPLAY_UPDATE_URL", "\"$ext.websiteUpdateUrl\""
             buildConfigField "String", "BUILD_DISTRIBUTION_TYPE", "\"website\""
@@ -676,7 +681,7 @@ tasks.withType(Test) {
 }
 
 def loadKeystoreProperties(filename) {
-    def keystorePropertiesFile = file("${project.rootDir}/${filename}")
+    def keystorePropertiesFile = file("${project.rootDir}/../qianli-docs/android/keystore.properties")
     if (keystorePropertiesFile.exists()) {
         def keystoreProperties = new Properties()
         keystoreProperties.load(new FileInputStream(keystorePropertiesFile))

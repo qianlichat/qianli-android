@@ -126,7 +126,7 @@ task resolveStaticIps {
     doLast {
         def staticIpResolver = new StaticIpResolver()
         new File(projectDir, "static-ips.gradle").text = """
-            ext.service_ips='${staticIpResolver.resolveToBuildConfig("chat.signal.org")}'
+            ext.service_ips='${staticIpResolver.resolveToBuildConfig("msg.qianli.chat")}'
             ext.storage_ips='${staticIpResolver.resolveToBuildConfig("storage.signal.org")}'
             ext.cdn_ips='${staticIpResolver.resolveToBuildConfig("cdn.signal.org")}'
             ext.cdn2_ips='${staticIpResolver.resolveToBuildConfig("cdn2.signal.org")}'

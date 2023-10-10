@@ -1783,6 +1783,7 @@
     <string name="RegistrationActivity_you_must_specify_your_country_code">必须指定 国家代码
     </string>
     <string name="RegistrationActivity_please_enter_a_valid_phone_number_to_register">请输入一个有效的电话号码来注册。</string>
+    <string name="RegistrationActivity_please_enter_a_valid_account_name_to_register">帐号的长度在3到9位之间</string>
     <string name="RegistrationActivity_invalid_number">号码无效</string>
     <string name="RegistrationActivity_the_number_you_specified_s_is_invalid">指定的号码 (%1$s) 无效。
     </string>
@@ -1833,8 +1834,10 @@
     <string name="RegistrationActivity_take_privacy_with_you_be_yourself_in_every_message">让隐私与您形影不离。\n在每一条消息中展现真正的自己。</string>
     <!-- Title of registration screen when asking for the users phone number -->
     <string name="RegistrationActivity_phone_number">手机号码</string>
+  <string name="RegistrationActivity_account_name">帐号</string>
     <!-- Subtitle of registration screen when asking for the users phone number -->
     <string name="RegistrationActivity_enter_your_phone_number_to_get_started">请输入您的手机号以开始操作。</string>
+  <string name="RegistrationActivity_enter_your_account_name_to_get_started">您只能输入字母或数字，3-9位。</string>
     <string name="RegistrationActivity_enter_the_code_we_sent_to_s">请输入 %1$s 收到的验证码</string>
 
     <string name="RegistrationActivity_phone_number_description">手机号码</string>
@@ -3051,6 +3054,8 @@
     <!-- GrantPermissionsFragment -->
     <!-- Displayed as a text-only action button at the bottom start of the screen -->
     <string name="GrantPermissionsFragment__not_now">稍后再说</string>
+    <string name="GrantPermissionsFragment__none">无需额外权限</string>
+    <string name="GrantPermissionsFragment__none_detail">不申请其它权限，以保护用户隐私</string>
     <!-- Displayed as an action button at the bottom end of the screen -->
     <string name="GrantPermissionsFragment__next">下一步</string>
     <!-- Displayed as a title at the top of the screen -->

@@ -249,21 +249,21 @@ open class SignalServiceNetworkAccess(context: Context) {
       return uncensoredConfiguration
     }
 
-    val countryCode: Int = PhoneNumberUtil.getInstance().parse(e164, null).countryCode
+//    val countryCode: Int = PhoneNumberUtil.getInstance().parse(e164, null).countryCode
 
     return when (SignalStore.settings().censorshipCircumventionEnabled) {
       SettingsValues.CensorshipCircumventionEnabled.ENABLED -> {
-        censorshipConfiguration[countryCode] ?: defaultCensoredConfiguration
+       defaultCensoredConfiguration
       }
       SettingsValues.CensorshipCircumventionEnabled.DISABLED -> {
         uncensoredConfiguration
       }
       SettingsValues.CensorshipCircumventionEnabled.DEFAULT -> {
-        if (defaultCensoredCountryCodes.contains(countryCode)) {
-          censorshipConfiguration[countryCode] ?: defaultCensoredConfiguration
-        } else {
+//        if (defaultCensoredCountryCodes.contains(countryCode)) {
+//          censorshipConfiguration[countryCode] ?: defaultCensoredConfiguration
+//        } else {
           uncensoredConfiguration
-        }
+//        }
       }
     }
   }
@@ -273,7 +273,8 @@ open class SignalServiceNetworkAccess(context: Context) {
   }
 
   fun isCensored(number: String?): Boolean {
-    return getConfiguration(number) != uncensoredConfiguration
+//    return getConfiguration(number) != uncensoredConfiguration
+    return true;
   }
 
   fun isCountryCodeCensoredByDefault(countryCode: Int): Boolean {

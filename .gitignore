@@ -29,3 +29,6 @@ pkcs11.password
 dev.keystore
 maps.key
 local/
+/contacts/app/debug/
+app/google-services.json
+app/src/main/res/values/firebase_messaging.xml

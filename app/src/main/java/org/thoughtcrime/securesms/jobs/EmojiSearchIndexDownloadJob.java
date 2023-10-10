@@ -85,32 +85,32 @@ public final class EmojiSearchIndexDownloadJob extends BaseJob {
 
   @Override
   protected void onRun() throws Exception {
-    Manifest manifest = downloadManifest();
-
-    Locale locale         = DynamicLanguageContextWrapper.getUsersSelectedLocale(context);
-    String remoteLanguage = findMatchingLanguage(locale, manifest.getLanguages());
-
-    if (manifest.getVersion() == SignalStore.emojiValues().getSearchVersion() &&
-        remoteLanguage.equals(SignalStore.emojiValues().getSearchLanguage()))
-    {
-      Log.i(TAG, "Already using the latest version of " + manifest.getVersion() + " with the correct language " + remoteLanguage);
-      SignalStore.emojiValues().setLastSearchIndexCheck(System.currentTimeMillis());
-      return;
-    }
-
-    Log.i(TAG, "Need to get a new search index. Downloading version: " + manifest.getVersion() + ", language: " + remoteLanguage);
-
-    List<EmojiSearchData> searchIndex = downloadSearchIndex(manifest.getVersion(), remoteLanguage);
-
-    if (searchIndex.isEmpty()) {
-      throw new IOException("Emoji search data is empty");
-    }
-
-    SignalDatabase.emojiSearch().setSearchIndex(searchIndex);
-    SignalStore.emojiValues().onSearchIndexUpdated(manifest.getVersion(), remoteLanguage);
-    SignalStore.emojiValues().setLastSearchIndexCheck(System.currentTimeMillis());
-
-    Log.i(TAG, "Success! Now at version: " + manifest.getVersion() + ", language: " + remoteLanguage);
+//    Manifest manifest = downloadManifest();
+//
+//    Locale locale         = DynamicLanguageContextWrapper.getUsersSelectedLocale(context);
+//    String remoteLanguage = findMatchingLanguage(locale, manifest.getLanguages());
+//
+//    if (manifest.getVersion() == SignalStore.emojiValues().getSearchVersion() &&
+//        remoteLanguage.equals(SignalStore.emojiValues().getSearchLanguage()))
+//    {
+//      Log.i(TAG, "Already using the latest version of " + manifest.getVersion() + " with the correct language " + remoteLanguage);
+//      SignalStore.emojiValues().setLastSearchIndexCheck(System.currentTimeMillis());
+//      return;
+//    }
+//
+//    Log.i(TAG, "Need to get a new search index. Downloading version: " + manifest.getVersion() + ", language: " + remoteLanguage);
+//
+//    List<EmojiSearchData> searchIndex = downloadSearchIndex(manifest.getVersion(), remoteLanguage);
+//
+//    if (searchIndex.isEmpty()) {
+//      throw new IOException("Emoji search data is empty");
+//    }
+//
+//    SignalDatabase.emojiSearch().setSearchIndex(searchIndex);
+//    SignalStore.emojiValues().onSearchIndexUpdated(manifest.getVersion(), remoteLanguage);
+//    SignalStore.emojiValues().setLastSearchIndexCheck(System.currentTimeMillis());
+//
+//    Log.i(TAG, "Success! Now at version: " + manifest.getVersion() + ", language: " + remoteLanguage);
   }
 
   @Override

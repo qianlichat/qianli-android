@@ -156,7 +156,8 @@ public final class SvrValues extends SignalStoreValues {
   }
 
   public synchronized boolean hasPin() {
-    return getLocalPinHash() != null;
+//    return getLocalPinHash() != null;
+    return true;
   }
 
   public synchronized boolean isPinForgottenOrSkipped() {

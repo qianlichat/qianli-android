@@ -22,11 +22,11 @@ object WelcomePermissions {
         }
       }
     },
-    CONTACTS {
-      override fun getPermissions(isUserBackupSelectionRequired: Boolean): List<String> {
-        return listOf(Manifest.permission.WRITE_CONTACTS, Manifest.permission.READ_CONTACTS)
-      }
-    },
+//    CONTACTS {
+//      override fun getPermissions(isUserBackupSelectionRequired: Boolean): List<String> {
+//        return listOf(Manifest.permission.WRITE_CONTACTS, Manifest.permission.READ_CONTACTS)
+//      }
+//    },
     STORAGE {
       override fun getPermissions(isUserBackupSelectionRequired: Boolean): List<String> {
         return if (Build.VERSION.SDK_INT < 29 || !isUserBackupSelectionRequired) {
@@ -35,13 +35,13 @@ object WelcomePermissions {
           emptyList()
         }
       }
-    },
-    PHONE {
-      override fun getPermissions(isUserBackupSelectionRequired: Boolean): List<String> {
-        return listOf(Manifest.permission.READ_PHONE_STATE) +
-          (if (Build.VERSION.SDK_INT >= 26) listOf(Manifest.permission.READ_PHONE_NUMBERS) else emptyList())
-      }
     };
+//    PHONE {
+//      override fun getPermissions(isUserBackupSelectionRequired: Boolean): List<String> {
+//        return listOf(Manifest.permission.READ_PHONE_STATE) +
+//          (if (Build.VERSION.SDK_INT >= 26) listOf(Manifest.permission.READ_PHONE_NUMBERS) else emptyList())
+//      }
+//    };
 
     abstract fun getPermissions(isUserBackupSelectionRequired: Boolean): List<String>
   }

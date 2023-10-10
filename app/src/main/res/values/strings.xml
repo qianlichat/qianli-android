@@ -16,6 +16,7 @@
     <string name="username_support_url" translatable="false">https://support.signal.org/hc/articles/5389476324250</string>
     <string name="export_account_data_url" translatable="false">https://support.signal.org/hc/articles/5538911756954</string>
 
+    <string name="at">@</string>
     <string name="yes">Yes</string>
     <string name="no">No</string>
     <string name="delete">Delete</string>
@@ -1857,6 +1858,7 @@
         country code
     </string>
     <string name="RegistrationActivity_please_enter_a_valid_phone_number_to_register">Please enter a valid phone number to register.</string>
+    <string name="RegistrationActivity_please_enter_a_valid_account_name_to_register">The length of account name should be at 3 ~ 9</string>
     <string name="RegistrationActivity_invalid_number">Invalid number</string>
     <string name="RegistrationActivity_the_number_you_specified_s_is_invalid">The number you
         specified (%s) is invalid.
@@ -1909,8 +1911,10 @@
     <string name="RegistrationActivity_take_privacy_with_you_be_yourself_in_every_message">Take privacy with you.\nBe yourself in every message.</string>
     <!-- Title of registration screen when asking for the users phone number -->
     <string name="RegistrationActivity_phone_number">Phone number</string>
+    <string name="RegistrationActivity_account_name">Account name</string>
     <!-- Subtitle of registration screen when asking for the users phone number -->
     <string name="RegistrationActivity_enter_your_phone_number_to_get_started">Enter your phone number to get started.</string>
+    <string name="RegistrationActivity_enter_your_account_name_to_get_started">You can only input alphabet or numbers, length is between 3~9.</string>
     <string name="RegistrationActivity_enter_the_code_we_sent_to_s">Enter the code we sent to %s</string>
 
     <string name="RegistrationActivity_phone_number_description">Phone number</string>
@@ -3164,8 +3168,10 @@
     <string name="GrantPermissionsFragment__make_registering_easier">Make registering easier and enable additional calling features.</string>
     <!-- Storage permission row title -->
     <string name="GrantPermissionsFragment__storage">Storage</string>
+    <string name="GrantPermissionsFragment__none">That\'s all</string>
     <!-- Storage permission row description -->
     <string name="GrantPermissionsFragment__send_photos_videos_and_files">Send photos, videos and files from your device.</string>
+    <string name="GrantPermissionsFragment__none_detail">No additional permission required.</string>
 
     <!-- PaymentsSecuritySetupFragment -->
     <!-- Toolbar title -->

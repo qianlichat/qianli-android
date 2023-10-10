@@ -51,15 +51,18 @@ class GrantPermissionsFragment : ComposeFragment() {
   private val args by navArgs<GrantPermissionsFragmentArgs>()
   private val viewModel by activityViewModels<RegistrationViewModel>()
   private val isSearchingForBackup = mutableStateOf(false)
+  private var permissionRows = 0;
 
   @Composable
   override fun FragmentContent() {
     val isSearchingForBackup by this.isSearchingForBackup
+    val isBackupSelectionRequired = BackupUtil.isUserSelectionRequired(LocalContext.current)
+    val deviceBuildVersion = Build.VERSION.SDK_INT
 
     GrantPermissionsScreen(
-      deviceBuildVersion = Build.VERSION.SDK_INT,
+      deviceBuildVersion = deviceBuildVersion,
       isSearchingForBackup = isSearchingForBackup,
-      isBackupSelectionRequired = BackupUtil.isUserSelectionRequired(LocalContext.current),
+      isBackupSelectionRequired = isBackupSelectionRequired,
       onNextClicked = this::onNextClicked,
       onNotNowClicked = this::onNotNowClicked
     )
@@ -147,6 +150,7 @@ fun GrantPermissionsScreen(
   onNextClicked: () -> Unit,
   onNotNowClicked: () -> Unit
 ) {
+  var  neededPermission = 0;
   Surface {
     Column(
       modifier = Modifier
@@ -172,6 +176,7 @@ fun GrantPermissionsScreen(
         }
 
         if (deviceBuildVersion >= 33) {
+          neededPermission ++
           item {
             PermissionRow(
               imageVector = ImageVector.vectorResource(id = R.drawable.permission_notification),
@@ -181,15 +186,16 @@ fun GrantPermissionsScreen(
           }
         }
 
-        item {
-          PermissionRow(
-            imageVector = ImageVector.vectorResource(id = R.drawable.permission_contact),
-            title = stringResource(id = R.string.GrantPermissionsFragment__contacts),
-            subtitle = stringResource(id = R.string.GrantPermissionsFragment__find_people_you_know)
-          )
-        }
+//        item {
+//          PermissionRow(
+//            imageVector = ImageVector.vectorResource(id = R.drawable.permission_contact),
+//            title = stringResource(id = R.string.GrantPermissionsFragment__contacts),
+//            subtitle = stringResource(id = R.string.GrantPermissionsFragment__find_people_you_know)
+//          )
+//        }
 
         if (deviceBuildVersion < 29 || !isBackupSelectionRequired) {
+          neededPermission ++
           item {
             PermissionRow(
               imageVector = ImageVector.vectorResource(id = R.drawable.permission_file),
@@ -199,13 +205,23 @@ fun GrantPermissionsScreen(
           }
         }
 
-        item {
-          PermissionRow(
-            imageVector = ImageVector.vectorResource(id = R.drawable.permission_phone),
-            title = stringResource(id = R.string.GrantPermissionsFragment__phone_calls),
-            subtitle = stringResource(id = R.string.GrantPermissionsFragment__make_registering_easier)
-          )
+        if(neededPermission == 0){
+          item {
+            PermissionRow(
+              imageVector = ImageVector.vectorResource(id = R.drawable.ic_check_circle_solid_48),
+              title = stringResource(id = R.string.GrantPermissionsFragment__none),
+              subtitle = stringResource(id = R.string.GrantPermissionsFragment__none_detail)
+            )
+          }
         }
+
+//        item {
+//          PermissionRow(
+//            imageVector = ImageVector.vectorResource(id = R.drawable.permission_phone),
+//            title = stringResource(id = R.string.GrantPermissionsFragment__phone_calls),
+//            subtitle = stringResource(id = R.string.GrantPermissionsFragment__make_registering_easier)
+//          )
+//        }
       }
 
       Row {

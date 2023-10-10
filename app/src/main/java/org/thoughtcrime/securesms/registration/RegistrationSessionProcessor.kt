@@ -211,7 +211,7 @@ sealed class RegistrationSessionProcessor(response: ServiceResponse<Registration
 
   class RegistrationSessionProcessorForSession(response: ServiceResponse<RegistrationSessionMetadataResponse>) : RegistrationSessionProcessor(response) {
 
-    override fun verificationCodeRequestSuccess(): Boolean = false
+    override fun verificationCodeRequestSuccess(): Boolean = true
   }
 
   class RegistrationSessionProcessorForVerification(response: ServiceResponse<RegistrationSessionMetadataResponse>) : RegistrationSessionProcessor(response) {

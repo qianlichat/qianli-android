@@ -233,7 +233,7 @@ public abstract class BaseRegistrationViewModel extends ViewModel {
 
   public Single<RegistrationSessionProcessor> requestVerificationCode(@NonNull Mode mode, @Nullable String mcc, @Nullable String mnc) {
 
-    final String e164 = getNumber().getE164Number();
+    final String e164 = getNumber().getNationalNumber();
 
     return getValidSession(e164, mcc, mnc)
         .flatMap(processor -> {
@@ -252,25 +252,25 @@ public abstract class BaseRegistrationViewModel extends ViewModel {
             return Single.just(processor);
           }
 
-          if (!processor.isAllowedToRequestCode()) {
+//          if (!processor.isAllowedToRequestCode()) {
             return Single.just(processor);
-          }
+//          }
 
-          String sessionId = processor.getSessionId();
-          clearCaptchaResponse();
-          return verifyAccountRepository.requestVerificationCode(sessionId,
-                                                                 getNumber().getE164Number(),
-                                                                 getRegistrationSecret(),
-                                                                 mode)
-                                        .map(RegistrationSessionProcessor.RegistrationSessionProcessorForVerification::new);
+//          String sessionId = processor.getSessionId();
+//          clearCaptchaResponse();
+//          return verifyAccountRepository.requestVerificationCode(sessionId,
+//                                                                 getNumber().getE164Number(),
+//                                                                 getRegistrationSecret(),
+//                                                                 mode)
+//                                        .map(RegistrationSessionProcessor.RegistrationSessionProcessorForVerification::new);
         })
-        .observeOn(AndroidSchedulers.mainThread())
-        .doOnSuccess((RegistrationSessionProcessor processor) -> {
-          if (processor.hasResult() && processor.isAllowedToRequestCode()) {
-            setCanSmsAtTime(processor.getNextCodeViaSmsAttempt());
-            setCanCallAtTime(processor.getNextCodeViaCallAttempt());
-          }
-        });
+        .observeOn(AndroidSchedulers.mainThread());
+//        .doOnSuccess((RegistrationSessionProcessor processor) -> {
+//          if (processor.hasResult() && processor.isAllowedToRequestCode()) {
+//            setCanSmsAtTime(processor.getNextCodeViaSmsAttempt());
+//            setCanCallAtTime(processor.getNextCodeViaCallAttempt());
+//          }
+//        });
   }
 
   public Single<RegistrationSessionProcessor.RegistrationSessionProcessorForSession> validateSession(String e164) {

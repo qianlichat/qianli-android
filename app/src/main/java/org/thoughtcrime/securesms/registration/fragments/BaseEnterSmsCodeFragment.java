@@ -90,7 +90,7 @@ public abstract class BaseEnterSmsCodeFragment<ViewModel extends BaseRegistratio
     wrongNumber          = view.findViewById(R.id.wrong_number);
     bottomSheetButton    = view.findViewById(R.id.having_trouble_button);
 
-    new SignalStrengthPhoneStateListener(this, this);
+//    new SignalStrengthPhoneStateListener(this, this);
 
     connectKeyboard(verificationCodeView, keyboard);
     ViewUtil.hideKeyboard(requireContext(), view);
@@ -374,56 +374,57 @@ public abstract class BaseEnterSmsCodeFragment<ViewModel extends BaseRegistratio
     });
   }
 
-  @Override
-  public void onResume() {
-    super.onResume();
-    String sessionE164 = viewModel.getSessionE164();
-    if (sessionE164 == null) {
-      returnToPhoneEntryScreen();
-      return;
-    }
-
-    subheader.setText(requireContext().getString(R.string.RegistrationActivity_enter_the_code_we_sent_to_s, viewModel.getNumber().getFullFormattedNumber()));
-
-    Disposable request = viewModel.validateSession(sessionE164)
-                                  .observeOn(AndroidSchedulers.mainThread())
-                                  .subscribe(processor -> {
-                                    if (!processor.hasResult()) {
-                                      Log.d(TAG, "Network error.");
-                                      returnToPhoneEntryScreen();
-                                    } else if (processor.isInvalidSession()) {
-                                      Log.d(TAG, "Registration session is invalid.");
-                                      returnToPhoneEntryScreen();
-                                    } else if (processor.cannotSubmitVerificationAttempt()) {
-                                      Log.d(TAG, "Cannot submit any more verification attempts.");
-                                      returnToPhoneEntryScreen();
-                                    } else if (processor.mustWaitToSubmitProof()) {
-                                      Log.d(TAG, "Blocked from submitting proof at this time.");
-                                      handleRateLimited();
-                                    }
-                                    // else session state is valid and server is ready to accept code
-                                  });
-
-    disposables.add(request);
-
-    viewModel.getCanCallAtTime().observe(getViewLifecycleOwner(), callAtTime -> {
-      if (callAtTime > 0) {
-        callMeCountDown.setVisibility(View.VISIBLE);
-        callMeCountDown.startCountDownTo(callAtTime);
-      } else {
-        callMeCountDown.setVisibility(View.INVISIBLE);
-      }
-    });
-    viewModel.getCanSmsAtTime().observe(getViewLifecycleOwner(), smsAtTime -> {
-      if (smsAtTime > 0) {
-        resendSmsCountDown.setVisibility(View.VISIBLE);
-        resendSmsCountDown.startCountDownTo(smsAtTime);
-      } else {
-        resendSmsCountDown.setVisibility(View.INVISIBLE);
-      }
-    });
-  }
-
+//  @Override
+//  public void onResume() {
+//    super.onResume();
+//    String sessionE164 = viewModel.getSessionE164();
+//    if (sessionE164 == null) {
+//      returnToPhoneEntryScreen();
+//      return;
+//    }
+//
+//    subheader.setText(requireContext().getString(R.string.RegistrationActivity_enter_the_code_we_sent_to_s, viewModel.getNumber().getFullFormattedNumber()));
+//
+//    Disposable request = viewModel.validateSession(sessionE164)
+//                                  .observeOn(AndroidSchedulers.mainThread())
+//                                  .subscribe(processor -> {
+//                                    if (!processor.hasResult()) {
+//                                      Log.d(TAG, "Network error.");
+//                                      returnToPhoneEntryScreen();
+//                                    } else if (processor.isInvalidSession()) {
+//                                      Log.d(TAG, "Registration session is invalid.");
+//                                      returnToPhoneEntryScreen();
+//                                    }
+////                                    else if (processor.cannotSubmitVerificationAttempt()) {
+////                                      Log.d(TAG, "Cannot submit any more verification attempts.");
+////                                      returnToPhoneEntryScreen();
+////                                    }
+//                                    else if (processor.mustWaitToSubmitProof()) {
+//                                      Log.d(TAG, "Blocked from submitting proof at this time.");
+//                                      handleRateLimited();
+//                                    }
+//                                    // else session state is valid and server is ready to accept code
+//                                  });
+//
+//    disposables.add(request);
+//
+//    viewModel.getCanCallAtTime().observe(getViewLifecycleOwner(), callAtTime -> {
+//      if (callAtTime > 0) {
+//        callMeCountDown.setVisibility(View.VISIBLE);
+//        callMeCountDown.startCountDownTo(callAtTime);
+//      } else {
+//        callMeCountDown.setVisibility(View.INVISIBLE);
+//      }
+//    });
+//    viewModel.getCanSmsAtTime().observe(getViewLifecycleOwner(), smsAtTime -> {
+//      if (smsAtTime > 0) {
+//        resendSmsCountDown.setVisibility(View.VISIBLE);
+//        resendSmsCountDown.startCountDownTo(smsAtTime);
+//      } else {
+//        resendSmsCountDown.setVisibility(View.INVISIBLE);
+//      }
+//    });
+//  }
 
   private void showBottomSheet() {
     ContactSupportBottomSheetFragment bottomSheet = new ContactSupportBottomSheetFragment();
