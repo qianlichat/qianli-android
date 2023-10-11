@@ -1859,6 +1859,8 @@
     </string>
     <string name="RegistrationActivity_please_enter_a_valid_phone_number_to_register">Please enter a valid phone number to register.</string>
     <string name="RegistrationActivity_please_enter_a_valid_account_name_to_register">The length of account name should be at 3 ~ 9</string>
+    <string name="RegistrationActivity_please_enter_a_valid_password_to_register">The length of password should be at 9 ~ 18</string>
+    <string name="RegistrationActivity_please_enter_a_same_password_to_register">Confirm password is not same as crated password</string>
     <string name="RegistrationActivity_invalid_number">Invalid number</string>
     <string name="RegistrationActivity_the_number_you_specified_s_is_invalid">The number you
         specified (%s) is invalid.
@@ -1921,6 +1923,10 @@
     <string name="RegistrationActivity_country_code_description">Country code</string>
     <string name="RegistrationActivity_call">Call</string>
     <string name="RegistrationActivity_verification_code">Verification Code</string>
+    <string name="RegistrationActivity_verification_create_account">Create Account</string>
+    <string name="RegistrationActivity_enter_the_password">Please create your password</string>
+    <string name="RegistrationActivity_create_password">Create password</string>
+    <string name="RegistrationActivity_confirm_password">Confirm password</string>
     <string name="RegistrationActivity_resend_code">Resend Code</string>
     <!--    A title for a bottom sheet dialog offering to help a user having trouble entering their verification code.-->
     <string name="RegistrationActivity_support_bottom_sheet_title">Having trouble registering?</string>

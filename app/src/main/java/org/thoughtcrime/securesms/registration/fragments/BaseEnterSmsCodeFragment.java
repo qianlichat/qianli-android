@@ -330,23 +330,23 @@ public abstract class BaseEnterSmsCodeFragment<ViewModel extends BaseRegistratio
   }
 
   private void handleCodeCallRequestAfterConfirm(VerifyAccountRepository.Mode mode) {
-    MccMncProducer mccMncProducer = new MccMncProducer(requireContext());
-    Disposable request = viewModel.requestVerificationCode(mode, mccMncProducer.getMcc(), mccMncProducer.getMnc())
-                                  .observeOn(AndroidSchedulers.mainThread())
-                                  .subscribe(processor -> {
-                                    if (processor.hasResult()) {
-                                      Toast.makeText(requireContext(), getCodeRequestedToastText(mode), Toast.LENGTH_LONG).show();
-                                    } else if (processor.captchaRequired(viewModel.getExcludedChallenges())) {
-                                      navigateToCaptcha();
-                                    } else if (processor.rateLimit()) {
-                                      handleRateLimited();
-                                    } else {
-                                      Log.w(TAG, "Unable to request phone code", processor.getError());
-                                      Toast.makeText(requireContext(), R.string.RegistrationActivity_unable_to_connect_to_service, Toast.LENGTH_LONG).show();
-                                    }
-                                  });
-
-    disposables.add(request);
+//    MccMncProducer mccMncProducer = new MccMncProducer(requireContext());
+//    Disposable request = viewModel.requestVerificationCode(mode, mccMncProducer.getMcc(), mccMncProducer.getMnc())
+//                                  .observeOn(AndroidSchedulers.mainThread())
+//                                  .subscribe(processor -> {
+//                                    if (processor.hasResult()) {
+//                                      Toast.makeText(requireContext(), getCodeRequestedToastText(mode), Toast.LENGTH_LONG).show();
+//                                    } else if (processor.captchaRequired(viewModel.getExcludedChallenges())) {
+//                                      navigateToCaptcha();
+//                                    } else if (processor.rateLimit()) {
+//                                      handleRateLimited();
+//                                    } else {
+//                                      Log.w(TAG, "Unable to request phone code", processor.getError());
+//                                      Toast.makeText(requireContext(), R.string.RegistrationActivity_unable_to_connect_to_service, Toast.LENGTH_LONG).show();
+//                                    }
+//                                  });
+//
+//    disposables.add(request);
   }
 
   @StringRes

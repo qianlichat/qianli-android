@@ -136,6 +136,10 @@ sealed class RegistrationSessionProcessor(response: ServiceResponse<Registration
     return hasResult() && result.body.verified
   }
 
+  fun getPublicKey(): String {
+    return result.body.publicKey
+  }
+
   /** Should only be called if [isNonNormalizedNumber] */
   fun getOriginalNumber(): String {
     if (error !is NonNormalizedPhoneNumberException) {

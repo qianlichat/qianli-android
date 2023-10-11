@@ -23,19 +23,20 @@ public final class FcmUtil {
    */
   @WorkerThread
   public static Optional<String> getToken(Context context) {
-    String token = null;
-
-    // Must be called manually if running outside of main process
-    FirebaseApp.initializeApp(context);
-
-    try {
-      token = Tasks.await(FirebaseMessaging.getInstance().getToken());
-    } catch (InterruptedException e) {
-      Log.w(TAG, "Was interrupted while waiting for the token.");
-    } catch (ExecutionException e) {
-      Log.w(TAG, "Failed to get the token.", e.getCause());
-    }
-
-    return Optional.ofNullable(TextUtils.isEmpty(token) ? null : token);
+    return Optional.empty();
+//    String token = null;
+//
+//    // Must be called manually if running outside of main process
+//    FirebaseApp.initializeApp(context);
+//
+//    try {
+//      token = Tasks.await(FirebaseMessaging.getInstance().getToken());
+//    } catch (InterruptedException e) {
+//      Log.w(TAG, "Was interrupted while waiting for the token.");
+//    } catch (ExecutionException e) {
+//      Log.w(TAG, "Failed to get the token.", e.getCause());
+//    }
+//
+//    return Optional.ofNullable(TextUtils.isEmpty(token) ? null : token);
   }
 }

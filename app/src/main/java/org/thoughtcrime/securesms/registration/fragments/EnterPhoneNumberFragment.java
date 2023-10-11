@@ -291,7 +291,7 @@ public final class EnterPhoneNumberFragment extends LoggingFragment implements R
     NavController                         navController       = NavHostFragment.findNavController(this);
     MccMncProducer                        mccMncProducer      = new MccMncProducer(requireContext());
     final DialogInterface.OnClickListener proceedToNextScreen = (dialog, which) -> SafeNavigation.safeNavigate(navController, EnterPhoneNumberFragmentDirections.actionEnterVerificationCode());
-    Disposable request = viewModel.requestVerificationCode(mode, mccMncProducer.getMcc(), mccMncProducer.getMnc())
+    Disposable request = viewModel.createSession(mode, mccMncProducer.getMcc(), mccMncProducer.getMnc())
                                   .doOnSubscribe(unused -> SignalStore.account().setRegistered(false))
                                   .observeOn(AndroidSchedulers.mainThread())
                                   .subscribe((RegistrationSessionProcessor processor) -> {
@@ -304,7 +304,10 @@ public final class EnterPhoneNumberFragment extends LoggingFragment implements R
                                     if (processor.verificationCodeRequestSuccess()) {
                                       disposables.add(updateFcmTokenValue());
                                       boolean isRegistered = processor.isVerified();
+                                      viewModel.setPublicKey(processor.getPublicKey());
+                                      viewModel.setAccountExists(isRegistered);
                                       Log.w(TAG, "[requestVerificationCode] Account isRegistered = " + isRegistered);
+                                      Log.w(TAG, "[requestVerificationCode] PublicKey = = " + processor.getPublicKey());
                                       SafeNavigation.safeNavigate(navController, EnterPhoneNumberFragmentDirections.actionEnterVerificationCode());
                                     } else if (processor.captchaRequired(viewModel.getExcludedChallenges())) {
                                       Log.i(TAG, "Unable to request sms code due to captcha required");

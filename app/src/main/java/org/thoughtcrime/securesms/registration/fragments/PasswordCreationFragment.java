@@ -5,21 +5,21 @@ import androidx.lifecycle.ViewModelProvider;
 import androidx.navigation.Navigation;
 import androidx.navigation.fragment.NavHostFragment;
 
+import org.signal.core.util.concurrent.SimpleTask;
 import org.signal.core.util.logging.Log;
 import org.thoughtcrime.securesms.R;
 import org.thoughtcrime.securesms.registration.viewmodel.RegistrationViewModel;
 import org.thoughtcrime.securesms.util.FeatureFlags;
-import org.signal.core.util.concurrent.SimpleTask;
 import org.thoughtcrime.securesms.util.navigation.SafeNavigation;
 
 import java.io.IOException;
 
-public final class EnterSmsCodeFragment extends BaseEnterSmsCodeFragment<RegistrationViewModel> implements SignalStrengthPhoneStateListener.Callback {
+public final class PasswordCreationFragment extends BaseEnterPasswordFragment<RegistrationViewModel> {
 
-  private static final String TAG = Log.tag(EnterSmsCodeFragment.class);
+  private static final String TAG = Log.tag(PasswordCreationFragment.class);
 
-  public EnterSmsCodeFragment() {
-    super(R.layout.fragment_registration_enter_code);
+  public PasswordCreationFragment() {
+    super(R.layout.fragment_registration_enter_password);
   }
 
   @Override
@@ -39,21 +39,5 @@ public final class EnterSmsCodeFragment extends BaseEnterSmsCodeFragment<Registr
       }
       return null;
     }, none -> displaySuccess(() -> SafeNavigation.safeNavigate(Navigation.findNavController(requireView()), PasswordCreationFragmentDirections.actionSuccessfulRegistration())));
-  }
-
-  @Override
-  protected void navigateToRegistrationLock(long timeRemaining) {
-    SafeNavigation.safeNavigate(Navigation.findNavController(requireView()),
-                                PasswordCreationFragmentDirections.actionRequireKbsLockPin(timeRemaining));
-  }
-
-  @Override
-  protected void navigateToCaptcha() {
-    SafeNavigation.safeNavigate(NavHostFragment.findNavController(this), PasswordCreationFragmentDirections.actionRequestCaptcha());
-  }
-
-  @Override
-  protected void navigateToKbsAccountLocked() {
-    SafeNavigation.safeNavigate(Navigation.findNavController(requireView()), RegistrationLockFragmentDirections.actionAccountLocked());
   }
 }

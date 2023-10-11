@@ -1844,7 +1844,13 @@
     <string name="RegistrationActivity_country_code_description">国家代码</string>
     <string name="RegistrationActivity_call">呼叫</string>
     <string name="RegistrationActivity_verification_code">验证码</string>
+    <string name="RegistrationActivity_verification_create_account">创建帐号</string>
+    <string name="RegistrationActivity_enter_the_password">请创建您的密码</string>
+    <string name="RegistrationActivity_create_password">创建密码</string>
+    <string name="RegistrationActivity_confirm_password">确认密码</string>
     <string name="RegistrationActivity_resend_code">重新发送验证码</string>
+  <string name="RegistrationActivity_please_enter_a_valid_password_to_register">密码的长度在9-18位之间</string>
+  <string name="RegistrationActivity_please_enter_a_same_password_to_register">您两次输入的密码不一致</string>
     <!--    A title for a bottom sheet dialog offering to help a user having trouble entering their verification code.-->
     <string name="RegistrationActivity_support_bottom_sheet_title">在注册时遇到问题？</string>
     <!--    A list of suggestions to try for a user having trouble entering their verification code.-->

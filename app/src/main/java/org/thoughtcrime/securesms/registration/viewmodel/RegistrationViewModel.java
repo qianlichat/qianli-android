@@ -61,6 +61,8 @@ public final class RegistrationViewModel extends BaseRegistrationViewModel {
 
   private boolean userSkippedReRegisterFlow = false;
   private boolean autoShowSmsConfirmDialog = false;
+  private boolean accountExists = false;
+  private String publicKey;
 
   public RegistrationViewModel(@NonNull SavedStateHandle savedStateHandle,
                                boolean isReregister,
@@ -80,13 +82,6 @@ public final class RegistrationViewModel extends BaseRegistrationViewModel {
   public boolean isReregister() {
     //noinspection ConstantConditions
     return savedState.get(STATE_IS_REREGISTER);
-  }
-
-  public void onNumberDetected(int countryCode, String nationalNumber) {
-    setViewState(getNumber().toBuilder()
-                            .countryCode(countryCode)
-                            .nationalNumber(nationalNumber)
-                            .build());
   }
 
   public @Nullable String getFcmToken() {
@@ -150,7 +145,7 @@ public final class RegistrationViewModel extends BaseRegistrationViewModel {
     if (sessionId == null) {
       throw new IllegalStateException("No valid registration session");
     }
-    return verifyAccountRepository.verifyAccount(sessionId, getRegistrationData())
+    return verifyAccountRepository.verifyAccount(sessionId, getRegistrationData(),publicKey)
                                   .map(RegistrationSessionProcessor.RegistrationSessionProcessorForVerification::new)
                                   .observeOn(AndroidSchedulers.mainThread())
                                   .doOnSuccess(processor -> {
@@ -162,7 +157,7 @@ public final class RegistrationViewModel extends BaseRegistrationViewModel {
                                   .observeOn(Schedulers.io())
                                   .flatMap(processor -> {
                                     if (processor.isAlreadyVerified() || (processor.hasResult() && processor.isVerified())) {
-                                      return verifyAccountRepository.registerAccount(sessionId, getRegistrationData(), null, null);
+                                      return verifyAccountRepository.registerAccount(sessionId, "",getRegistrationData(), null, null,publicKey);
                                     } else if (processor.getError() == null) {
                                       return Single.just(ServiceResponse.<VerifyResponse>forApplicationError(new IncorrectCodeException(), 403, null));
                                     } else {
@@ -174,7 +169,7 @@ public final class RegistrationViewModel extends BaseRegistrationViewModel {
                                     String                  pin       = SignalStore.svr().getPin();
 
                                     if ((processor.isRegistrationLockPresentAndSvrExhausted() || processor.registrationLock()) && SignalStore.svr().getRegistrationLockToken() != null && pin != null) {
-                                      return verifyAccountRepository.registerAccount(sessionId, getRegistrationData(), pin, () -> SignalStore.svr().getOrCreateMasterKey())
+                                      return verifyAccountRepository.registerAccount(sessionId, "",getRegistrationData(), pin, () -> SignalStore.svr().getOrCreateMasterKey(),publicKey)
                                                                     .map(verifyAccountWithPinResponse -> {
                                                                       if (verifyAccountWithPinResponse.getResult().isPresent() && verifyAccountWithPinResponse.getResult().get().getMasterKey() != null) {
                                                                         return verifyAccountWithPinResponse;
@@ -195,7 +190,7 @@ public final class RegistrationViewModel extends BaseRegistrationViewModel {
     if (sessionId == null) {
       throw new IllegalStateException("No valid registration session");
     }
-    return verifyAccountRepository.verifyAccount(sessionId, getRegistrationData())
+    return verifyAccountRepository.verifyAccount(sessionId, getRegistrationData(),publicKey)
                                   .map(RegistrationSessionProcessor.RegistrationSessionProcessorForVerification::new)
                                   .doOnSuccess(processor -> {
                                     if (processor.hasResult()) {
@@ -205,7 +200,7 @@ public final class RegistrationViewModel extends BaseRegistrationViewModel {
                                   })
                                   .<ServiceResponse<VerifyResponse>>flatMap(processor -> {
                                     if (processor.isAlreadyVerified() || (processor.hasResult() && processor.isVerified())) {
-                                      return verifyAccountRepository.registerAccount(sessionId, getRegistrationData(), pin, () -> SvrRepository.restoreMasterKeyPreRegistration(svrAuthCredentials, pin));
+                                      return verifyAccountRepository.registerAccount(sessionId,"", getRegistrationData(), pin, () -> SvrRepository.restoreMasterKeyPreRegistration(svrAuthCredentials, pin),publicKey);
                                     } else {
                                       return Single.just(ServiceResponse.coerceError(processor.getResponse()));
                                     }
@@ -225,15 +220,25 @@ public final class RegistrationViewModel extends BaseRegistrationViewModel {
                                  .map(processor::updatedIfRegistrationFailed);
   }
 
-  private RegistrationData getRegistrationData() {
+  @Override
+  public Single<ServiceResponse<VerifyResponse>> registerAccount(String pass) {
+    final String sessionId = getSessionId();
+    if (sessionId == null) {
+      throw new IllegalStateException("No valid registration session");
+    }
+    return verifyAccountRepository.registerAccount(sessionId,pass, getRegistrationData(), null, null,publicKey);
+  }
+
+  protected RegistrationData getRegistrationData() {
     return new RegistrationData(getTextCodeEntered(),
-                                getNumber().getE164Number(),
+                                getNumber().getNationalNumber(),
                                 getRegistrationSecret(),
                                 registrationRepository.getRegistrationId(),
                                 registrationRepository.getProfileKey(getNumber().getE164Number()),
                                 getFcmToken(),
                                 registrationRepository.getPniRegistrationId(),
-                                getSessionId() != null ? null : getRecoveryPassword());
+                                getSessionId() != null ? null : getRecoveryPassword(),
+                                publicKey);
   }
 
   public @NonNull Single<VerifyResponseProcessor> verifyReRegisterWithPin(@NonNull String pin) {
@@ -303,14 +308,14 @@ public final class RegistrationViewModel extends BaseRegistrationViewModel {
       throw new IllegalStateException("No valid recovery password");
     }
 
-    return verifyAccountRepository.registerAccount(null, registrationData, null, null)
+    return verifyAccountRepository.registerAccount(null,"", registrationData, null, null,publicKey)
                                   .observeOn(Schedulers.io())
                                   .onErrorReturn(ServiceResponse::forUnknownError)
                                   .map(VerifyResponseWithoutKbs::new)
                                   .flatMap(processor -> {
                                     if (processor.registrationLock()) {
                                       setSvrAuthCredentials(processor.getSvrAuthCredentials());
-                                      return verifyAccountRepository.registerAccount(null, registrationData, pin, () -> masterKey)
+                                      return verifyAccountRepository.registerAccount(null,"", registrationData, pin, () -> masterKey,publicKey)
                                                                     .onErrorReturn(ServiceResponse::forUnknownError)
                                                                     .map(r -> new VerifyResponseWithRegistrationLockProcessor(r, processor.getSvrAuthCredentials()));
                                     } else {
@@ -413,6 +418,19 @@ public final class RegistrationViewModel extends BaseRegistrationViewModel {
   private boolean hasRecoveryPassword() {
     return getRecoveryPassword() != null && Objects.equals(getRegistrationData().getE164(), SignalStore.account().getE164());
   }
+
+  public void setAccountExists(boolean exists) {
+    this.accountExists = exists;
+  }
+
+  public void setPublicKey(String key){
+    this.publicKey = key;
+  }
+
+  public boolean isAccountsExists(){
+    return this.accountExists;
+  }
+
 
   private static class ReRegistrationData {
     public boolean   canProceed;

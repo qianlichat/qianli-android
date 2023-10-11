@@ -73,7 +73,7 @@ public final class WelcomeFragment extends LoggingFragment {
         return;
       }
 
-      initializeNumber(requireContext(), viewModel);
+//      initializeNumber(requireContext(), viewModel);
 
       Log.i(TAG, "Skipping restore because this is a reregistration.");
       viewModel.setWelcomeSkippedOnRestore();
@@ -193,7 +193,7 @@ public final class WelcomeFragment extends LoggingFragment {
 
       TextSecurePreferences.setHasSeenWelcomeScreen(fragment.requireContext(), true);
 
-      initializeNumber(fragment.requireContext(), viewModel);
+//      initializeNumber(fragment.requireContext(), viewModel);
 
       onSearchForBackupFinished.run();
 
@@ -213,37 +213,37 @@ public final class WelcomeFragment extends LoggingFragment {
                                                @NonNull NavDirections actionTransferOrRestore) {
     TextSecurePreferences.setHasSeenWelcomeScreen(fragment.requireContext(), true);
 
-    initializeNumber(fragment.requireContext(), viewModel);
+//    initializeNumber(fragment.requireContext(), viewModel);
 
     SafeNavigation.safeNavigate(NavHostFragment.findNavController(fragment),
                                 actionTransferOrRestore);
   }
 
-  @SuppressLint("MissingPermission")
-  private static void initializeNumber(@NonNull Context context, @NonNull RegistrationViewModel viewModel) {
-    Optional<Phonenumber.PhoneNumber> localNumber = Optional.empty();
-
-    if (Permissions.hasAll(context, Manifest.permission.READ_PHONE_STATE, Manifest.permission.READ_PHONE_NUMBERS)) {
-      localNumber = Util.getDeviceNumber(context);
-    } else {
-      Log.i(TAG, "No phone permission");
-    }
-
-    if (localNumber.isPresent()) {
-      Log.i(TAG, "Phone number detected");
-      Phonenumber.PhoneNumber phoneNumber    = localNumber.get();
-      String                  nationalNumber = PhoneNumberUtil.getInstance().format(phoneNumber, PhoneNumberUtil.PhoneNumberFormat.NATIONAL);
-
-      viewModel.onNumberDetected(phoneNumber.getCountryCode(), nationalNumber);
-    } else {
-      Log.i(TAG, "No number detected");
-      Optional<String> simCountryIso = Util.getSimCountryIso(context);
-
-      if (simCountryIso.isPresent() && !TextUtils.isEmpty(simCountryIso.get())) {
-        viewModel.onNumberDetected(PhoneNumberUtil.getInstance().getCountryCodeForRegion(simCountryIso.get()), "");
-      }
-    }
-  }
+//  @SuppressLint("MissingPermission")
+//  private static void initializeNumber(@NonNull Context context, @NonNull RegistrationViewModel viewModel) {
+//    Optional<Phonenumber.PhoneNumber> localNumber = Optional.empty();
+//
+//    if (Permissions.hasAll(context, Manifest.permission.READ_PHONE_STATE, Manifest.permission.READ_PHONE_NUMBERS)) {
+//      localNumber = Util.getDeviceNumber(context);
+//    } else {
+//      Log.i(TAG, "No phone permission");
+//    }
+//
+//    if (localNumber.isPresent()) {
+//      Log.i(TAG, "Phone number detected");
+//      Phonenumber.PhoneNumber phoneNumber    = localNumber.get();
+//      String                  nationalNumber = PhoneNumberUtil.getInstance().format(phoneNumber, PhoneNumberUtil.PhoneNumberFormat.NATIONAL);
+//
+//      viewModel.onNumberDetected(phoneNumber.getCountryCode(), nationalNumber);
+//    } else {
+//      Log.i(TAG, "No number detected");
+//      Optional<String> simCountryIso = Util.getSimCountryIso(context);
+//
+//      if (simCountryIso.isPresent() && !TextUtils.isEmpty(simCountryIso.get())) {
+//        viewModel.onNumberDetected(PhoneNumberUtil.getInstance().getCountryCodeForRegion(simCountryIso.get()), "");
+//      }
+//    }
+//  }
 
   private void onTermsClicked() {
     CommunicationActions.openBrowserLink(requireContext(), RegistrationConstants.TERMS_AND_CONDITIONS_URL);

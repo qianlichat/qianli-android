@@ -57,45 +57,45 @@ class ChangeNumberVerifyFragment : LoggingFragment(R.layout.fragment_change_phon
   }
 
   private fun requestCode() {
-    val mode = if (ChangeNumberVerifyFragmentArgs.fromBundle(requireArguments()).smsListenerEnabled) VerifyAccountRepository.Mode.SMS_WITH_LISTENER else VerifyAccountRepository.Mode.SMS_WITHOUT_LISTENER
-    val mccMncProducer = MccMncProducer(requireContext())
-    lifecycleDisposable += viewModel
-      .ensureDecryptionsDrained()
-      .onErrorComplete()
-      .andThen(viewModel.changeNumberWithRecoveryPassword())
-      .flatMap { changed ->
-        if (changed) {
-          Log.d(TAG, "Successfully changed number using recovery password.")
-          Single.just(RequestCodeResult.RecoveryPasswordWorked)
-        } else {
-          viewModel.requestVerificationCode(mode, mccMncProducer.mcc, mccMncProducer.mnc)
-            .map { p -> RequestCodeResult.RequestedVerificationCode(p) }
-        }
-      }
-      .observeOn(AndroidSchedulers.mainThread())
-      .subscribe { result ->
-        if (result is RequestCodeResult.RecoveryPasswordWorked) {
-          changeNumberSuccess()
-          return@subscribe
-        }
-
-        val processor: RegistrationSessionProcessor = (result as RequestCodeResult.RequestedVerificationCode).processor
-
-        if (processor.verificationCodeRequestSuccess()) {
-          Log.i(TAG, "Successfully requested SMS code.")
-          findNavController().safeNavigate(R.id.action_changePhoneNumberVerifyFragment_to_changeNumberEnterCodeFragment)
-        } else if (processor.captchaRequired(viewModel.excludedChallenges)) {
-          Log.i(TAG, "Unable to request sms code due to captcha required")
-          findNavController().safeNavigate(R.id.action_changePhoneNumberVerifyFragment_to_captchaFragment, getCaptchaArguments())
-          requestingCaptcha = true
-        } else if (processor.rateLimit()) {
-          Log.i(TAG, "Unable to request sms code due to rate limit")
-          showErrorDialog(requireContext(), R.string.RegistrationActivity_rate_limited_to_service) { _, _ -> findNavController().navigateUp() }
-        } else {
-          Log.w(TAG, "Unable to request sms code", processor.error)
-          showErrorDialog(requireContext(), R.string.RegistrationActivity_unable_to_request_verification_code) { _, _ -> findNavController().navigateUp() }
-        }
-      }
+//    val mode = if (ChangeNumberVerifyFragmentArgs.fromBundle(requireArguments()).smsListenerEnabled) VerifyAccountRepository.Mode.SMS_WITH_LISTENER else VerifyAccountRepository.Mode.SMS_WITHOUT_LISTENER
+//    val mccMncProducer = MccMncProducer(requireContext())
+//    lifecycleDisposable += viewModel
+//      .ensureDecryptionsDrained()
+//      .onErrorComplete()
+//      .andThen(viewModel.changeNumberWithRecoveryPassword())
+//      .flatMap { changed ->
+//        if (changed) {
+//          Log.d(TAG, "Successfully changed number using recovery password.")
+//          Single.just(RequestCodeResult.RecoveryPasswordWorked)
+//        } else {
+//          viewModel.requestVerificationCode(mode, mccMncProducer.mcc, mccMncProducer.mnc)
+//            .map { p -> RequestCodeResult.RequestedVerificationCode(p) }
+//        }
+//      }
+//      .observeOn(AndroidSchedulers.mainThread())
+//      .subscribe { result ->
+//        if (result is RequestCodeResult.RecoveryPasswordWorked) {
+//          changeNumberSuccess()
+//          return@subscribe
+//        }
+//
+//        val processor: RegistrationSessionProcessor = (result as RequestCodeResult.RequestedVerificationCode).processor
+//
+//        if (processor.verificationCodeRequestSuccess()) {
+//          Log.i(TAG, "Successfully requested SMS code.")
+//          findNavController().safeNavigate(R.id.action_changePhoneNumberVerifyFragment_to_changeNumberEnterCodeFragment)
+//        } else if (processor.captchaRequired(viewModel.excludedChallenges)) {
+//          Log.i(TAG, "Unable to request sms code due to captcha required")
+//          findNavController().safeNavigate(R.id.action_changePhoneNumberVerifyFragment_to_captchaFragment, getCaptchaArguments())
+//          requestingCaptcha = true
+//        } else if (processor.rateLimit()) {
+//          Log.i(TAG, "Unable to request sms code due to rate limit")
+//          showErrorDialog(requireContext(), R.string.RegistrationActivity_rate_limited_to_service) { _, _ -> findNavController().navigateUp() }
+//        } else {
+//          Log.w(TAG, "Unable to request sms code", processor.error)
+//          showErrorDialog(requireContext(), R.string.RegistrationActivity_unable_to_request_verification_code) { _, _ -> findNavController().navigateUp() }
+//        }
+//      }
   }
 
   private fun showErrorDialog(context: Context, @StringRes message: Int, onPositiveButtonClickListener: OnClickListener?) {

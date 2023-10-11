@@ -131,7 +131,7 @@
 
         <action
             android:id="@+id/action_enterVerificationCode"
-            app:destination="@id/enterCodeFragment"
+            app:destination="@id/enterPassFragment"
             app:enterAnim="@anim/nav_default_enter_anim"
             app:exitAnim="@anim/nav_default_exit_anim"
             app:popEnterAnim="@anim/nav_default_pop_enter_anim"
@@ -172,10 +172,10 @@
         tools:layout="@layout/fragment_registration_country_picker" />
 
     <fragment
-        android:id="@+id/enterCodeFragment"
-        android:name="org.thoughtcrime.securesms.registration.fragments.EnterSmsCodeFragment"
-        android:label="fragment_enter_code"
-        tools:layout="@layout/fragment_registration_enter_code">
+        android:id="@+id/enterPassFragment"
+        android:name="org.thoughtcrime.securesms.registration.fragments.PasswordCreationFragment"
+        android:label="fragment_enter_password"
+        tools:layout="@layout/fragment_registration_enter_password">
 
         <action
             android:id="@+id/action_requireKbsLockPin"
