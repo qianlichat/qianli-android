@@ -29,15 +29,6 @@ public final class PasswordCreationFragment extends BaseEnterPasswordFragment<Re
 
   @Override
   protected void handleSuccessfulVerify() {
-    SimpleTask.run(() -> {
-      long startTime = System.currentTimeMillis();
-      try {
-        FeatureFlags.refreshSync();
-        Log.i(TAG, "Took " + (System.currentTimeMillis() - startTime) + " ms to get feature flags.");
-      } catch (IOException e) {
-        Log.w(TAG, "Failed to refresh flags after " + (System.currentTimeMillis() - startTime) + " ms.", e);
-      }
-      return null;
-    }, none -> displaySuccess(() -> SafeNavigation.safeNavigate(Navigation.findNavController(requireView()), PasswordCreationFragmentDirections.actionSuccessfulRegistration())));
+    displaySuccess(() -> SafeNavigation.safeNavigate(Navigation.findNavController(requireView()), PasswordCreationFragmentDirections.actionSuccessfulRegistration()));
   }
 }

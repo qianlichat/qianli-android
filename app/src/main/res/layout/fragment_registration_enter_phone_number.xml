@@ -71,7 +71,7 @@
                     android:text="@string/at"
                     android:maxLength="10"
                     android:imeOptions="actionDone"
-                    android:digits="abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789"
+                    android:digits="abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789@"
                     android:inputType="textNoSuggestions">
 
                     <requestFocus />

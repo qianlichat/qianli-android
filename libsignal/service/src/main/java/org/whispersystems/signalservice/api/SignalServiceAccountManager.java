@@ -786,6 +786,10 @@ public class SignalServiceAccountManager {
     return this.pushServiceSocket.getAciByUsernameHash(usernameHash);
   }
 
+  public ACI getAciByAccountId(String accountId) throws IOException {
+    return this.pushServiceSocket.getAciByAccountId(accountId);
+  }
+
   public ReserveUsernameResponse reserveUsername(List<String> usernameHashes) throws IOException {
     return this.pushServiceSocket.reserveUsername(usernameHashes);
   }

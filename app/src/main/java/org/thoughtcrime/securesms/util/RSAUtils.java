@@ -35,7 +35,7 @@ public class RSAUtils {
     try{
       Cipher encryptCipher = Cipher.getInstance("RSA/ECB/OAEPWithSHA-256AndMGF1Padding");
       encryptCipher.init(Cipher.ENCRYPT_MODE, publicKey);
-      return Base64.encodeToString(encryptCipher.doFinal(plainText.getBytes()),Base64.DEFAULT);
+      return Base64.encodeToString(encryptCipher.doFinal(plainText.getBytes()),Base64.NO_WRAP);
     }catch (Throwable e){
       Log.e(TAG,"encrypt failed !", e);
     }

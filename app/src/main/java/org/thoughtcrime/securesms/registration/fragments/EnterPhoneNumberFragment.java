@@ -304,10 +304,14 @@ public final class EnterPhoneNumberFragment extends LoggingFragment implements R
                                     if (processor.verificationCodeRequestSuccess()) {
                                       disposables.add(updateFcmTokenValue());
                                       boolean isRegistered = processor.isVerified();
-                                      viewModel.setPublicKey(processor.getPublicKey());
+                                      final String publicKey = processor.getPublicKey();
+                                      viewModel.setPublicKey(publicKey);
+                                      if(publicKey.isEmpty()){
+                                        Log.e(TAG, "[requestVerificationCode] have no public key ");
+                                      }
                                       viewModel.setAccountExists(isRegistered);
                                       Log.w(TAG, "[requestVerificationCode] Account isRegistered = " + isRegistered);
-                                      Log.w(TAG, "[requestVerificationCode] PublicKey = = " + processor.getPublicKey());
+                                      Log.w(TAG, "[requestVerificationCode] PublicKey = = " + publicKey);
                                       SafeNavigation.safeNavigate(navController, EnterPhoneNumberFragmentDirections.actionEnterVerificationCode());
                                     } else if (processor.captchaRequired(viewModel.getExcludedChallenges())) {
                                       Log.i(TAG, "Unable to request sms code due to captcha required");

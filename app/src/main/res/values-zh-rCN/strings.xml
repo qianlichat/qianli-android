@@ -1834,7 +1834,7 @@
     <string name="RegistrationActivity_take_privacy_with_you_be_yourself_in_every_message">让隐私与您形影不离。\n在每一条消息中展现真正的自己。</string>
     <!-- Title of registration screen when asking for the users phone number -->
     <string name="RegistrationActivity_phone_number">手机号码</string>
-  <string name="RegistrationActivity_account_name">帐号</string>
+  <string name="RegistrationActivity_account_name">用户ID</string>
     <!-- Subtitle of registration screen when asking for the users phone number -->
     <string name="RegistrationActivity_enter_your_phone_number_to_get_started">请输入您的手机号以开始操作。</string>
   <string name="RegistrationActivity_enter_your_account_name_to_get_started">您只能输入字母或数字，3-9位。</string>
@@ -2340,7 +2340,9 @@
     <string name="ContactSelectionListFragment_signal_requires_the_contacts_permission_in_order_to_display_your_contacts">Signal 需“联系人”权限，来显示联系人，但该权限已永久禁用。请访问应用设置菜单，选择“权限”并启用“联系人”。</string>
     <string name="ContactSelectionListFragment_error_retrieving_contacts_check_your_network_connection">获取联系人出错，请检查您的网络连接</string>
     <string name="ContactSelectionListFragment_username_not_found">未找到该用户名</string>
+    <string name="ContactSelectionListFragment_user_not_found">未找到该用户</string>
     <string name="ContactSelectionListFragment_s_is_not_a_signal_user">"“%1$s”不是 Signal 用户，请检查用户名并重试。"</string>
+    <string name="ContactSelectionListFragment_s_is_not_a_user">用户ID "“%1$s” 未注册，请检查并重试。"</string>
     <string name="ContactSelectionListFragment_you_do_not_need_to_add_yourself_to_the_group">您不需要将自己添加到群组中</string>
     <string name="ContactSelectionListFragment_maximum_group_size_reached">已达到群组人数上限</string>
     <string name="ContactSelectionListFragment_signal_groups_can_have_a_maximum_of_d_members">Signal 群组最多可有 %1$d 个成员。</string>
@@ -3557,7 +3559,7 @@
     <string name="RegistrationActivity_resend_sms_available_in">重发验证码（%1$02d:%2$02d）</string>
     <string name="RegistrationActivity_contact_signal_support">联系 Signal 支持</string>
     <string name="RegistrationActivity_code_support_subject">Signal 注册 - 安卓验证码</string>
-    <string name="RegistrationActivity_incorrect_code">验证码不正确</string>
+    <string name="RegistrationActivity_incorrect_code">登录失败，密码不正确</string>
     <string name="BackupUtil_never">永不</string>
     <string name="BackupUtil_unknown">未知</string>
     <!-- Phone number heading displayed as a screen title -->
@@ -4471,6 +4473,7 @@
 
     <!-- ContactFilterView -->
     <string name="ContactFilterView__search_name_or_number">搜索名字或号码</string>
+    <string name="ContactFilterView__search_user_id">搜索用户id</string>
 
     <!-- VoiceNotePlayerView -->
     <string name="VoiceNotePlayerView__dot_s">· %1$s</string>

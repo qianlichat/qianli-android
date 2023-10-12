@@ -137,7 +137,10 @@ sealed class RegistrationSessionProcessor(response: ServiceResponse<Registration
   }
 
   fun getPublicKey(): String {
-    return result.body.publicKey
+    if(hasResult()){
+      return result.body.publicKey
+    }
+    return ""
   }
 
   /** Should only be called if [isNonNormalizedNumber] */
@@ -215,7 +218,7 @@ sealed class RegistrationSessionProcessor(response: ServiceResponse<Registration
 
   class RegistrationSessionProcessorForSession(response: ServiceResponse<RegistrationSessionMetadataResponse>) : RegistrationSessionProcessor(response) {
 
-    override fun verificationCodeRequestSuccess(): Boolean = true
+    override fun verificationCodeRequestSuccess(): Boolean = hasResult()
   }
 
   class RegistrationSessionProcessorForVerification(response: ServiceResponse<RegistrationSessionMetadataResponse>) : RegistrationSessionProcessor(response) {

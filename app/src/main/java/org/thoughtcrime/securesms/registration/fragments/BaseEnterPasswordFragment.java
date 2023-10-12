@@ -102,14 +102,14 @@ public abstract class BaseEnterPasswordFragment<ViewModel extends BaseRegistrati
     new MaterialAlertDialogBuilder(context).setMessage(msg).setPositiveButton(R.string.ok, positiveButtonListener).show();
   }
 
-  private void onNext(){
-    String pass = Objects.requireNonNull(editTextPassword.getText()).toString();
+  private void onNext() {
+    String pass        = Objects.requireNonNull(editTextPassword.getText()).toString();
     String passConfirm = Objects.requireNonNull(editTextPasswordConfirm.getText()).toString();
-    if(pass.length() < 9 || pass.length() > 18){
+    if (pass.length() < 9 || pass.length() > 18) {
       showErrorDialog(requireContext(), getString(R.string.RegistrationActivity_please_enter_a_valid_password_to_register));
       return;
     }
-    if(!pass.equals(passConfirm)){
+    if (!pass.equals(passConfirm)) {
       showErrorDialog(requireContext(), getString(R.string.RegistrationActivity_please_enter_a_same_password_to_register));
       return;
     }
@@ -119,7 +119,8 @@ public abstract class BaseEnterPasswordFragment<ViewModel extends BaseRegistrati
 //                                 .map(VerifyResponseWithoutKbs::new);
 
     Disposable verify = viewModel.registerAccount(pass)
-        .flatMap(resp -> Single.just(new VerifyResponseWithoutKbs(resp)))
+                                 .flatMap(resp -> Single.just(new VerifyResponseWithoutKbs(resp)))
+                                 .flatMap(processor -> viewModel.onVerifySuccess(processor))
                                  .observeOn(AndroidSchedulers.mainThread())
                                  .subscribe((VerifyResponseProcessor processor) -> {
                                    if (!processor.hasResult()) {

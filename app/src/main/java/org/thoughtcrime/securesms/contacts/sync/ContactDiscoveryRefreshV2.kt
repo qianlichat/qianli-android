@@ -64,7 +64,7 @@ object ContactDiscoveryRefreshV2 {
   @JvmStatic
   fun refresh(context: Context, inputRecipients: List<Recipient>, useCompat: Boolean, timeoutMs: Long? = null): ContactDiscovery.RefreshResult {
     val recipients: List<Recipient> = inputRecipients.map { it.resolve() }
-    val inputE164s: Set<String> = recipients.mapNotNull { it.e164.orElse(null) }.toSet().sanitize()
+    val inputE164s: Set<String> = recipients.mapNotNull { it.e164.orElse(null) }.toSet()
 
     return if (inputE164s.size > MAXIMUM_ONE_OFF_REQUEST_SIZE) {
       Log.i(TAG, "List of specific recipients to refresh is too large! (Size: ${recipients.size}). Doing a full refresh instead.")

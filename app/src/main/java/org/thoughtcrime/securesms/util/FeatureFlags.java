@@ -317,8 +317,8 @@ public final class FeatureFlags {
 
   @WorkerThread
   public static void refreshSync() throws IOException {
-    RemoteConfigResult result = ApplicationDependencies.getSignalServiceAccountManager().getRemoteConfig();
-    FeatureFlags.update(result.getConfig());
+//    RemoteConfigResult result = ApplicationDependencies.getSignalServiceAccountManager().getRemoteConfig();
+//    FeatureFlags.update(result.getConfig());
   }
 
   public static synchronized void update(@NonNull Map<String, Object> config) {

@@ -209,32 +209,6 @@ public final class ContactSelectionListFragment extends LoggingFragment {
   }
 
   @Override
-  public void onStart() {
-    super.onStart();
-
-    Permissions.with(this)
-               .request(Manifest.permission.WRITE_CONTACTS, Manifest.permission.READ_CONTACTS)
-               .ifNecessary()
-               .onAllGranted(() -> {
-                 if (!TextSecurePreferences.hasSuccessfullyRetrievedDirectory(getActivity())) {
-                   handleContactPermissionGranted();
-                 } else {
-                   contactSearchMediator.refresh();
-                 }
-               })
-               .onAnyDenied(() -> {
-                 requireActivity().getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_STATE_ALWAYS_HIDDEN);
-
-                 if (safeArguments().getBoolean(RECENTS, requireActivity().getIntent().getBooleanExtra(RECENTS, false))) {
-                   contactSearchMediator.refresh();
-                 } else {
-                   initializeNoContactsPermission();
-                 }
-               })
-               .execute();
-  }
-
-  @Override
   public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
     View view = inflater.inflate(R.layout.contact_selection_list_fragment, container, false);
 
@@ -691,19 +665,50 @@ public final class ContactSelectionListFragment extends LoggingFragment {
             }
           });
         } else {
-          if (onContactSelectedListener != null) {
-            onContactSelectedListener.onBeforeContactSelected(
-                isUnknown,
-                Optional.ofNullable(selectedContact.getRecipientId()),
-                selectedContact.getNumber(),
-                allowed -> {
-              if (allowed) {
-                markContactSelected(selectedContact);
-              }
-            });
-          } else {
-            markContactSelected(selectedContact);
+          String      accountIdQuery      = selectedContact.getNumber();
+          if(accountIdQuery == null || accountIdQuery.isEmpty()){
+            return;
           }
+          AlertDialog loadingDialog = SimpleProgressDialog.show(requireContext());
+          SimpleTask.run(getViewLifecycleOwner().getLifecycle(), () -> {
+            return UsernameUtil.fetchAciForAccountId(accountIdQuery);
+          }, uuid -> {
+            loadingDialog.dismiss();
+            if (uuid.isPresent()) {
+              Recipient       recipient = Recipient.externalContact(accountIdQuery);
+              SelectedContact selected  = SelectedContact.forPhone(recipient.getId(), accountIdQuery);
+
+              if (onContactSelectedListener != null) {
+                onContactSelectedListener.onBeforeContactSelected(true, Optional.of(recipient.getId()), null, allowed -> {
+                  if (allowed) {
+                    markContactSelected(selected);
+                  }
+                });
+              } else {
+                markContactSelected(selected);
+              }
+            } else {
+              new MaterialAlertDialogBuilder(requireContext())
+                  .setTitle(R.string.ContactSelectionListFragment_user_not_found)
+                  .setMessage(getString(R.string.ContactSelectionListFragment_s_is_not_a_user, accountIdQuery))
+                  .setPositiveButton(android.R.string.ok, (dialog, which) -> dialog.dismiss())
+                  .show();
+            }
+          });
+
+//          if (onContactSelectedListener != null) {
+//            onContactSelectedListener.onBeforeContactSelected(
+//                isUnknown,
+//                Optional.ofNullable(selectedContact.getRecipientId()),
+//                selectedContact.getNumber(),
+//                allowed -> {
+//              if (allowed) {
+//                markContactSelected(selectedContact);
+//              }
+//            });
+//          } else {
+//            markContactSelected(selectedContact);
+//          }
         }
       } else {
         markContactUnselected(selectedContact);
@@ -908,7 +913,7 @@ public final class ContactSelectionListFragment extends LoggingFragment {
 
   private void addMoreSection(@NonNull ContactSearchConfiguration.Builder builder) {
     builder.arbitrary(ContactSelectionListAdapter.ArbitraryRepository.ArbitraryRow.MORE_HEADING.getCode());
-    builder.arbitrary(ContactSelectionListAdapter.ArbitraryRepository.ArbitraryRow.REFRESH_CONTACTS.getCode());
+//    builder.arbitrary(ContactSelectionListAdapter.ArbitraryRepository.ArbitraryRow.REFRESH_CONTACTS.getCode());
     builder.arbitrary(ContactSelectionListAdapter.ArbitraryRepository.ArbitraryRow.INVITE_TO_SIGNAL.getCode());
   }
 

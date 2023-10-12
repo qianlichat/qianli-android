@@ -209,7 +209,7 @@ public final class RegistrationViewModel extends BaseRegistrationViewModel {
   }
 
   @Override
-  protected Single<VerifyResponseProcessor> onVerifySuccess(@NonNull VerifyResponseProcessor processor) {
+  public Single<VerifyResponseProcessor> onVerifySuccess(@NonNull VerifyResponseProcessor processor) {
     return registrationRepository.registerAccount(getRegistrationData(), processor.getResult(), false)
                                  .map(VerifyResponseWithoutKbs::new);
   }

@@ -403,7 +403,11 @@ open class ContactSearchAdapter(
           ContactSearchConfiguration.NewRowMode.ADD_TO_GROUP -> R.string.contact_selection_list__unknown_contact_add_to_group
         }
       )
-      number.text = model.data.query
+      var qq = model.data.query
+      if(!qq.startsWith("@")){
+        qq = "@$qq"
+      }
+      number.text = qq
       itemView.setOnClickListener {
         onClick.onClicked(itemView, model.data, false)
       }

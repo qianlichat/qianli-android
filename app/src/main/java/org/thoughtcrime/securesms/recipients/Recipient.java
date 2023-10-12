@@ -341,6 +341,9 @@ public class Recipient {
    */
   @WorkerThread
   public static @NonNull Recipient external(@NonNull Context context, @NonNull String identifier) {
+    if(identifier.startsWith("@")){
+      identifier = identifier.substring(1);
+    }
     Preconditions.checkNotNull(identifier, "Identifier cannot be null!");
 
     RecipientTable db = SignalDatabase.recipients();
@@ -355,8 +358,8 @@ public class Recipient {
     } else if (NumberUtil.isValidEmail(identifier)) {
       id = db.getOrInsertFromEmail(identifier);
     } else {
-      String e164 = PhoneNumberFormatter.get(context).format(identifier);
-      id = db.getOrInsertFromE164(e164);
+//      String e164 = PhoneNumberFormatter.get(context).format(identifier);
+      id = db.getOrInsertFromE164(identifier);
     }
 
     return Recipient.resolved(id);

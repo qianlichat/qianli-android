@@ -79,7 +79,8 @@ public class PhoneNumberFormatter {
   }
 
   public static @NonNull String prettyPrint(@NonNull String e164) {
-    return StringUtil.forceLtr(get(ApplicationDependencies.getApplication()).prettyPrintFormat(e164));
+    return e164;
+//    return StringUtil.forceLtr(get(ApplicationDependencies.getApplication()).prettyPrintFormat(e164));
   }
 
   public @NonNull String prettyPrintFormat(@NonNull String e164) {

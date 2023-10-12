@@ -394,7 +394,7 @@ public abstract class BaseRegistrationViewModel extends ViewModel {
 
   protected abstract Single<ServiceResponse<VerifyResponse>> verifyAccountWithRegistrationLock(@NonNull String pin, @NonNull SvrAuthCredentialSet svrAuthCredentials);
 
-  protected abstract Single<VerifyResponseProcessor> onVerifySuccess(@NonNull VerifyResponseProcessor processor);
+  public abstract Single<VerifyResponseProcessor> onVerifySuccess(@NonNull VerifyResponseProcessor processor);
 
   protected abstract Single<VerifyResponseWithRegistrationLockProcessor> onVerifySuccessWithRegistrationLock(@NonNull VerifyResponseWithRegistrationLockProcessor processor, String pin);
 

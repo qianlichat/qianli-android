@@ -68,6 +68,32 @@ object UsernameUtil {
 
   @JvmStatic
   @WorkerThread
+  fun fetchAciForAccountId(accountId: String): Optional<ServiceId> {
+    val localId = recipients.getByE164(accountId)
+
+    if (localId.isPresent) {
+      val recipient = Recipient.resolved(localId.get())
+      if (recipient.serviceId.isPresent) {
+        Log.i(TAG, "Found username locally -- using associated UUID.")
+        return recipient.serviceId
+      }
+//      else {
+//        Log.w(TAG, "Found username locally, but it had no associated UUID! Clearing it.")
+//        recipients.debugClearE164AndPni(accountId)
+//      }
+    }
+
+    Log.d(TAG, "No local user with this username. Searching remotely.")
+
+    return try {
+      fetchAciForAccountIdPerform(accountId)
+    } catch (e: BaseUsernameException) {
+      Optional.empty()
+    }
+  }
+
+  @JvmStatic
+  @WorkerThread
   fun fetchAciForUsername(username: String): Optional<ServiceId> {
     val localId = recipients.getByUsername(username)
 
@@ -99,7 +125,17 @@ object UsernameUtil {
   fun hashUsernameToBase64(username: String?): String {
     return Base64UrlSafe.encodeBytesWithoutPadding(Username.hash(username))
   }
-
+  @JvmStatic
+  @WorkerThread
+  fun fetchAciForAccountIdPerform(accountId: String): Optional<ServiceId> {
+    return try {
+      val aci = ApplicationDependencies.getSignalServiceAccountManager().getAciByAccountId(accountId)
+      Optional.ofNullable(aci)
+    } catch (e: IOException) {
+      Log.w(TAG, "Failed to get ACI for username hash", e)
+      Optional.empty()
+    }
+  }
   @JvmStatic
   @WorkerThread
   fun fetchAciForUsernameHash(base64UrlSafeEncodedUsernameHash: String): Optional<ServiceId> {
