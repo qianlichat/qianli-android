@@ -28,7 +28,6 @@ import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.view.WindowManager;
 import android.widget.Button;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -66,14 +65,12 @@ import org.thoughtcrime.securesms.contacts.paged.ContactSearchKey;
 import org.thoughtcrime.securesms.contacts.paged.ContactSearchMediator;
 import org.thoughtcrime.securesms.contacts.paged.ContactSearchSortOrder;
 import org.thoughtcrime.securesms.contacts.paged.ContactSearchState;
-import org.thoughtcrime.securesms.contacts.sync.ContactDiscovery;
 import org.thoughtcrime.securesms.groups.SelectionLimits;
 import org.thoughtcrime.securesms.groups.ui.GroupLimitDialog;
 import org.thoughtcrime.securesms.permissions.Permissions;
 import org.thoughtcrime.securesms.recipients.Recipient;
 import org.thoughtcrime.securesms.recipients.RecipientId;
 import org.thoughtcrime.securesms.util.CommunicationActions;
-import org.thoughtcrime.securesms.util.TextSecurePreferences;
 import org.thoughtcrime.securesms.util.UsernameUtil;
 import org.thoughtcrime.securesms.util.ViewUtil;
 import org.thoughtcrime.securesms.util.adapter.mapping.MappingAdapter;
@@ -563,12 +560,12 @@ public final class ContactSelectionListFragment extends LoggingFragment {
 
       @Override
       protected Boolean doInBackground(Void... voids) {
-        try {
-          ContactDiscovery.refreshAll(context, false);
-          return true;
-        } catch (IOException e) {
-          Log.w(TAG, e);
-        }
+//        try {
+//          ContactDiscovery.refreshAll(context, false);
+//          return true;
+//        } catch (IOException e) {
+//          Log.w(TAG, e);
+//        }
         return false;
       }
 
@@ -675,7 +672,7 @@ public final class ContactSelectionListFragment extends LoggingFragment {
           }, uuid -> {
             loadingDialog.dismiss();
             if (uuid.isPresent()) {
-              Recipient       recipient = Recipient.externalContact(accountIdQuery);
+              Recipient       recipient = Recipient.externalPush(uuid.get(),accountIdQuery);
               SelectedContact selected  = SelectedContact.forPhone(recipient.getId(), accountIdQuery);
 
               if (onContactSelectedListener != null) {

@@ -46,29 +46,10 @@ def abiPostFix = ['universal'   : 0,
 def keystoreProperties = loadKeystoreProperties('keystore.debug.properties')
 
 def selectableVariants = [
-        'nightlyProdSpinner',
-        'nightlyProdPerf',
-        'nightlyProdRelease',
-        'nightlyStagingRelease',
-        'nightlyPnpPerf',
-        'nightlyPnpRelease',
-        'playProdDebug',
-        'playProdSpinner',
-        'playProdCanary',
-        'playProdPerf',
-        'playProdBenchmark',
-        'playProdInstrumentation',
-        'playProdRelease',
-        'playStagingDebug',
-        'playStagingCanary',
-        'playStagingSpinner',
-        'playStagingPerf',
-        'playStagingInstrumentation',
-        'playPnpDebug',
-        'playPnpSpinner',
-        'playStagingRelease',
-        'websiteProdSpinner',
-        'websiteProdRelease',
+        'playDebug',
+        'playRelease',
+        'websiteDebug',
+        'websiteRelease',
 ]
 
 android {
@@ -77,7 +58,7 @@ android {
     buildToolsVersion = signalBuildToolsVersion
     compileSdkVersion = signalCompileSdkVersion
 
-    flavorDimensions 'distribution', 'environment'
+    flavorDimensions 'distribution'
     useLibrary 'org.apache.http.legacy'
     testBuildType 'instrumentation'
 
@@ -172,14 +153,9 @@ android {
         buildConfigField "long", "BUILD_TIMESTAMP", getLastCommitTimestamp() + "L"
         buildConfigField "String", "GIT_HASH", "\"${getGitHash()}\""
         buildConfigField "String", "SIGNAL_URL", "\"https://msg.qianli.chat\""
-        buildConfigField "String", "STORAGE_URL", "\"https://storage.signal.org\""
-        buildConfigField "String", "SIGNAL_CDN_URL", "\"https://cdn.signal.org\""
-        buildConfigField "String", "SIGNAL_CDN2_URL", "\"https://cdn2.signal.org\""
-        buildConfigField "String", "SIGNAL_CDN3_URL", "\"https://cdn3.signal.org\""
-        buildConfigField "String", "SIGNAL_CDSI_URL", "\"https://cdsi.signal.org\""
+        buildConfigField "String", "STORAGE_URL", "\"https://storage.qianli.chat\""
+        buildConfigField "String", "SIGNAL_CDN_URL", "\"https://cdn.qianli.chat\""
         buildConfigField "String", "SIGNAL_SERVICE_STATUS_URL", "\"uptime.signal.org\""
-        buildConfigField "String", "SIGNAL_KEY_BACKUP_URL", "\"https://api.backup.signal.org\""
-        buildConfigField "String", "SIGNAL_SVR2_URL", "\"https://svr2.signal.org\""
         buildConfigField "String", "SIGNAL_SFU_URL", "\"https://sfu.voip.signal.org\""
         buildConfigField "String", "SIGNAL_STAGING_SFU_URL", "\"https://sfu.staging.voip.signal.org\""
         buildConfigField "String[]", "SIGNAL_SFU_INTERNAL_NAMES", "new String[]{\"Test\", \"Staging\", \"Development\"}"
@@ -188,23 +164,12 @@ android {
         buildConfigField "int", "CONTENT_PROXY_PORT", "443"
         buildConfigField "String[]", "SIGNAL_SERVICE_IPS", service_ips
         buildConfigField "String[]", "SIGNAL_STORAGE_IPS", storage_ips
-        buildConfigField "String[]", "SIGNAL_CDN_IPS", cdn_ips
-        buildConfigField "String[]", "SIGNAL_CDN2_IPS", cdn2_ips
-        buildConfigField "String[]", "SIGNAL_CDN3_IPS", cdn3_ips
         buildConfigField "String[]", "SIGNAL_KBS_IPS", kbs_ips
         buildConfigField "String[]", "SIGNAL_SFU_IPS", sfu_ips
         buildConfigField "String[]", "SIGNAL_CONTENT_PROXY_IPS", content_proxy_ips
-        buildConfigField "String[]", "SIGNAL_CDSI_IPS", cdsi_ips
-        buildConfigField "String[]", "SIGNAL_SVR2_IPS", svr2_ips
         buildConfigField "String", "SIGNAL_AGENT", "\"OWA\""
         buildConfigField "String", "CDSI_MRENCLAVE", "\"0f6fd79cdfdaa5b2e6337f534d3baf999318b0c462a7ac1f41297a3e4b424a57\""
         buildConfigField "String", "SVR2_MRENCLAVE", "\"6ee1042f9e20f880326686dd4ba50c25359f01e9f733eeba4382bca001d45094\""
-        buildConfigField "org.thoughtcrime.securesms.KbsEnclave", "KBS_ENCLAVE", "new org.thoughtcrime.securesms.KbsEnclave(\"e18376436159cda3ad7a45d9320e382e4a497f26b0dca34d8eab0bd0139483b5\", " +
-                                                                                                                           "\"3a485adb56e2058ef7737764c738c4069dd62bc457637eafb6bbce1ce29ddb89\", " +
-                                                                                                                           "\"45627094b2ea4a66f4cf0b182858a8dcf4b8479122c3820fe7fd0551a6d4cf5c\")"
-        buildConfigField "org.thoughtcrime.securesms.KbsEnclave[]", "KBS_FALLBACKS", "new org.thoughtcrime.securesms.KbsEnclave[] { new org.thoughtcrime.securesms.KbsEnclave(\"0cedba03535b41b67729ce9924185f831d7767928a1d1689acb689bc079c375f\", " +
-                                                                                                                                                                             "\"187d2739d22be65e74b65f0055e74d31310e4267e5fac2b1246cc8beba81af39\", " +
-                                                                                                                                                                             "\"ee19f1965b1eefa3dc4204eb70c04f397755f771b8c1909d080c04dad2a6a9ba\") }"
         buildConfigField "String", "UNIDENTIFIED_SENDER_TRUST_ROOT", "\"CikI/5Pr3AMSIQWVOGDsxsFbrsOwLnOA/hBOEdIggte3CtmS7Sm/qWyQFxJAK+FfJk/YIqntoFAYSJMknuDHSz0dztH2aFgwWzthZfzGAOX6VNn+92aXHj/rWxN1lp8UqEY0Mbs8ogMURUOZjQ==\""
         buildConfigField "String", "ZKGROUP_SERVER_PUBLIC_PARAMS", "\"APK4KB+XRYH77d4rQHQV6RDjJGdKBOfuCeVHEy1k56A7RJGZCNqYWic30e1pKJ29zsmTgkHxS+QYKIXnAud8DQFk+COMT1Dg3UnizFVHOf3BWyjFcnZDJED6TW06UiCRRYLuurrGKu1WpjDxhdOUh8wPGFpd3l6oAy6dJBQHutgObFdlLffYptIqWTvcCMvUvY9D+3u3H1HxSa41xRe5sVjyR4Y7Yy56RH1PuyHAvS1MrL63+ZnBnV6m80T25DZDXORLMEmD/QwM5q4TxdGhxk4ny0eu/FMKKLq+93CS0ZM7lO8DqJlQ58QzKXnNyyivS4p7cDgxzezntrwa4OliUys8fA2Ms/yfjCFaksHVHuEU7u0gX+7Vdt2vRmFgP7PdLqTttxcXbsm5g6HstDadLV7Zz4gXmhAUchJjJaYILc1TPjU/9I4zLohJAr+2I1NT5PC49dnv17rm0HItcZUl5SxMrbnOF7n1colBocW8DIwpk3gzN/3XTcRyDKTrcQyDUMKWVUux4avxV/HIK2qTNG/UXp8PV3sq3a7E/eihezQm\""
         buildConfigField "String", "GENERIC_SERVER_PUBLIC_PARAMS", "\"AHQAzgV4gJLLpHvyDpdXwc9kwm5TS2aZtJYKvWJz+Rp83p//V+74+pHoBdSC6gAYXC6YVmFT8tY712rvoVlpWW/4V7z1dhvUIrIVObwBU0SGZmzDTOsDtadhNF5v0fJAdW6Dsic701tar5cxjZX6EBeUqoHO042KvBcmcAn/VXVIqpQ38NTHV28E9MpJrlxbwLhTwAiyEx55rEm4FnYd7gyEJgwQqeohBpC1tSM2/mziBK6TVol5Da7o6/Q11zIOEJAsbl5Mozk/uYPXbayYJNzH82E2jKonJwyC1T4YnEQQ\""
@@ -330,7 +295,6 @@ android {
     productFlavors {
         play {
             dimension 'distribution'
-            isDefault true
             ext.websiteUpdateUrl = "null"
             buildConfigField "boolean", "PLAY_STORE_DISABLED", "false"
             buildConfigField "String", "NOPLAY_UPDATE_URL", "$ext.websiteUpdateUrl"
@@ -339,69 +303,13 @@ android {
 
         website {
             dimension 'distribution'
+            isDefault true
             ext.websiteUpdateUrl = "https://updates.qianli.chat/android"
             buildConfigField "boolean", "PLAY_STORE_DISABLED", "true"
             buildConfigField "String", "NOPLAY_UPDATE_URL", "\"$ext.websiteUpdateUrl\""
             buildConfigField "String", "BUILD_DISTRIBUTION_TYPE", "\"website\""
         }
 
-        nightly {
-            dimension 'distribution'
-            versionNameSuffix "-nightly-untagged-${getDateSuffix()}"
-            ext.websiteUpdateUrl = "null"
-            buildConfigField "boolean", "PLAY_STORE_DISABLED", "false"
-            buildConfigField "String", "NOPLAY_UPDATE_URL", "$ext.websiteUpdateUrl"
-            buildConfigField "String", "BUILD_DISTRIBUTION_TYPE", "\"nightly\""
-        }
-
-        prod {
-            dimension 'environment'
-
-            isDefault true
-
-            buildConfigField "String", "MOBILE_COIN_ENVIRONMENT", "\"mainnet\""
-            buildConfigField "String", "BUILD_ENVIRONMENT_TYPE", "\"Prod\""
-        }
-
-        staging {
-            dimension 'environment'
-
-            applicationIdSuffix ".staging"
-
-            buildConfigField "String", "SIGNAL_URL", "\"https://chat.staging.signal.org\""
-            buildConfigField "String", "STORAGE_URL", "\"https://storage-staging.signal.org\""
-            buildConfigField "String", "SIGNAL_CDN_URL", "\"https://cdn-staging.signal.org\""
-            buildConfigField "String", "SIGNAL_CDN2_URL", "\"https://cdn2-staging.signal.org\""
-            buildConfigField "String", "SIGNAL_CDN3_URL", "\"https://cdn3-staging.signal.org\""
-            buildConfigField "String", "SIGNAL_CDSI_URL", "\"https://cdsi.staging.signal.org\""
-            buildConfigField "String", "SIGNAL_KEY_BACKUP_URL", "\"https://api-staging.backup.signal.org\""
-            buildConfigField "String", "SIGNAL_SVR2_URL", "\"https://svr2.staging.signal.org\""
-            buildConfigField "String", "SVR2_MRENCLAVE", "\"a8a261420a6bb9b61aa25bf8a79e8bd20d7652531feb3381cbffd446d270be95\""
-            buildConfigField "org.thoughtcrime.securesms.KbsEnclave", "KBS_ENCLAVE", "new org.thoughtcrime.securesms.KbsEnclave(\"39963b736823d5780be96ab174869a9499d56d66497aa8f9b2244f777ebc366b\", " +
-                                                                                                                               "\"ee1d0d972b7ea903615670de43ab1b6e7a825e811c70a29bb5fe0f819e0975fa\", " +
-                                                                                                                               "\"45627094b2ea4a66f4cf0b182858a8dcf4b8479122c3820fe7fd0551a6d4cf5c\")"
-            buildConfigField "org.thoughtcrime.securesms.KbsEnclave[]", "KBS_FALLBACKS", "new org.thoughtcrime.securesms.KbsEnclave[] { new org.thoughtcrime.securesms.KbsEnclave(\"dd6f66d397d9e8cf6ec6db238e59a7be078dd50e9715427b9c89b409ffe53f99\", " +
-                                                                                                                                                                                 "\"4200003414528c151e2dccafbc87aa6d3d66a5eb8f8c05979a6e97cb33cd493a\", " +
-                                                                                                                                                                                 "\"ee19f1965b1eefa3dc4204eb70c04f397755f771b8c1909d080c04dad2a6a9ba\") }"
-            buildConfigField "String", "UNIDENTIFIED_SENDER_TRUST_ROOT", "\"BbqY1DzohE4NUZoVF+L18oUPrK3kILllLEJh2UnPSsEx\""
-            buildConfigField "String", "ZKGROUP_SERVER_PUBLIC_PARAMS", "\"ABSY21VckQcbSXVNCGRYJcfWHiAMZmpTtTELcDmxgdFbtp/bWsSxZdMKzfCp8rvIs8ocCU3B37fT3r4Mi5qAemeGeR2X+/YmOGR5ofui7tD5mDQfstAI9i+4WpMtIe8KC3wU5w3Inq3uNWVmoGtpKndsNfwJrCg0Hd9zmObhypUnSkfYn2ooMOOnBpfdanRtrvetZUayDMSC5iSRcXKpdlukrpzzsCIvEwjwQlJYVPOQPj4V0F4UXXBdHSLK05uoPBCQG8G9rYIGedYsClJXnbrgGYG3eMTG5hnx4X4ntARBgELuMWWUEEfSK0mjXg+/2lPmWcTZWR9nkqgQQP0tbzuiPm74H2wMO4u1Wafe+UwyIlIT9L7KLS19Aw8r4sPrXZSSsOZ6s7M1+rTJN0bI5CKY2PX29y5Ok3jSWufIKcgKOnWoP67d5b2du2ZVJjpjfibNIHbT/cegy/sBLoFwtHogVYUewANUAXIaMPyCLRArsKhfJ5wBtTminG/PAvuBdJ70Z/bXVPf8TVsR292zQ65xwvWTejROW6AZX6aqucUj\""
-            buildConfigField "String", "GENERIC_SERVER_PUBLIC_PARAMS", "\"AHILOIrFPXX9laLbalbA9+L1CXpSbM/bTJXZGZiuyK1JaI6dK5FHHWL6tWxmHKYAZTSYmElmJ5z2A5YcirjO/yfoemE03FItyaf8W1fE4p14hzb5qnrmfXUSiAIVrhaXVwIwSzH6RL/+EO8jFIjJ/YfExfJ8aBl48CKHgu1+A6kWynhttonvWWx6h7924mIzW0Czj2ROuh4LwQyZypex4GuOPW8sgIT21KNZaafgg+KbV7XM1x1tF3XA17B4uGUaDbDw2O+nR1+U5p6qHPzmJ7ggFjSN6Utu+35dS1sS0P9N\""
-            buildConfigField "String", "MOBILE_COIN_ENVIRONMENT", "\"testnet\""
-            buildConfigField "String", "SIGNAL_CAPTCHA_URL", "\"https://signalcaptchas.org/staging/registration/generate.html\""
-            buildConfigField "String", "RECAPTCHA_PROOF_URL", "\"https://signalcaptchas.org/staging/challenge/generate.html\""
-
-            buildConfigField "String", "BUILD_ENVIRONMENT_TYPE", "\"Staging\""
-            buildConfigField "String", "STRIPE_PUBLISHABLE_KEY", "\"pk_test_sngOd8FnXNkpce9nPXawKrJD00kIDngZkD\""
-        }
-
-        pnp {
-            dimension 'environment'
-
-            initWith staging
-            applicationIdSuffix ".pnp"
-
-            buildConfigField "String", "BUILD_ENVIRONMENT_TYPE", "\"Pnp\""
-        }
     }
 
     lint {
@@ -436,9 +344,8 @@ android {
 
     android.variantFilter { variant ->
         def distribution = variant.getFlavors().get(0).name
-        def environment  = variant.getFlavors().get(1).name
         def buildType    = variant.buildType.name
-        def fullName     = distribution + environment.capitalize() + buildType.capitalize()
+        def fullName     = distribution + buildType.capitalize()
 
         if (!selectableVariants.contains(fullName)) {
             variant.setIgnore(true)

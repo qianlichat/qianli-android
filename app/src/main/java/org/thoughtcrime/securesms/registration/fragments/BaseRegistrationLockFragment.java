@@ -2,7 +2,6 @@ package org.thoughtcrime.securesms.registration.fragments;
 
 import android.content.res.Resources;
 import android.os.Bundle;
-import android.text.InputType;
 import android.view.View;
 import android.view.inputmethod.EditorInfo;
 import android.widget.EditText;
@@ -16,20 +15,15 @@ import androidx.annotation.Nullable;
 import com.google.android.material.button.MaterialButton;
 import com.google.android.material.dialog.MaterialAlertDialogBuilder;
 
+import org.signal.core.util.concurrent.LifecycleDisposable;
 import org.signal.core.util.logging.Log;
 import org.thoughtcrime.securesms.LoggingFragment;
 import org.thoughtcrime.securesms.R;
-import org.thoughtcrime.securesms.lock.v2.PinKeyboardType;
 import org.thoughtcrime.securesms.registration.viewmodel.BaseRegistrationViewModel;
-import org.signal.core.util.concurrent.LifecycleDisposable;
 import org.thoughtcrime.securesms.util.ViewUtil;
 import org.thoughtcrime.securesms.util.views.CircularProgressMaterialButton;
 
-import java.util.Objects;
 import java.util.concurrent.TimeUnit;
-
-import io.reactivex.rxjava3.android.schedulers.AndroidSchedulers;
-import io.reactivex.rxjava3.disposables.Disposable;
 
 import static org.thoughtcrime.securesms.registration.fragments.RegistrationViewDelegate.setDebugLogSubmitMultiTapView;
 
@@ -97,15 +91,15 @@ public abstract class BaseRegistrationLockFragment extends LoggingFragment {
       handlePinEntry();
     });
 
-    keyboardToggle.setOnClickListener((v) -> {
-      PinKeyboardType keyboardType = getPinEntryKeyboardType();
-
-      updateKeyboard(keyboardType.getOther());
-      keyboardToggle.setIconResource(keyboardType.getIconResource());
-    });
-
-    PinKeyboardType keyboardType = getPinEntryKeyboardType().getOther();
-    keyboardToggle.setIconResource(keyboardType.getIconResource());
+//    keyboardToggle.setOnClickListener((v) -> {
+//      PinKeyboardType keyboardType = getPinEntryKeyboardType();
+//
+//      updateKeyboard(keyboardType.getOther());
+//      keyboardToggle.setIconResource(keyboardType.getIconResource());
+//    });
+//
+//    PinKeyboardType keyboardType = getPinEntryKeyboardType().getOther();
+//    keyboardToggle.setIconResource(keyboardType.getIconResource());
 
     disposables.bindTo(getViewLifecycleOwner().getLifecycle());
     viewModel = getViewModel();
@@ -143,50 +137,50 @@ public abstract class BaseRegistrationLockFragment extends LoggingFragment {
     return tries + " " + days;
   }
 
-  protected PinKeyboardType getPinEntryKeyboardType() {
-    boolean isNumeric = (pinEntry.getInputType() & InputType.TYPE_MASK_CLASS) == InputType.TYPE_CLASS_NUMBER;
-
-    return isNumeric ? PinKeyboardType.NUMERIC : PinKeyboardType.ALPHA_NUMERIC;
-  }
+//  protected PinKeyboardType getPinEntryKeyboardType() {
+//    boolean isNumeric = (pinEntry.getInputType() & InputType.TYPE_MASK_CLASS) == InputType.TYPE_CLASS_NUMBER;
+//
+//    return isNumeric ? PinKeyboardType.NUMERIC : PinKeyboardType.ALPHA_NUMERIC;
+//  }
 
   private void handlePinEntry() {
     pinEntry.setEnabled(false);
 
-    final String pin = pinEntry.getText().toString();
-
-    int trimmedLength = pin.replace(" ", "").length();
-    if (trimmedLength == 0) {
-      Toast.makeText(requireContext(), R.string.RegistrationActivity_you_must_enter_your_registration_lock_PIN, Toast.LENGTH_LONG).show();
-      enableAndFocusPinEntry();
-      return;
-    }
-
-    if (trimmedLength < MINIMUM_PIN_LENGTH) {
-      Toast.makeText(requireContext(), getString(R.string.RegistrationActivity_your_pin_has_at_least_d_digits_or_characters, MINIMUM_PIN_LENGTH), Toast.LENGTH_LONG).show();
-      enableAndFocusPinEntry();
-      return;
-    }
-
-    pinButton.setSpinning();
-
-    Disposable verify = viewModel.verifyCodeAndRegisterAccountWithRegistrationLock(pin)
-                                 .observeOn(AndroidSchedulers.mainThread())
-                                 .subscribe(processor -> {
-                                   if (processor.hasResult()) {
-                                     handleSuccessfulPinEntry(pin);
-                                   } else if (processor.wrongPin()) {
-                                     onIncorrectKbsRegistrationLockPin(Objects.requireNonNull(processor.getSvrTriesRemaining()));
-                                   } else if (processor.isRegistrationLockPresentAndSvrExhausted() || processor.registrationLock()) {
-                                     onKbsAccountLocked();
-                                   } else if (processor.rateLimit()) {
-                                     onRateLimited();
-                                   } else {
-                                     Log.w(TAG, "Unable to verify code with registration lock", processor.getError());
-                                     onError();
-                                   }
-                                 });
-
-    disposables.add(verify);
+//    final String pin = pinEntry.getText().toString();
+//
+//    int trimmedLength = pin.replace(" ", "").length();
+//    if (trimmedLength == 0) {
+//      Toast.makeText(requireContext(), R.string.RegistrationActivity_you_must_enter_your_registration_lock_PIN, Toast.LENGTH_LONG).show();
+//      enableAndFocusPinEntry();
+//      return;
+//    }
+//
+//    if (trimmedLength < MINIMUM_PIN_LENGTH) {
+//      Toast.makeText(requireContext(), getString(R.string.RegistrationActivity_your_pin_has_at_least_d_digits_or_characters, MINIMUM_PIN_LENGTH), Toast.LENGTH_LONG).show();
+//      enableAndFocusPinEntry();
+//      return;
+//    }
+//
+//    pinButton.setSpinning();
+//
+//    Disposable verify = viewModel.verifyCodeAndRegisterAccountWithRegistrationLock(pin)
+//                                 .observeOn(AndroidSchedulers.mainThread())
+//                                 .subscribe(processor -> {
+//                                   if (processor.hasResult()) {
+//                                     handleSuccessfulPinEntry(pin);
+//                                   } else if (processor.wrongPin()) {
+//                                     onIncorrectKbsRegistrationLockPin(Objects.requireNonNull(processor.getSvrTriesRemaining()));
+//                                   } else if (processor.isRegistrationLockPresentAndSvrExhausted() || processor.registrationLock()) {
+//                                     onKbsAccountLocked();
+//                                   } else if (processor.rateLimit()) {
+//                                     onRateLimited();
+//                                   } else {
+//                                     Log.w(TAG, "Unable to verify code with registration lock", processor.getError());
+//                                     onError();
+//                                   }
+//                                 });
+//
+//    disposables.add(verify);
   }
 
   public void onIncorrectKbsRegistrationLockPin(int svrTriesRemaining) {
@@ -262,14 +256,14 @@ public abstract class BaseRegistrationLockFragment extends LoggingFragment {
 
   protected abstract void navigateToAccountLocked();
 
-  private void updateKeyboard(@NonNull PinKeyboardType keyboard) {
-    boolean isAlphaNumeric = keyboard == PinKeyboardType.ALPHA_NUMERIC;
+//  private void updateKeyboard(@NonNull PinKeyboardType keyboard) {
+//    boolean isAlphaNumeric = keyboard == PinKeyboardType.ALPHA_NUMERIC;
 
-    pinEntry.setInputType(isAlphaNumeric ? InputType.TYPE_CLASS_TEXT | InputType.TYPE_TEXT_VARIATION_PASSWORD
-                                         : InputType.TYPE_CLASS_NUMBER | InputType.TYPE_NUMBER_VARIATION_PASSWORD);
+//    pinEntry.setInputType(isAlphaNumeric ? InputType.TYPE_CLASS_TEXT | InputType.TYPE_TEXT_VARIATION_PASSWORD
+//                                         : InputType.TYPE_CLASS_NUMBER | InputType.TYPE_NUMBER_VARIATION_PASSWORD);
 
-    pinEntry.getText().clear();
-  }
+//    pinEntry.getText().clear();
+//  }
 
   private void enableAndFocusPinEntry() {
     pinEntry.setEnabled(true);

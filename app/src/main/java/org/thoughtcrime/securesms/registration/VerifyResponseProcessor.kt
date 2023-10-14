@@ -1,6 +1,5 @@
 package org.thoughtcrime.securesms.registration
 
-import org.thoughtcrime.securesms.pin.SvrWrongPinException
 import org.thoughtcrime.securesms.registration.viewmodel.SvrAuthCredentialSet
 import org.whispersystems.signalservice.api.SvrNoDataException
 import org.whispersystems.signalservice.api.push.exceptions.IncorrectRegistrationRecoveryPasswordException
@@ -15,7 +14,7 @@ import org.whispersystems.signalservice.internal.push.LockedException
 sealed class VerifyResponseProcessor(response: ServiceResponse<VerifyResponse>) : ServiceResponseProcessor<VerifyResponse>(response) {
 
   open val svrTriesRemaining: Int?
-    get() = (error as? SvrWrongPinException)?.triesRemaining
+    get() = null
 
   open val svrAuthCredentials: SvrAuthCredentialSet?
     get() {
@@ -85,7 +84,7 @@ class VerifyResponseHitRegistrationLock(response: ServiceResponse<VerifyResponse
 class VerifyResponseWithRegistrationLockProcessor(response: ServiceResponse<VerifyResponse>, override val svrAuthCredentials: SvrAuthCredentialSet?) : VerifyResponseProcessor(response) {
 
   fun wrongPin(): Boolean {
-    return error is SvrWrongPinException
+    return false
   }
 
   override fun isRegistrationLockPresentAndSvrExhausted(): Boolean {
@@ -102,7 +101,6 @@ class VerifyResponseWithRegistrationLockProcessor(response: ServiceResponse<Veri
 
   override fun isServerSentError(): Boolean {
     return super.isServerSentError() ||
-      error is SvrWrongPinException ||
       error is SvrNoDataException
   }
 }

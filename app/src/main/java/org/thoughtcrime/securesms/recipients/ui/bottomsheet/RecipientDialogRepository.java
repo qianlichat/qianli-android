@@ -7,8 +7,8 @@ import androidx.annotation.Nullable;
 import androidx.core.util.Consumer;
 
 import org.signal.core.util.concurrent.SignalExecutors;
+import org.signal.core.util.concurrent.SimpleTask;
 import org.signal.core.util.logging.Log;
-import org.thoughtcrime.securesms.contacts.sync.ContactDiscovery;
 import org.thoughtcrime.securesms.database.GroupTable;
 import org.thoughtcrime.securesms.database.SignalDatabase;
 import org.thoughtcrime.securesms.database.model.GroupRecord;
@@ -21,7 +21,6 @@ import org.thoughtcrime.securesms.groups.ui.GroupChangeErrorCallback;
 import org.thoughtcrime.securesms.groups.ui.GroupChangeFailureReason;
 import org.thoughtcrime.securesms.recipients.Recipient;
 import org.thoughtcrime.securesms.recipients.RecipientId;
-import org.signal.core.util.concurrent.SimpleTask;
 
 import java.io.IOException;
 import java.util.ArrayList;
@@ -65,13 +64,14 @@ final class RecipientDialogRepository {
   }
 
   void refreshRecipient() {
-    SignalExecutors.UNBOUNDED.execute(() -> {
-      try {
-        ContactDiscovery.refresh(context, Recipient.resolved(recipientId), false);
-      } catch (IOException e) {
-        Log.w(TAG, "Failed to refresh user after adding to contacts.");
-      }
-    });
+    Log.w(TAG, "Failed to refresh user after adding to contacts.");
+//    SignalExecutors.UNBOUNDED.execute(() -> {
+//      try {
+//        ContactDiscovery.refresh(context, Recipient.resolved(recipientId), false);
+//      } catch (IOException e) {
+//        Log.w(TAG, "Failed to refresh user after adding to contacts.");
+//      }
+//    });
   }
 
   void removeMember(@NonNull Consumer<Boolean> onComplete, @NonNull GroupChangeErrorCallback error) {

@@ -20,7 +20,6 @@ import androidx.navigation.Navigation;
 
 import org.thoughtcrime.securesms.R;
 import org.thoughtcrime.securesms.keyvalue.SignalStore;
-import org.thoughtcrime.securesms.pin.PinOptOutDialog;
 import org.thoughtcrime.securesms.util.CommunicationActions;
 import org.thoughtcrime.securesms.util.navigation.SafeNavigation;
 
@@ -125,6 +124,6 @@ public final class SvrSplashFragment extends Fragment {
   }
 
   private void onPinSkipped() {
-    PinOptOutDialog.show(requireContext(), () -> requireActivity().finish());
+//    PinOptOutDialog.show(requireContext(), () -> requireActivity().finish());
   }
 }

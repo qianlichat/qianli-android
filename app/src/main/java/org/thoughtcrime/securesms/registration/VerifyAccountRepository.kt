@@ -1,3 +1,8 @@
+/*
+ * Copyright 2023 Signal Messenger, LLC
+ * SPDX-License-Identifier: AGPL-3.0-only
+ */
+
 package org.thoughtcrime.securesms.registration
 
 import android.app.Application
@@ -11,7 +16,6 @@ import org.signal.libsignal.protocol.IdentityKeyPair
 import org.thoughtcrime.securesms.AppCapabilities
 import org.thoughtcrime.securesms.gcm.FcmUtil
 import org.thoughtcrime.securesms.keyvalue.SignalStore
-import org.thoughtcrime.securesms.pin.SvrWrongPinException
 import org.thoughtcrime.securesms.push.AccountManagerFactory
 import org.thoughtcrime.securesms.registration.PushChallengeRequest.PushChallengeEvent
 import org.thoughtcrime.securesms.util.RSAUtils
@@ -178,7 +182,7 @@ class VerifyAccountRepository(private val context: Application) {
     }.subscribeOn(Schedulers.io())
   }
 
-  fun registerAccount(sessionId: String?, pass : String,registrationData: RegistrationData, pin: String? = null, masterKeyProducer: MasterKeyProducer? = null,publicKey: String): Single<ServiceResponse<VerifyResponse>> {
+  fun registerAccount(sessionId: String?, pass : String,registrationData: RegistrationData, pin: String? = null, masterKeyProducer: Object? = null,publicKey: String): Single<ServiceResponse<VerifyResponse>> {
     val universalUnidentifiedAccess: Boolean = TextSecurePreferences.isUniversalUnidentifiedAccess(context)
     val unidentifiedAccessKey: ByteArray = UnidentifiedAccess.deriveAccessKeyFrom(registrationData.profileKey)
 
@@ -189,14 +193,14 @@ class VerifyAccountRepository(private val context: Application) {
       registrationData.password
     )
 
-    val masterKey: MasterKey? = masterKeyProducer?.produceMasterKey()
-    val registrationLock: String? = masterKey?.deriveRegistrationLock()
+//    val masterKey: MasterKey? = masterKeyProducer?.produceMasterKey()
+//    val registrationLock: String? = masterKey?.deriveRegistrationLock()
 
     val accountAttributes = AccountAttributes(
       signalingKey = null,
       registrationId = registrationData.registrationId,
       fetchesMessages = registrationData.isNotFcm,
-      registrationLock = registrationLock,
+      registrationLock = null,
       unidentifiedAccessKey = unidentifiedAccessKey,
       unrestrictedUnidentifiedAccess = universalUnidentifiedAccess,
       capabilities = AppCapabilities.getCapabilities(true),
@@ -228,7 +232,7 @@ class VerifyAccountRepository(private val context: Application) {
       Log.d(TAG, "registerAccount after encrypt = $passDecrypted")
       Log.d(TAG, "registerAccount session id = $sessionId")
       val response = accountManager.registerAccount(sessionId, passDecrypted, registrationData.recoveryPassword, accountAttributes, aciPreKeyCollection, pniPreKeyCollection, registrationData.fcmToken, true)
-      VerifyResponse.from(response, masterKey, pin, aciPreKeyCollection, pniPreKeyCollection)
+      VerifyResponse.from(response, null, pin, aciPreKeyCollection, pniPreKeyCollection)
     }.subscribeOn(Schedulers.io())
   }
 
@@ -236,11 +240,6 @@ class VerifyAccountRepository(private val context: Application) {
     return Single.fromCallable {
       return@fromCallable FcmUtil.getToken(context).orElse("")
     }.subscribeOn(Schedulers.io())
-  }
-
-  interface MasterKeyProducer {
-    @Throws(IOException::class, SvrWrongPinException::class, SvrNoDataException::class)
-    fun produceMasterKey(): MasterKey
   }
 
   enum class Mode(val isSmsRetrieverSupported: Boolean) {

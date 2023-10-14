@@ -31,7 +31,6 @@ import org.signal.core.util.logging.Log;
 import org.thoughtcrime.securesms.attachments.Attachment;
 import org.thoughtcrime.securesms.attachments.AttachmentId;
 import org.thoughtcrime.securesms.attachments.DatabaseAttachment;
-import org.thoughtcrime.securesms.contacts.sync.ContactDiscovery;
 import org.thoughtcrime.securesms.contactshare.Contact;
 import org.thoughtcrime.securesms.database.AttachmentTable;
 import org.thoughtcrime.securesms.database.MessageTable;
@@ -52,11 +51,11 @@ import org.thoughtcrime.securesms.jobs.AttachmentCompressionJob;
 import org.thoughtcrime.securesms.jobs.AttachmentCopyJob;
 import org.thoughtcrime.securesms.jobs.AttachmentMarkUploadedJob;
 import org.thoughtcrime.securesms.jobs.AttachmentUploadJob;
+import org.thoughtcrime.securesms.jobs.IndividualSendJob;
 import org.thoughtcrime.securesms.jobs.MmsSendJob;
 import org.thoughtcrime.securesms.jobs.ProfileKeySendJob;
 import org.thoughtcrime.securesms.jobs.PushDistributionListSendJob;
 import org.thoughtcrime.securesms.jobs.PushGroupSendJob;
-import org.thoughtcrime.securesms.jobs.IndividualSendJob;
 import org.thoughtcrime.securesms.jobs.ReactionSendJob;
 import org.thoughtcrime.securesms.jobs.RemoteDeleteSendJob;
 import org.thoughtcrime.securesms.jobs.ResumableUploadSpecJob;
@@ -76,7 +75,6 @@ import org.thoughtcrime.securesms.util.TextSecurePreferences;
 import org.whispersystems.signalservice.api.push.DistributionId;
 import org.whispersystems.signalservice.api.util.Preconditions;
 
-import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collection;
@@ -603,13 +601,13 @@ public class MessageSender {
     } else if (destination.resolve().getRegistered() == RecipientTable.RegisteredState.NOT_REGISTERED) {
       return false;
     } else {
-      try {
-        RecipientTable.RegisteredState state = ContactDiscovery.refresh(context, destination, false);
-        return state == RecipientTable.RegisteredState.REGISTERED;
-      } catch (IOException e1) {
-        Log.w(TAG, e1);
+//      try {
+//        RecipientTable.RegisteredState state = ContactDiscovery.refresh(context, destination, false);
+//        return state == RecipientTable.RegisteredState.REGISTERED;
+//      } catch (IOException e1) {
+//        Log.w(TAG, e1);
         return false;
-      }
+//      }
     }
   }
 

@@ -32,7 +32,7 @@ public class PinReminderMigrationJob extends MigrationJob {
 
   @Override
   void performMigration() {
-    SignalStore.pinValues().setNextReminderIntervalToAtMost(TimeUnit.DAYS.toMillis(3));
+//    SignalStore.pinValues().setNextReminderIntervalToAtMost(TimeUnit.DAYS.toMillis(3));
   }
 
   @Override

@@ -13,7 +13,6 @@ import org.thoughtcrime.securesms.jobmanager.Job;
 import org.thoughtcrime.securesms.jobmanager.JobMigration.JobData;
 import org.thoughtcrime.securesms.jobmanager.migrations.RecipientIdJobMigration.NewSerializableSyncMessageId;
 import org.thoughtcrime.securesms.jobmanager.migrations.RecipientIdJobMigration.OldSerializableSyncMessageId;
-import org.thoughtcrime.securesms.jobs.DirectoryRefreshJob;
 import org.thoughtcrime.securesms.jobs.MultiDeviceContactUpdateJob;
 import org.thoughtcrime.securesms.jobs.MultiDeviceReadUpdateJob;
 import org.thoughtcrime.securesms.jobs.MultiDeviceVerifiedUpdateJob;

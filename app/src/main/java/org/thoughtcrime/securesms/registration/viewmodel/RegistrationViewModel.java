@@ -16,8 +16,6 @@ import org.thoughtcrime.securesms.jobs.NewRegistrationUsernameSyncJob;
 import org.thoughtcrime.securesms.jobs.StorageAccountRestoreJob;
 import org.thoughtcrime.securesms.jobs.StorageSyncJob;
 import org.thoughtcrime.securesms.keyvalue.SignalStore;
-import org.thoughtcrime.securesms.pin.SvrWrongPinException;
-import org.thoughtcrime.securesms.pin.SvrRepository;
 import org.thoughtcrime.securesms.registration.RegistrationData;
 import org.thoughtcrime.securesms.registration.RegistrationRepository;
 import org.thoughtcrime.securesms.registration.RegistrationSessionProcessor;
@@ -169,7 +167,7 @@ public final class RegistrationViewModel extends BaseRegistrationViewModel {
                                     String                  pin       = SignalStore.svr().getPin();
 
                                     if ((processor.isRegistrationLockPresentAndSvrExhausted() || processor.registrationLock()) && SignalStore.svr().getRegistrationLockToken() != null && pin != null) {
-                                      return verifyAccountRepository.registerAccount(sessionId, "",getRegistrationData(), pin, () -> SignalStore.svr().getOrCreateMasterKey(),publicKey)
+                                      return verifyAccountRepository.registerAccount(sessionId, "",getRegistrationData(), pin, null,publicKey)
                                                                     .map(verifyAccountWithPinResponse -> {
                                                                       if (verifyAccountWithPinResponse.getResult().isPresent() && verifyAccountWithPinResponse.getResult().get().getMasterKey() != null) {
                                                                         return verifyAccountWithPinResponse;
@@ -200,7 +198,7 @@ public final class RegistrationViewModel extends BaseRegistrationViewModel {
                                   })
                                   .<ServiceResponse<VerifyResponse>>flatMap(processor -> {
                                     if (processor.isAlreadyVerified() || (processor.hasResult() && processor.isVerified())) {
-                                      return verifyAccountRepository.registerAccount(sessionId,"", getRegistrationData(), pin, () -> SvrRepository.restoreMasterKeyPreRegistration(svrAuthCredentials, pin),publicKey);
+                                      return verifyAccountRepository.registerAccount(sessionId,"", getRegistrationData(), pin, null,publicKey);
                                     } else {
                                       return Single.just(ServiceResponse.coerceError(processor.getResponse()));
                                     }
@@ -210,6 +208,9 @@ public final class RegistrationViewModel extends BaseRegistrationViewModel {
 
   @Override
   public Single<VerifyResponseProcessor> onVerifySuccess(@NonNull VerifyResponseProcessor processor) {
+    if(!processor.hasResult()){
+      return Single.just(processor);
+    }
     return registrationRepository.registerAccount(getRegistrationData(), processor.getResult(), false)
                                  .map(VerifyResponseWithoutKbs::new);
   }
@@ -276,30 +277,31 @@ public final class RegistrationViewModel extends BaseRegistrationViewModel {
 
   @WorkerThread
   private @NonNull ReRegistrationData verifyReRegisterWithPinInternal(@NonNull String pin)
-      throws SvrWrongPinException, IOException, SvrNoDataException
+      throws IOException, SvrNoDataException
   {
     String localPinHash = SignalStore.svr().getLocalPinHash();
 
-    if (hasRecoveryPassword() && localPinHash != null) {
-      if (PinHashUtil.verifyLocalPinHash(localPinHash, pin)) {
-        Log.i(TAG, "Local pin matches input, attempting registration");
-        return ReRegistrationData.canProceed(SignalStore.svr().getOrCreateMasterKey());
-      } else {
-        throw new SvrWrongPinException(0);
-      }
-    } else {
+//    if (hasRecoveryPassword() && localPinHash != null) {
+//      if (PinHashUtil.verifyLocalPinHash(localPinHash, pin)) {
+//        Log.i(TAG, "Local pin matches input, attempting registration");
+//        return ReRegistrationData.canProceed(SignalStore.svr().getOrCreateMasterKey());
+//      }
+////      else {
+////        throw new SvrWrongPinException(0);
+////      }
+//    } else {
       SvrAuthCredentialSet authCredentials = getSvrAuthCredentials();
       if (authCredentials == null) {
         Log.w(TAG, "No SVR auth credentials, abort skip flow");
         return ReRegistrationData.cannotProceed();
       }
 
-      MasterKey masterKey = SvrRepository.restoreMasterKeyPreRegistration(authCredentials, pin);
+//      MasterKey masterKey = SvrRepository.restoreMasterKeyPreRegistration(authCredentials, pin);
 
-      setRecoveryPassword(masterKey.deriveRegistrationRecoveryPassword());
-      setSvrTriesRemaining(10);
-      return ReRegistrationData.canProceed(masterKey);
-    }
+//      setRecoveryPassword(masterKey.deriveRegistrationRecoveryPassword());
+//      setSvrTriesRemaining(10);
+      return ReRegistrationData.canProceed(null);
+//    }
   }
 
   private Single<VerifyResponseProcessor> verifyReRegisterWithRecoveryPassword(@NonNull String pin, @NonNull MasterKey masterKey) {
@@ -315,7 +317,7 @@ public final class RegistrationViewModel extends BaseRegistrationViewModel {
                                   .flatMap(processor -> {
                                     if (processor.registrationLock()) {
                                       setSvrAuthCredentials(processor.getSvrAuthCredentials());
-                                      return verifyAccountRepository.registerAccount(null,"", registrationData, pin, () -> masterKey,publicKey)
+                                      return verifyAccountRepository.registerAccount(null,"", registrationData, pin, null,publicKey)
                                                                     .onErrorReturn(ServiceResponse::forUnknownError)
                                                                     .map(r -> new VerifyResponseWithRegistrationLockProcessor(r, processor.getSvrAuthCredentials()));
                                     } else {

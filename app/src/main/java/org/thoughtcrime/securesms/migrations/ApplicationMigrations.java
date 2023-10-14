@@ -315,9 +315,9 @@ public class ApplicationMigrations {
       jobs.put(Version.STORAGE_CAPABILITY, new StorageCapabilityMigrationJob());
     }
 
-    if (lastSeenVersion < Version.PIN_REMINDER) {
-      jobs.put(Version.PIN_REMINDER, new PinReminderMigrationJob());
-    }
+//    if (lastSeenVersion < Version.PIN_REMINDER) {
+//      jobs.put(Version.PIN_REMINDER, new PinReminderMigrationJob());
+//    }
 
     if (lastSeenVersion < Version.VERSIONED_PROFILE) {
       jobs.put(Version.VERSIONED_PROFILE, new ProfileMigrationJob());
@@ -604,9 +604,9 @@ public class ApplicationMigrations {
       jobs.put(Version.EMOJI_VERSION_8, new EmojiDownloadMigrationJob());
     }
 
-    if (lastSeenVersion < Version.SVR2_MIRROR) {
-      jobs.put(Version.SVR2_MIRROR, new Svr2MirrorMigrationJob());
-    }
+//    if (lastSeenVersion < Version.SVR2_MIRROR) {
+//      jobs.put(Version.SVR2_MIRROR, new Svr2MirrorMigrationJob());
+//    }
 
     if (lastSeenVersion < Version.ATTACHMENT_CLEANUP_3) {
       jobs.put(Version.ATTACHMENT_CLEANUP_3, new AttachmentCleanupMigrationJob());

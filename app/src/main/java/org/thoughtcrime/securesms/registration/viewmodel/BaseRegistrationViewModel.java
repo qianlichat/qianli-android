@@ -231,7 +231,7 @@ public abstract class BaseRegistrationViewModel extends ViewModel {
     savedState.getLiveData(STATE_CAN_SMS_AT_TIME).postValue(smsTimestamp);
   }
 
-  public Single<RegistrationSessionProcessor> createSession(@NonNull Mode mode, @Nullable String mcc, @Nullable String mnc) {
+  public Single<RegistrationSessionProcessor> createSession( @Nullable String mcc, @Nullable String mnc) {
 
     final String e164 = getNumber().getNationalNumber();
 

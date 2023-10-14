@@ -7,14 +7,11 @@ import androidx.annotation.Nullable;
 import androidx.preference.Preference;
 
 import com.google.android.material.dialog.MaterialAlertDialogBuilder;
-import com.google.android.material.snackbar.Snackbar;
 
 import org.thoughtcrime.securesms.R;
 import org.thoughtcrime.securesms.keyvalue.SignalStore;
-import org.thoughtcrime.securesms.lock.v2.CreateSvrPinActivity;
 import org.thoughtcrime.securesms.payments.backup.PaymentsRecoveryStartFragmentArgs;
 import org.thoughtcrime.securesms.payments.preferences.PaymentsActivity;
-import org.thoughtcrime.securesms.pin.PinOptOutDialog;
 
 public class AdvancedPinPreferenceFragment extends ListSummaryPreferenceFragment {
 
@@ -39,9 +36,9 @@ public class AdvancedPinPreferenceFragment extends ListSummaryPreferenceFragment
 
   @Override
   public void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
-    if (requestCode == CreateSvrPinActivity.REQUEST_NEW_PIN && resultCode == CreateSvrPinActivity.RESULT_OK) {
-      Snackbar.make(requireView(), R.string.ApplicationPreferencesActivity_pin_created, Snackbar.LENGTH_LONG).show();
-    }
+//    if (requestCode == CreateSvrPinActivity.REQUEST_NEW_PIN && resultCode == CreateSvrPinActivity.RESULT_OK) {
+//      Snackbar.make(requireView(), R.string.ApplicationPreferencesActivity_pin_created, Snackbar.LENGTH_LONG).show();
+//    }
   }
 
   private void updatePreferenceState() {
@@ -93,13 +90,13 @@ public class AdvancedPinPreferenceFragment extends ListSummaryPreferenceFragment
                      .setCancelable(true)
                      .show();
     } else if (!enabled) {
-      PinOptOutDialog.show(requireContext(),
-                           () -> {
-                             updatePreferenceState();
-                             Snackbar.make(requireView(), R.string.ApplicationPreferencesActivity_pin_disabled, Snackbar.LENGTH_SHORT).show();
-                           });
+//      PinOptOutDialog.show(requireContext(),
+//                           () -> {
+//                             updatePreferenceState();
+//                             Snackbar.make(requireView(), R.string.ApplicationPreferencesActivity_pin_disabled, Snackbar.LENGTH_SHORT).show();
+//                           });
     } else {
-      startActivityForResult(CreateSvrPinActivity.getIntentForPinCreate(requireContext()), CreateSvrPinActivity.REQUEST_NEW_PIN);
+//      startActivityForResult(CreateSvrPinActivity.getIntentForPinCreate(requireContext()), CreateSvrPinActivity.REQUEST_NEW_PIN);
     }
   }
 }

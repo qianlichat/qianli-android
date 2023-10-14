@@ -121,8 +121,6 @@ import org.thoughtcrime.securesms.contacts.paged.ContactSearchData;
 import org.thoughtcrime.securesms.contacts.paged.ContactSearchKey;
 import org.thoughtcrime.securesms.contacts.paged.ContactSearchMediator;
 import org.thoughtcrime.securesms.contacts.paged.ContactSearchState;
-import org.thoughtcrime.securesms.contacts.sync.CdsPermanentErrorBottomSheet;
-import org.thoughtcrime.securesms.contacts.sync.CdsTemporaryErrorBottomSheet;
 import org.thoughtcrime.securesms.conversationlist.chatfilter.ConversationFilterRequest;
 import org.thoughtcrime.securesms.conversationlist.chatfilter.ConversationFilterSource;
 import org.thoughtcrime.securesms.conversationlist.chatfilter.ConversationListFilterPullView;
@@ -139,7 +137,6 @@ import org.thoughtcrime.securesms.exporter.flow.SmsExportDialogs;
 import org.thoughtcrime.securesms.groups.SelectionLimits;
 import org.thoughtcrime.securesms.jobs.ServiceOutageDetectionJob;
 import org.thoughtcrime.securesms.keyvalue.SignalStore;
-import org.thoughtcrime.securesms.lock.v2.CreateSvrPinActivity;
 import org.thoughtcrime.securesms.main.Material3OnScrollHelperBinder;
 import org.thoughtcrime.securesms.main.SearchBinder;
 import org.thoughtcrime.securesms.mediasend.v2.MediaSelectionActivity;
@@ -199,7 +196,6 @@ import java.util.stream.Collectors;
 import kotlin.Unit;
 
 import static android.app.Activity.RESULT_CANCELED;
-import static android.app.Activity.RESULT_OK;
 
 
 public class ConversationListFragment extends MainFragment implements ActionMode.Callback,
@@ -697,10 +693,10 @@ public class ConversationListFragment extends MainFragment implements ActionMode
       }
     }
 
-    if (resultCode == RESULT_OK && requestCode == CreateSvrPinActivity.REQUEST_NEW_PIN) {
-      Snackbar.make(fab, R.string.ConfirmKbsPinFragment__pin_created, Snackbar.LENGTH_LONG).show();
-      viewModel.onMegaphoneCompleted(Megaphones.Event.PINS_FOR_ALL);
-    }
+//    if (resultCode == RESULT_OK && requestCode == CreateSvrPinActivity.REQUEST_NEW_PIN) {
+//      Snackbar.make(fab, R.string.ConfirmKbsPinFragment__pin_created, Snackbar.LENGTH_LONG).show();
+//      viewModel.onMegaphoneCompleted(Megaphones.Event.PINS_FOR_ALL);
+//    }
   }
 
   private void onConversationClicked(@NonNull ThreadRecord threadRecord) {
@@ -787,11 +783,7 @@ public class ConversationListFragment extends MainFragment implements ActionMode
   private void onReminderAction(@IdRes int reminderActionId) {
     if (reminderActionId == R.id.reminder_action_update_now) {
       PlayStoreUtil.openPlayStoreOrOurApkDownloadPage(requireContext());
-    } else if (reminderActionId == R.id.reminder_action_cds_temporary_error_learn_more) {
-      CdsTemporaryErrorBottomSheet.show(getChildFragmentManager());
-    } else if (reminderActionId == R.id.reminder_action_cds_permanent_error_learn_more) {
-      CdsPermanentErrorBottomSheet.show(getChildFragmentManager());
-    } else if (reminderActionId == R.id.reminder_action_fix_username) {
+    }else if (reminderActionId == R.id.reminder_action_fix_username) {
       startActivity(ManageProfileActivity.getIntentForUsernameEdit(requireContext()));
     } else if (reminderActionId == R.id.reminder_action_re_register) {
       startActivity(RegistrationNavigationActivity.newIntentForReRegistration(requireContext()));

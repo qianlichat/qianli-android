@@ -17,7 +17,6 @@ import org.thoughtcrime.securesms.database.model.MessageRecord;
 import org.thoughtcrime.securesms.dependencies.ApplicationDependencies;
 import org.thoughtcrime.securesms.jobmanager.Job;
 import org.thoughtcrime.securesms.jobs.AttachmentDownloadJob;
-import org.thoughtcrime.securesms.jobs.DirectoryRefreshJob;
 import org.thoughtcrime.securesms.jobs.PreKeysSyncJob;
 import org.thoughtcrime.securesms.jobs.RefreshAttributesJob;
 import org.thoughtcrime.securesms.keyvalue.SignalStore;
@@ -142,9 +141,9 @@ public class LegacyMigrationJob extends MigrationJob {
 //      scheduleMessagesInPushDatabase(context);;
 //    }
 
-    if (lastSeenVersion < CONTACTS_ACCOUNT_VERSION) {
-      ApplicationDependencies.getJobManager().add(new DirectoryRefreshJob(false));
-    }
+//    if (lastSeenVersion < CONTACTS_ACCOUNT_VERSION) {
+//      ApplicationDependencies.getJobManager().add(new DirectoryRefreshJob(false));
+//    }
 
     if (lastSeenVersion < MEDIA_DOWNLOAD_CONTROLS_VERSION) {
       schedulePendingIncomingParts(context);
@@ -152,12 +151,12 @@ public class LegacyMigrationJob extends MigrationJob {
 
     if (lastSeenVersion < REDPHONE_SUPPORT_VERSION) {
       ApplicationDependencies.getJobManager().add(new RefreshAttributesJob());
-      ApplicationDependencies.getJobManager().add(new DirectoryRefreshJob(false));
+//      ApplicationDependencies.getJobManager().add(new DirectoryRefreshJob(false));
     }
 
-    if (lastSeenVersion < PROFILES) {
-      ApplicationDependencies.getJobManager().add(new DirectoryRefreshJob(false));
-    }
+//    if (lastSeenVersion < PROFILES) {
+//      ApplicationDependencies.getJobManager().add(new DirectoryRefreshJob(false));
+//    }
 
     if (lastSeenVersion < SCREENSHOTS) {
       boolean screenSecurity = PreferenceManager.getDefaultSharedPreferences(context).getBoolean(TextSecurePreferences.SCREEN_SECURITY_PREF, true);

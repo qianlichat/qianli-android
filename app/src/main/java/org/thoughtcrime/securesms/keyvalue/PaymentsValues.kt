@@ -9,7 +9,6 @@ import com.mobilecoin.lib.Mnemonics
 import com.mobilecoin.lib.exceptions.BadMnemonicException
 import org.signal.core.util.logging.Log
 import org.thoughtcrime.securesms.database.SignalDatabase
-import org.thoughtcrime.securesms.lock.v2.PinKeyboardType
 import org.thoughtcrime.securesms.payments.Balance
 import org.thoughtcrime.securesms.payments.Entropy
 import org.thoughtcrime.securesms.payments.GeographicalRestrictions
@@ -245,8 +244,8 @@ internal class PaymentsValues internal constructor(store: KeyValueStore) : Signa
 
   fun showUpdatePinInfoCard(): Boolean {
     return if (userHasLargeBalance() &&
-      SignalStore.svr().hasPin() &&
-      !SignalStore.svr().hasOptedOut() && SignalStore.pinValues().keyboardType == PinKeyboardType.NUMERIC
+      SignalStore.svr().hasPin()
+//      && !SignalStore.svr().hasOptedOut() && SignalStore.pinValues().keyboardType == PinKeyboardType.NUMERIC
     ) {
       store.getBoolean(SHOW_CASHING_OUT_INFO_CARD, true)
     } else {

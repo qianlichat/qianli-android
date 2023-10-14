@@ -3,7 +3,6 @@ package org.thoughtcrime.securesms.lock;
 import android.content.Context;
 import android.content.Intent;
 import android.text.Editable;
-import android.text.InputType;
 import android.text.SpannableString;
 import android.text.SpannableStringBuilder;
 import android.text.Spanned;
@@ -76,14 +75,14 @@ public final class SignalPinReminderDialog {
     ViewUtil.focusAndShowKeyboard(pinEditText);
     ViewCompat.setAutofillHints(pinEditText, HintConstants.AUTOFILL_HINT_PASSWORD);
 
-    switch (SignalStore.pinValues().getKeyboardType()) {
-      case NUMERIC:
-        pinEditText.setInputType(InputType.TYPE_CLASS_NUMBER | InputType.TYPE_NUMBER_VARIATION_PASSWORD);
-        break;
-      case ALPHA_NUMERIC:
-        pinEditText.setInputType(InputType.TYPE_CLASS_TEXT | InputType.TYPE_TEXT_VARIATION_PASSWORD);
-        break;
-    }
+//    switch (SignalStore.pinValues().getKeyboardType()) {
+//      case NUMERIC:
+//        pinEditText.setInputType(InputType.TYPE_CLASS_NUMBER | InputType.TYPE_NUMBER_VARIATION_PASSWORD);
+//        break;
+//      case ALPHA_NUMERIC:
+//        pinEditText.setInputType(InputType.TYPE_CLASS_TEXT | InputType.TYPE_TEXT_VARIATION_PASSWORD);
+//        break;
+//    }
 
     ClickableSpan clickableSpan = new ClickableSpan() {
       @Override

@@ -317,7 +317,6 @@ public class PushServiceSocket {
 
   private final ServiceConnectionHolder[]        serviceClients;
   private final Map<Integer, ConnectionHolder[]> cdnClientsMap;
-  private final ConnectionHolder[]               keyBackupServiceClients;
   private final ConnectionHolder[]               storageClients;
 
   private final CredentialsProvider       credentialsProvider;
@@ -337,7 +336,6 @@ public class PushServiceSocket {
     this.automaticNetworkRetry     = automaticNetworkRetry;
     this.serviceClients            = createServiceConnectionHolders(configuration.getSignalServiceUrls(), configuration.getNetworkInterceptors(), configuration.getDns(), configuration.getSignalProxy());
     this.cdnClientsMap             = createCdnClientsMap(configuration.getSignalCdnUrlMap(), configuration.getNetworkInterceptors(), configuration.getDns(), configuration.getSignalProxy());
-    this.keyBackupServiceClients   = createConnectionHolders(configuration.getSignalKeyBackupServiceUrls(), configuration.getNetworkInterceptors(), configuration.getDns(), configuration.getSignalProxy());
     this.storageClients            = createConnectionHolders(configuration.getSignalStorageUrls(), configuration.getNetworkInterceptors(), configuration.getDns(), configuration.getSignalProxy());
     this.random                    = new SecureRandom();
     this.clientZkProfileOperations = clientZkProfileOperations;
@@ -1324,21 +1322,21 @@ public class PushServiceSocket {
     return getAuthCredentials(PAYMENTS_AUTH_PATH);
   }
 
-  public TokenResponse getKeyBackupServiceToken(String authorizationToken, String enclaveName)
-      throws IOException
-  {
-    try (Response response = makeRequest(ClientSet.KeyBackup, authorizationToken, null, "/v1/token/" + enclaveName, "GET", null)) {
-      return readBodyJson(response, TokenResponse.class);
-    }
-  }
+//  public TokenResponse getKeyBackupServiceToken(String authorizationToken, String enclaveName)
+//      throws IOException
+//  {
+//    try (Response response = makeRequest(ClientSet.KeyBackup, authorizationToken, null, "/v1/token/" + enclaveName, "GET", null)) {
+//      return readBodyJson(response, TokenResponse.class);
+//    }
+//  }
 
-  public KeyBackupResponse putKbsData(String authorizationToken, KeyBackupRequest request, List<String> cookies, String mrenclave)
-      throws IOException
-  {
-    try (Response response = makeRequest(ClientSet.KeyBackup, authorizationToken, cookies, "/v1/backup/" + mrenclave, "PUT", JsonUtil.toJson(request))) {
-      return readBodyJson(response, KeyBackupResponse.class);
-    }
-  }
+//  public KeyBackupResponse putKbsData(String authorizationToken, KeyBackupRequest request, List<String> cookies, String mrenclave)
+//      throws IOException
+//  {
+//    try (Response response = makeRequest(ClientSet.KeyBackup, authorizationToken, cookies, "/v1/backup/" + mrenclave, "PUT", JsonUtil.toJson(request))) {
+//      return readBodyJson(response, KeyBackupResponse.class);
+//    }
+//  }
 
   public TurnServerInfo getTurnServerInfo() throws IOException {
     String response = makeServiceRequest(TURN_SERVER_INFO, "GET", null);
@@ -1471,7 +1469,7 @@ public class PushServiceSocket {
       throw new ResumeLocationInvalidException();
     }
 
-    if (attachment.getResumableUploadSpec().getCdnNumber() == 2) {
+//    if (attachment.getResumableUploadSpec().getCdnNumber() == 2) {
       return uploadToCdn2(attachment.getResumableUploadSpec().getResumeLocation(),
                           attachment.getData(),
                           "application/octet-stream",
@@ -1479,16 +1477,16 @@ public class PushServiceSocket {
                           attachment.getOutputStreamFactory(),
                           attachment.getListener(),
                           attachment.getCancelationSignal());
-    } else {
-      return uploadToCdn3(attachment.getResumableUploadSpec().getResumeLocation(),
-                          attachment.getData(),
-                          "application/offset+octet-stream",
-                          attachment.getDataSize(),
-                          attachment.getOutputStreamFactory(),
-                          attachment.getListener(),
-                          attachment.getCancelationSignal(),
-                          attachment.getResumableUploadSpec().getHeaders());
-    }
+//    } else {
+//      return uploadToCdn3(attachment.getResumableUploadSpec().getResumeLocation(),
+//                          attachment.getData(),
+//                          "application/offset+octet-stream",
+//                          attachment.getDataSize(),
+//                          attachment.getOutputStreamFactory(),
+//                          attachment.getListener(),
+//                          attachment.getCancelationSignal(),
+//                          attachment.getResumableUploadSpec().getHeaders());
+//    }
   }
 
   private void downloadFromCdn(File destination, int cdnNumber, String path, long maxSizeBytes, ProgressListener listener)
@@ -1635,7 +1633,7 @@ public class PushServiceSocket {
                                                 .readTimeout(soTimeoutMillis, TimeUnit.MILLISECONDS)
                                                 .build();
 
-    Request.Builder request = new Request.Builder().url(buildConfiguredUrl(connectionHolder, signedUrl))
+    Request.Builder request = new Request.Builder().url(signedUrl)
                                                    .post(RequestBody.create(null, ""));
 
     for (Map.Entry<String, String> header : headers.entrySet()) {
@@ -1903,22 +1901,23 @@ public class PushServiceSocket {
   }
 
   private static HttpUrl buildConfiguredUrl(ConnectionHolder connectionHolder, String url) throws IOException {
-    final HttpUrl endpointUrl = HttpUrl.get(connectionHolder.url);
-    final HttpUrl resumableHttpUrl;
-    try {
-      resumableHttpUrl = HttpUrl.get(url);
-    } catch (IllegalArgumentException e) {
-      throw new IOException("Malformed URL!", e);
-    }
-
-    return new HttpUrl.Builder().scheme(endpointUrl.scheme())
-                                .host(endpointUrl.host())
-                                .port(endpointUrl.port())
-                                .encodedPath(endpointUrl.encodedPath())
-                                .addEncodedPathSegments(resumableHttpUrl.encodedPath().substring(1))
-                                .encodedQuery(resumableHttpUrl.encodedQuery())
-                                .encodedFragment(resumableHttpUrl.encodedFragment())
-                                .build();
+    return HttpUrl.get(url);
+//    final HttpUrl endpointUrl = HttpUrl.get(connectionHolder.url);
+//    final HttpUrl resumableHttpUrl;
+//    try {
+//      resumableHttpUrl = HttpUrl.get(url);
+//    } catch (IllegalArgumentException e) {
+//      throw new IOException("Malformed URL!", e);
+//    }
+//
+//    return new HttpUrl.Builder().scheme(endpointUrl.scheme())
+//                                .host(endpointUrl.host())
+//                                .port(endpointUrl.port())
+//                                .encodedPath(endpointUrl.encodedPath())
+//                                .addEncodedPathSegments(resumableHttpUrl.encodedPath().substring(1))
+//                                .encodedQuery(resumableHttpUrl.encodedQuery())
+//                                .encodedFragment(resumableHttpUrl.encodedFragment())
+//                                .build();
   }
 
   private String makeServiceRequestWithoutAuthentication(String urlFragment, String method, String jsonBody)
@@ -2148,80 +2147,71 @@ public class PushServiceSocket {
   }
 
 
-  private ConnectionHolder[] clientsFor(ClientSet clientSet) {
-    switch (clientSet) {
-      case KeyBackup:
-        return keyBackupServiceClients;
-      default:
-        throw new AssertionError("Unknown attestation purpose");
-    }
-  }
-
-  Response makeRequest(ClientSet clientSet, String authorization, List<String> cookies, String path, String method, String body)
-      throws PushNetworkException, NonSuccessfulResponseCodeException
-  {
-    ConnectionHolder connectionHolder = getRandom(clientsFor(clientSet), random);
-
-    OkHttpClient okHttpClient = connectionHolder.getClient()
-                                                .newBuilder()
-                                                .connectTimeout(soTimeoutMillis, TimeUnit.MILLISECONDS)
-                                                .readTimeout(soTimeoutMillis, TimeUnit.MILLISECONDS)
-                                                .build();
-
-    Request.Builder request = new Request.Builder().url(connectionHolder.getUrl() + path);
-
-    if (body != null) {
-      request.method(method, RequestBody.create(MediaType.parse("application/json"), body));
-    } else {
-      request.method(method, null);
-    }
-
-    if (connectionHolder.getHostHeader().isPresent()) {
-      request.addHeader("Host", connectionHolder.getHostHeader().get());
-    }
-
-    if (authorization != null) {
-      request.addHeader("Authorization", authorization);
-    }
-
-    if (cookies != null && !cookies.isEmpty()) {
-      request.addHeader("Cookie", Util.join(cookies, "; "));
-    }
-
-    Call call = okHttpClient.newCall(request.build());
-
-    synchronized (connections) {
-      connections.add(call);
-    }
-
-    Response response;
-
-    try {
-      response = call.execute();
-
-      if (response.isSuccessful()) {
-        return response;
-      }
-    } catch (IOException e) {
-      throw new PushNetworkException(e);
-    } finally {
-      synchronized (connections) {
-        connections.remove(call);
-      }
-    }
-
-    switch (response.code()) {
-      case 401:
-      case 403:
-        throw new AuthorizationFailedException(response.code(), "Authorization failed!");
-      case 409:
-        throw new RemoteAttestationResponseExpiredException("Remote attestation response expired");
-      case 429:
-        throw new RateLimitException(response.code(), "Rate limit exceeded: " + response.code());
-    }
-
-    throw new NonSuccessfulResponseCodeException(response.code(), "Response: " + response);
-  }
+//  Response makeRequest(ClientSet clientSet, String authorization, List<String> cookies, String path, String method, String body)
+//      throws PushNetworkException, NonSuccessfulResponseCodeException
+//  {
+////    ConnectionHolder connectionHolder = getRandom(clientsFor(clientSet), random);
+//
+//    OkHttpClient okHttpClient = connectionHolder.getClient()
+//                                                .newBuilder()
+//                                                .connectTimeout(soTimeoutMillis, TimeUnit.MILLISECONDS)
+//                                                .readTimeout(soTimeoutMillis, TimeUnit.MILLISECONDS)
+//                                                .build();
+//
+//    Request.Builder request = new Request.Builder().url(connectionHolder.getUrl() + path);
+//
+//    if (body != null) {
+//      request.method(method, RequestBody.create(MediaType.parse("application/json"), body));
+//    } else {
+//      request.method(method, null);
+//    }
+//
+//    if (connectionHolder.getHostHeader().isPresent()) {
+//      request.addHeader("Host", connectionHolder.getHostHeader().get());
+//    }
+//
+//    if (authorization != null) {
+//      request.addHeader("Authorization", authorization);
+//    }
+//
+//    if (cookies != null && !cookies.isEmpty()) {
+//      request.addHeader("Cookie", Util.join(cookies, "; "));
+//    }
+//
+//    Call call = okHttpClient.newCall(request.build());
+//
+//    synchronized (connections) {
+//      connections.add(call);
+//    }
+//
+//    Response response;
+//
+//    try {
+//      response = call.execute();
+//
+//      if (response.isSuccessful()) {
+//        return response;
+//      }
+//    } catch (IOException e) {
+//      throw new PushNetworkException(e);
+//    } finally {
+//      synchronized (connections) {
+//        connections.remove(call);
+//      }
+//    }
+//
+//    switch (response.code()) {
+//      case 401:
+//      case 403:
+//        throw new AuthorizationFailedException(response.code(), "Authorization failed!");
+//      case 409:
+//        throw new RemoteAttestationResponseExpiredException("Remote attestation response expired");
+//      case 429:
+//        throw new RateLimitException(response.code(), "Rate limit exceeded: " + response.code());
+//    }
+//
+//    throw new NonSuccessfulResponseCodeException(response.code(), "Response: " + response);
+//  }
 
   private Response makeStorageRequest(String authorization, String path, String method, RequestBody body, ResponseCodeHandler responseCodeHandler)
       throws PushNetworkException, NonSuccessfulResponseCodeException

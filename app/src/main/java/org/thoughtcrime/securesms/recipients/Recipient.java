@@ -248,7 +248,7 @@ public class Recipient {
    * sent messages and whatnot. So we should store it when available.
    */
   @WorkerThread
-  static @NonNull Recipient externalPush(@Nullable ServiceId serviceId, @Nullable String e164) {
+  public static @NonNull Recipient externalPush(@Nullable ServiceId serviceId, @Nullable String e164) {
     if (ACI.UNKNOWN.equals(serviceId) || PNI.UNKNOWN.equals(serviceId)) {
       throw new AssertionError();
     }

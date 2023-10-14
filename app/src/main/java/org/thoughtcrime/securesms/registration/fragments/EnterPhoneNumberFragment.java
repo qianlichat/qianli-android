@@ -42,7 +42,6 @@ import org.thoughtcrime.securesms.LoggingFragment;
 import org.thoughtcrime.securesms.R;
 import org.thoughtcrime.securesms.keyvalue.SignalStore;
 import org.thoughtcrime.securesms.registration.RegistrationSessionProcessor;
-import org.thoughtcrime.securesms.registration.VerifyAccountRepository.Mode;
 import org.thoughtcrime.securesms.registration.util.RegistrationNumberInputController;
 import org.thoughtcrime.securesms.registration.viewmodel.NumberViewState;
 import org.thoughtcrime.securesms.registration.viewmodel.RegistrationViewModel;
@@ -267,7 +266,7 @@ public final class EnterPhoneNumberFragment extends LoggingFragment implements R
 //
 //    } else {
 //      Log.i(TAG, "FCM is not supported, using no SMS listener");
-      requestVerificationCode(Mode.SMS_WITHOUT_LISTENER);
+      requestVerificationCode();
 //    }
   }
 
@@ -287,11 +286,11 @@ public final class EnterPhoneNumberFragment extends LoggingFragment implements R
     }
   }
 
-  private void requestVerificationCode(@NonNull Mode mode) {
+  private void requestVerificationCode() {
     NavController                         navController       = NavHostFragment.findNavController(this);
     MccMncProducer                        mccMncProducer      = new MccMncProducer(requireContext());
     final DialogInterface.OnClickListener proceedToNextScreen = (dialog, which) -> SafeNavigation.safeNavigate(navController, EnterPhoneNumberFragmentDirections.actionEnterVerificationCode());
-    Disposable request = viewModel.createSession(mode, mccMncProducer.getMcc(), mccMncProducer.getMnc())
+    Disposable request = viewModel.createSession(mccMncProducer.getMcc(), mccMncProducer.getMnc())
                                   .doOnSubscribe(unused -> SignalStore.account().setRegistered(false))
                                   .observeOn(AndroidSchedulers.mainThread())
                                   .subscribe((RegistrationSessionProcessor processor) -> {
@@ -328,7 +327,7 @@ public final class EnterPhoneNumberFragment extends LoggingFragment implements R
                                                               context.getString(R.string.RegistrationActivity_invalid_number),
                                                               String.format(context.getString(R.string.RegistrationActivity_the_number_you_specified_s_is_invalid), viewModel.getNumber().getFullFormattedNumber()));
                                     } else if (processor.isNonNormalizedNumber()) {
-                                      handleNonNormalizedNumberError(processor.getOriginalNumber(), processor.getNormalizedNumber(), mode);
+//                                      handleNonNormalizedNumberError(processor.getOriginalNumber(), processor.getNormalizedNumber(), mode);
                                     } else if (processor.isTokenRejected()) {
                                       Log.i(TAG, "The server did not accept the information.", processor.getError());
                                       showErrorDialog(context, context.getString(R.string.RegistrationActivity_we_need_to_verify_that_youre_human));
@@ -339,7 +338,7 @@ public final class EnterPhoneNumberFragment extends LoggingFragment implements R
                                       Log.w(TAG, "The server reported an invalid transport mode failure.", processor.getError());
                                       new MaterialAlertDialogBuilder(context)
                                           .setMessage(R.string.RegistrationActivity_we_couldnt_send_you_a_verification_code)
-                                          .setPositiveButton(R.string.RegistrationActivity_voice_call, (dialog, which) -> requestVerificationCode(Mode.PHONE_CALL))
+                                          .setPositiveButton(R.string.RegistrationActivity_voice_call, (dialog, which) -> requestVerificationCode())
                                           .setNegativeButton(R.string.RegistrationActivity_cancel, null)
                                           .show();
                                     } else if ( processor.isMalformedRequest()){
@@ -430,7 +429,7 @@ public final class EnterPhoneNumberFragment extends LoggingFragment implements R
     disposables.add(request);
   }
 
-  private void handleNonNormalizedNumberError(@NonNull String originalNumber, @NonNull String normalizedNumber, @NonNull Mode mode) {
+  private void handleNonNormalizedNumberError(@NonNull String originalNumber, @NonNull String normalizedNumber) {
     try {
       Phonenumber.PhoneNumber phoneNumber = PhoneNumberUtil.getInstance().parse(normalizedNumber, null);
 
@@ -448,7 +447,7 @@ public final class EnterPhoneNumberFragment extends LoggingFragment implements R
           .setPositiveButton(R.string.yes, (d, i) -> {
 //            countryCode.getEditText().setText(String.valueOf(phoneNumber.getCountryCode()));
             number.setText(String.valueOf(phoneNumber.getNationalNumber()));
-            requestVerificationCode(mode);
+            requestVerificationCode();
             d.dismiss();
           })
           .show();

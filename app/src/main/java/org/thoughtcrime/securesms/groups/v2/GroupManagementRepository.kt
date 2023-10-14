@@ -8,7 +8,6 @@ import io.reactivex.rxjava3.schedulers.Schedulers
 import org.signal.core.util.Result
 import org.signal.core.util.concurrent.SignalExecutors
 import org.signal.core.util.logging.Log
-import org.thoughtcrime.securesms.contacts.sync.ContactDiscovery
 import org.thoughtcrime.securesms.database.SignalDatabase
 import org.thoughtcrime.securesms.dependencies.ApplicationDependencies
 import org.thoughtcrime.securesms.groups.GroupChangeBusyException
@@ -45,7 +44,7 @@ class GroupManagementRepository @JvmOverloads constructor(private val context: C
         .toList()
 
       try {
-        ContactDiscovery.refresh(context, recipients, false)
+//        ContactDiscovery.refresh(context, recipients, false)
         recipients.forEach { Recipient.live(it.id).refresh() }
       } catch (e: IOException) {
         consumer.accept(GroupAddMembersResult.Failure(GroupChangeFailureReason.NETWORK))
