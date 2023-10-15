@@ -32,3 +32,9 @@ local/
 /contacts/app/debug/
 app/google-services.json
 app/src/main/res/values/firebase_messaging.xml
+/app/nightlyPnp/release/output-metadata.json
+/app/nightlyPnp/release/Signal-Android-nightly-pnp-arm64-v8a-release.apk
+/app/nightlyPnp/release/Signal-Android-nightly-pnp-armeabi-v7a-release.apk
+/app/nightlyPnp/release/Signal-Android-nightly-pnp-universal-release.apk
+/app/nightlyPnp/release/Signal-Android-nightly-pnp-x86-release.apk
+/app/nightlyPnp/release/Signal-Android-nightly-pnp-x86_64-release.apk
