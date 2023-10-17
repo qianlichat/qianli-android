@@ -2020,6 +2020,16 @@ open class RecipientTable(context: Context, databaseHelper: SignalDatabase) : Da
     }
   }
 
+  fun setE164(id: RecipientId, e164: String) {
+    writableDatabase.withinTransaction {
+      if (update(id, contentValuesOf(E164 to e164))) {
+        ApplicationDependencies.getDatabaseObserver().notifyRecipientChanged(id)
+        rotateStorageId(id)
+        StorageSyncHelper.scheduleSyncForDataChange()
+      }
+    }
+  }
+
   fun setUsername(id: RecipientId, username: String?) {
     writableDatabase.withinTransaction {
       if (username != null) {

@@ -210,7 +210,7 @@ public class WebRtcServiceStateBuilder {
     }
 
     public @NonNull CallSetupStateBuilder alwaysTurn(boolean isAlwaysTurn) {
-      toBuild.setAlwaysTurnServers(isAlwaysTurn);
+      toBuild.setAlwaysTurnServers(true);
       return this;
     }
   }

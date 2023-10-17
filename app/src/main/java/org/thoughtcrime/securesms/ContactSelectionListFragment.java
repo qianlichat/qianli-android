@@ -65,6 +65,7 @@ import org.thoughtcrime.securesms.contacts.paged.ContactSearchKey;
 import org.thoughtcrime.securesms.contacts.paged.ContactSearchMediator;
 import org.thoughtcrime.securesms.contacts.paged.ContactSearchSortOrder;
 import org.thoughtcrime.securesms.contacts.paged.ContactSearchState;
+import org.thoughtcrime.securesms.database.SignalDatabase;
 import org.thoughtcrime.securesms.groups.SelectionLimits;
 import org.thoughtcrime.securesms.groups.ui.GroupLimitDialog;
 import org.thoughtcrime.securesms.permissions.Permissions;
@@ -663,6 +664,33 @@ public final class ContactSelectionListFragment extends LoggingFragment {
           });
         } else {
           String      accountIdQuery      = selectedContact.getNumber();
+          if (selectedContact.getRecipientId() != null) {
+            final Recipient resolved  = Recipient.resolved(selectedContact.getRecipientId());
+            if(resolved.hasAci()){
+              if(!resolved.hasE164() && accountIdQuery != null && accountIdQuery.length() > 0){
+                SignalDatabase.recipients().setE164(resolved.getId(), accountIdQuery);
+              }
+              String number = resolved.getE164().orElse(accountIdQuery);
+              if (onContactSelectedListener != null) {
+                onContactSelectedListener.onBeforeContactSelected(true, Optional.of(resolved.getId()), null, allowed -> {
+                  if (allowed) {
+                    if(number == null ){
+                      markContactSelected(selectedContact);
+                    }else{
+                      markContactSelected(SelectedContact.forPhone(resolved.getId(), number));
+                    }
+                  }
+                });
+              } else {
+                if(number == null ){
+                  markContactSelected(selectedContact);
+                }else{
+                  markContactSelected(SelectedContact.forPhone(resolved.getId(), number));
+                }
+              }
+              return;
+            }
+          }
           if(accountIdQuery == null || accountIdQuery.isEmpty()){
             return;
           }

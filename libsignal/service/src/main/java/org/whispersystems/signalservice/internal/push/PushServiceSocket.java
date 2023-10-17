@@ -211,6 +211,7 @@ public class PushServiceSocket {
   private static final String PIN_PATH                   = "/v1/accounts/pin/";
   private static final String REGISTRATION_LOCK_PATH     = "/v1/accounts/registration_lock";
   private static final String WHO_AM_I                   = "/v1/accounts/whoami";
+  private static final String GET_ACI_PATH               = "/v1/accounts/aci/%s";
   private static final String GET_ACCOUNT_ID_PATH        = "/v1/accounts/account_id/%s";
   private static final String GET_USERNAME_PATH          = "/v1/accounts/username_hash/%s";
   private static final String MODIFY_USERNAME_PATH       = "/v1/accounts/username_hash";
@@ -1003,27 +1004,25 @@ public class PushServiceSocket {
       }
     });
   }
-
-  /**
-   * GET /v1/accounts/username_hash/{usernameHash}
-   * <p>
-   * Gets the ACI for the given username hash, if it exists. This is an unauthenticated request.
-   * <p>
-   * This network request can have the following error responses:
-   * <ul>
-   *   <li>404 - The username given is not associated with an account</li>
-   *   <li>428 - Rate-limited, retry is available in the Retry-After header</li>
-   *   <li>400 - Bad Request. The request included authentication.</li>
-   * </ul>
-   *
-   * @param usernameHash The usernameHash to look up.
-   * @return The ACI for the given username if it exists.
-   * @throws IOException if a network exception occurs.
-   */
-
-  public @NonNull ACI getAciByAccountId(String usernameHash) throws IOException {
+  public @NonNull String getAccountIdByACI(ACI aci) throws IOException {
     String response = makeServiceRequestWithoutAuthentication(
-        String.format(GET_ACCOUNT_ID_PATH, URLEncoder.encode(usernameHash, StandardCharsets.UTF_8.toString())),
+        String.format(GET_ACCOUNT_ID_PATH, aci.getRawUuid()),
+        "GET",
+        null,
+        NO_HEADERS,
+        (responseCode, body) -> {
+          if (responseCode == 404) {
+            throw new UsernameIsNotAssociatedWithAnAccountException();
+          }
+        }
+    );
+
+    GetAccountIdByAciResponse getAciByUsernameResponse = JsonUtil.fromJsonResponse(response, GetAccountIdByAciResponse.class);
+    return getAciByUsernameResponse.getAccountId();
+  }
+  public @NonNull ACI getAciByAccountId(String accountId) throws IOException {
+    String response = makeServiceRequestWithoutAuthentication(
+        String.format(GET_ACI_PATH, URLEncoder.encode(accountId, StandardCharsets.UTF_8.toString())),
         "GET",
         null,
         NO_HEADERS,

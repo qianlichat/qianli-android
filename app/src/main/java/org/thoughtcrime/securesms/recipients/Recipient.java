@@ -200,7 +200,8 @@ public class Recipient {
    */
   @WorkerThread
   public static @NonNull Recipient externalPush(@NonNull SignalServiceAddress signalServiceAddress) {
-    return externalPush(signalServiceAddress.getServiceId(), signalServiceAddress.getNumber().orElse(null));
+    final Recipient recipient = externalPush(signalServiceAddress.getServiceId(), signalServiceAddress.getNumber().orElse(null));
+    return recipient;
   }
 
   /**

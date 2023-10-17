@@ -717,6 +717,10 @@ public class SignalServiceAccountManager {
     return this.pushServiceSocket.getAciByUsernameHash(usernameHash);
   }
 
+  public String getAccountIdByAci(ACI aci) throws IOException {
+    return this.pushServiceSocket.getAccountIdByACI(aci);
+  }
+
   public ACI getAciByAccountId(String accountId) throws IOException {
     return this.pushServiceSocket.getAciByAccountId(accountId);
   }

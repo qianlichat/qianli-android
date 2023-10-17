@@ -68,6 +68,16 @@ object UsernameUtil {
 
   @JvmStatic
   @WorkerThread
+  fun fetchAccountIdForAci(aci: ServiceId.ACI): Optional<String> {
+    return try {
+      fetchAccountIdForAciPerform(aci)
+    } catch (e: BaseUsernameException) {
+      Optional.empty()
+    }
+  }
+
+  @JvmStatic
+  @WorkerThread
   fun fetchAciForAccountId(accountId: String): Optional<ServiceId> {
     val localId = recipients.getByE164(accountId)
 
@@ -124,6 +134,17 @@ object UsernameUtil {
   @Throws(BaseUsernameException::class)
   fun hashUsernameToBase64(username: String?): String {
     return Base64UrlSafe.encodeBytesWithoutPadding(Username.hash(username))
+  }
+  @JvmStatic
+  @WorkerThread
+  fun fetchAccountIdForAciPerform(accountId: ServiceId.ACI): Optional<String> {
+    return try {
+      val aci = ApplicationDependencies.getSignalServiceAccountManager().getAccountIdByAci(accountId)
+      Optional.ofNullable(aci)
+    } catch (e: IOException) {
+      Log.w(TAG, "Failed to get ACI for username hash", e)
+      Optional.empty()
+    }
   }
   @JvmStatic
   @WorkerThread
