@@ -318,7 +318,7 @@ public class PushServiceSocket {
 
   private final ServiceConnectionHolder[]        serviceClients;
   private final Map<Integer, ConnectionHolder[]> cdnClientsMap;
-  private final ConnectionHolder[]               storageClients;
+//  private final ConnectionHolder[]               storageClients;
 
   private final CredentialsProvider       credentialsProvider;
   private final String                    signalAgent;
@@ -337,7 +337,7 @@ public class PushServiceSocket {
     this.automaticNetworkRetry     = automaticNetworkRetry;
     this.serviceClients            = createServiceConnectionHolders(configuration.getSignalServiceUrls(), configuration.getNetworkInterceptors(), configuration.getDns(), configuration.getSignalProxy());
     this.cdnClientsMap             = createCdnClientsMap(configuration.getSignalCdnUrlMap(), configuration.getNetworkInterceptors(), configuration.getDns(), configuration.getSignalProxy());
-    this.storageClients            = createConnectionHolders(configuration.getSignalStorageUrls(), configuration.getNetworkInterceptors(), configuration.getDns(), configuration.getSignalProxy());
+//    this.storageClients            = createConnectionHolders(configuration.getSignalStorageUrls(), configuration.getNetworkInterceptors(), configuration.getDns(), configuration.getSignalProxy());
     this.random                    = new SecureRandom();
     this.clientZkProfileOperations = clientZkProfileOperations;
   }
@@ -2215,7 +2215,7 @@ public class PushServiceSocket {
   private Response makeStorageRequest(String authorization, String path, String method, RequestBody body, ResponseCodeHandler responseCodeHandler)
       throws PushNetworkException, NonSuccessfulResponseCodeException
   {
-    ConnectionHolder connectionHolder = getRandom(storageClients, random);
+    ConnectionHolder connectionHolder = serviceClients[0];
     OkHttpClient okHttpClient = connectionHolder.getClient()
                                                 .newBuilder()
                                                 .connectTimeout(soTimeoutMillis, TimeUnit.MILLISECONDS)

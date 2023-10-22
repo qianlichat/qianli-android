@@ -127,7 +127,7 @@ task resolveStaticIps {
         def staticIpResolver = new StaticIpResolver()
         new File(projectDir, "static-ips.gradle").text = """
             ext.service_ips='${staticIpResolver.resolveToBuildConfig("msg.qianli.chat")}'
-            ext.storage_ips='${staticIpResolver.resolveToBuildConfig("storage.qianli.chat")}'
+//            ext.storage_ips='${staticIpResolver.resolveToBuildConfig("storage.qianli.chat")}'
             ext.kbs_ips='${staticIpResolver.resolveToBuildConfig("api.backup.signal.org")}'
             ext.sfu_ips='${staticIpResolver.resolveToBuildConfig("sfu.voip.signal.org")}'
             ext.content_proxy_ips='${staticIpResolver.resolveToBuildConfig("contentproxy.signal.org")}'

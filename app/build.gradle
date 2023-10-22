@@ -153,7 +153,7 @@ android {
         buildConfigField "long", "BUILD_TIMESTAMP", getLastCommitTimestamp() + "L"
         buildConfigField "String", "GIT_HASH", "\"${getGitHash()}\""
         buildConfigField "String", "SIGNAL_URL", "\"https://msg.qianli.chat\""
-        buildConfigField "String", "STORAGE_URL", "\"https://storage.qianli.chat\""
+//        buildConfigField "String", "STORAGE_URL", "\"https://storage.qianli.chat\""
         buildConfigField "String", "SIGNAL_CDN_URL", "\"https://cdn.qianli.chat\""
         buildConfigField "String", "SIGNAL_SERVICE_STATUS_URL", "\"uptime.signal.org\""
         buildConfigField "String", "SIGNAL_SFU_URL", "\"https://sfu.voip.signal.org\""

@@ -34,7 +34,7 @@ open class SignalServiceNetworkAccess(context: Context) {
       StaticDns(
         mapOf(
           BuildConfig.SIGNAL_URL.stripProtocol() to BuildConfig.SIGNAL_SERVICE_IPS.toSet(),
-          BuildConfig.STORAGE_URL.stripProtocol() to BuildConfig.SIGNAL_STORAGE_IPS.toSet(),
+//          BuildConfig.STORAGE_URL.stripProtocol() to BuildConfig.SIGNAL_STORAGE_IPS.toSet(),
           BuildConfig.SIGNAL_SFU_URL.stripProtocol() to BuildConfig.SIGNAL_SFU_IPS.toSet(),
           BuildConfig.CONTENT_PROXY_HOST.stripProtocol() to BuildConfig.SIGNAL_CONTENT_PROXY_IPS.toSet(),
         )
@@ -75,7 +75,7 @@ open class SignalServiceNetworkAccess(context: Context) {
       2 to arrayOf(SignalCdnUrl(BuildConfig.SIGNAL_CDN_URL, cdnTrustStore)),
       3 to arrayOf(SignalCdnUrl(BuildConfig.SIGNAL_CDN_URL, cdnTrustStore))
     ),
-    signalStorageUrls = arrayOf(SignalStorageUrl(BuildConfig.STORAGE_URL, serviceTrustStore)),
+//    signalStorageUrls = arrayOf(SignalStorageUrl(BuildConfig.STORAGE_URL, serviceTrustStore)),
     networkInterceptors = interceptors,
     dns = Optional.of(DNS),
     signalProxy = if (SignalStore.proxy().isProxyEnabled) Optional.ofNullable(SignalStore.proxy().proxy) else Optional.empty(),
