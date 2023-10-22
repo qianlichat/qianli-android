@@ -153,7 +153,7 @@ public final class JobManagerFactories {
       put(MultiDeviceVerifiedUpdateJob.KEY,          new MultiDeviceVerifiedUpdateJob.Factory());
       put(MultiDeviceViewOnceOpenJob.KEY,            new MultiDeviceViewOnceOpenJob.Factory());
       put(MultiDeviceViewedUpdateJob.KEY,            new MultiDeviceViewedUpdateJob.Factory());
-      put(NewRegistrationUsernameSyncJob.KEY,        new NewRegistrationUsernameSyncJob.Factory());
+//      put(NewRegistrationUsernameSyncJob.KEY,        new NewRegistrationUsernameSyncJob.Factory());
       put(NullMessageSendJob.KEY,                    new NullMessageSendJob.Factory());
       put(OptimizeMessageSearchIndexJob.KEY,         new OptimizeMessageSearchIndexJob.Factory());
       put(PaymentLedgerUpdateJob.KEY,                new PaymentLedgerUpdateJob.Factory());
@@ -186,7 +186,7 @@ public final class JobManagerFactories {
       put(RequestGroupV2InfoJob.KEY,                 new RequestGroupV2InfoJob.Factory());
       put(RetrieveProfileAvatarJob.KEY,              new RetrieveProfileAvatarJob.Factory());
       put(RetrieveProfileJob.KEY,                    new RetrieveProfileJob.Factory());
-      put(RetrieveRemoteAnnouncementsJob.KEY,        new RetrieveRemoteAnnouncementsJob.Factory());
+//      put(RetrieveRemoteAnnouncementsJob.KEY,        new RetrieveRemoteAnnouncementsJob.Factory());
       put(RotateCertificateJob.KEY,                  new RotateCertificateJob.Factory());
       put(RotateProfileKeyJob.KEY,                   new RotateProfileKeyJob.Factory());
       put(SenderKeyDistributionSendJob.KEY,          new SenderKeyDistributionSendJob.Factory());
@@ -205,10 +205,10 @@ public final class JobManagerFactories {
       put(StickerPackDownloadJob.KEY,                new StickerPackDownloadJob.Factory());
       put(StorageAccountRestoreJob.KEY,              new StorageAccountRestoreJob.Factory());
       put(StorageForcePushJob.KEY,                   new StorageForcePushJob.Factory());
-      put(StorageSyncJob.KEY,                        new StorageSyncJob.Factory());
+//      put(StorageSyncJob.KEY,                        new StorageSyncJob.Factory());
       put(SubscriptionKeepAliveJob.KEY,              new SubscriptionKeepAliveJob.Factory());
       put(SubscriptionReceiptRequestResponseJob.KEY, new SubscriptionReceiptRequestResponseJob.Factory());
-      put(StoryOnboardingDownloadJob.KEY,            new StoryOnboardingDownloadJob.Factory());
+//      put(StoryOnboardingDownloadJob.KEY,            new StoryOnboardingDownloadJob.Factory());
       put(SubmitRateLimitPushChallengeJob.KEY,       new SubmitRateLimitPushChallengeJob.Factory());
       put(ThreadUpdateJob.KEY,                       new ThreadUpdateJob.Factory());
       put(TrimThreadJob.KEY,                         new TrimThreadJob.Factory());
@@ -271,7 +271,7 @@ public final class JobManagerFactories {
       put("Argon2TestJob",                           new FailingJob.Factory());
       put("Argon2TestMigrationJob",                  new PassingMigrationJob.Factory());
       put("StorageKeyRotationMigrationJob",          new PassingMigrationJob.Factory());
-      put("StorageSyncJob",                          new StorageSyncJob.Factory());
+//      put("StorageSyncJob",                          new StorageSyncJob.Factory());
       put("WakeGroupV2Job",                          new FailingJob.Factory());
       put("LeaveGroupJob",                           new FailingJob.Factory());
       put("PushGroupUpdateJob",                      new FailingJob.Factory());

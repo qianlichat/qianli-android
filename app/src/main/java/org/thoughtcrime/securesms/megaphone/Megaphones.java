@@ -111,7 +111,7 @@ public final class Megaphones {
       put(Event.TURN_OFF_CENSORSHIP_CIRCUMVENTION, shouldShowTurnOffCircumventionMegaphone() ? RecurringSchedule.every(TimeUnit.DAYS.toMillis(7)) : NEVER);
       put(Event.DONATE_Q2_2022, shouldShowDonateMegaphone(context, Event.DONATE_Q2_2022, records) ? ShowForDurationSchedule.showForDays(7) : NEVER);
       put(Event.REMOTE_MEGAPHONE, shouldShowRemoteMegaphone(records) ? RecurringSchedule.every(TimeUnit.DAYS.toMillis(1)) : NEVER);
-      put(Event.PIN_REMINDER, new SignalPinReminderSchedule());
+//      put(Event.PIN_REMINDER, new SignalPinReminderSchedule());
       put(Event.SET_UP_YOUR_USERNAME, shouldShowSetUpYourUsernameMegaphone(records) ? ALWAYS : NEVER);
 
       // Feature-introduction megaphones should *probably* be added below this divider
@@ -123,8 +123,8 @@ public final class Megaphones {
     switch (record.getEvent()) {
       case PINS_FOR_ALL:
         return buildPinsForAllMegaphone(record);
-      case PIN_REMINDER:
-        return buildPinReminderMegaphone(context);
+//      case PIN_REMINDER:
+//        return buildPinReminderMegaphone(context);
       case CLIENT_DEPRECATED:
         return buildClientDeprecatedMegaphone(context);
       case ONBOARDING:
@@ -177,13 +177,13 @@ public final class Megaphones {
     }
   }
 
-  @SuppressWarnings("CodeBlock2Expr")
-  private static @NonNull Megaphone buildPinReminderMegaphone(@NonNull Context context) {
-    return new Megaphone.Builder(Event.PIN_REMINDER, Megaphone.Style.BASIC)
-        .setTitle(R.string.Megaphones_verify_your_signal_pin)
-        .setBody(R.string.Megaphones_well_occasionally_ask_you_to_verify_your_pin)
-        .setImage(R.drawable.kbs_pin_megaphone)
-        .setActionButton(R.string.Megaphones_verify_pin, (megaphone, controller) -> {
+//  @SuppressWarnings("CodeBlock2Expr")
+//  private static @NonNull Megaphone buildPinReminderMegaphone(@NonNull Context context) {
+//    return new Megaphone.Builder(Event.PIN_REMINDER, Megaphone.Style.BASIC)
+//        .setTitle(R.string.Megaphones_verify_your_signal_pin)
+//        .setBody(R.string.Megaphones_well_occasionally_ask_you_to_verify_your_pin)
+//        .setImage(R.drawable.kbs_pin_megaphone)
+//        .setActionButton(R.string.Megaphones_verify_pin, (megaphone, controller) -> {
 //          SignalPinReminderDialog.show(controller.getMegaphoneActivity(), controller::onMegaphoneNavigationRequested, new SignalPinReminderDialog.Callback() {
 //            @Override
 //            public void onReminderDismissed(boolean includedFailure) {
@@ -206,9 +206,9 @@ public final class Megaphones {
 //              controller.onMegaphoneToastRequested(controller.getMegaphoneActivity().getString(SignalPinReminders.getReminderString(SignalStore.pinValues().getCurrentInterval())));
 //            }
 //          });
-        })
-        .build();
-  }
+//        })
+//        .build();
+//  }
 
   private static @NonNull Megaphone buildClientDeprecatedMegaphone(@NonNull Context context) {
     return new Megaphone.Builder(Event.CLIENT_DEPRECATED, Megaphone.Style.FULLSCREEN)
@@ -487,7 +487,7 @@ public final class Megaphones {
 
   public enum Event {
     PINS_FOR_ALL("pins_for_all"),
-    PIN_REMINDER("pin_reminder"),
+//    PIN_REMINDER("pin_reminder"),
     CLIENT_DEPRECATED("client_deprecated"),
     ONBOARDING("onboarding"),
     NOTIFICATIONS("notifications"),

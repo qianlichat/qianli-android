@@ -60,8 +60,6 @@ import org.thoughtcrime.securesms.jobs.PnpInitializeDevicesJob;
 import org.thoughtcrime.securesms.jobs.PreKeysSyncJob;
 import org.thoughtcrime.securesms.jobs.ProfileUploadJob;
 import org.thoughtcrime.securesms.jobs.RetrieveProfileJob;
-import org.thoughtcrime.securesms.jobs.RetrieveRemoteAnnouncementsJob;
-import org.thoughtcrime.securesms.jobs.StoryOnboardingDownloadJob;
 import org.thoughtcrime.securesms.jobs.SubscriptionKeepAliveJob;
 import org.thoughtcrime.securesms.keyvalue.KeepMessagesDuration;
 import org.thoughtcrime.securesms.keyvalue.SignalStore;
@@ -196,12 +194,12 @@ public class ApplicationContext extends MultiDexApplication implements AppForegr
                             .addPostRender(EmojiSearchIndexDownloadJob::scheduleIfNecessary)
                             .addPostRender(() -> SignalDatabase.messageLog().trimOldMessages(System.currentTimeMillis(), FeatureFlags.retryRespondMaxAge()))
                             .addPostRender(() -> JumboEmoji.updateCurrentVersion(this))
-                            .addPostRender(RetrieveRemoteAnnouncementsJob::enqueue)
+//                            .addPostRender(RetrieveRemoteAnnouncementsJob::enqueue)
                             .addPostRender(() -> AndroidTelecomUtil.registerPhoneAccount())
                             .addPostRender(() -> ApplicationDependencies.getJobManager().add(new FontDownloaderJob()))
                             .addPostRender(CheckServiceReachabilityJob::enqueueIfNecessary)
                             .addPostRender(GroupV2UpdateSelfProfileKeyJob::enqueueForGroupsIfNecessary)
-                            .addPostRender(StoryOnboardingDownloadJob.Companion::enqueueIfNeeded)
+//                            .addPostRender(StoryOnboardingDownloadJob.Companion::enqueueIfNeeded)
                             .addPostRender(PnpInitializeDevicesJob::enqueueIfNecessary)
                             .addPostRender(() -> ApplicationDependencies.getExoPlayerPool().getPoolStats().getMaxUnreserved())
                             .addPostRender(() -> ApplicationDependencies.getRecipientCache().warmUp())

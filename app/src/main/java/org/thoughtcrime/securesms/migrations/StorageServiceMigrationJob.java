@@ -4,14 +4,8 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 
 import org.signal.core.util.logging.Log;
-import org.thoughtcrime.securesms.database.SignalDatabase;
-import org.thoughtcrime.securesms.dependencies.ApplicationDependencies;
 import org.thoughtcrime.securesms.jobmanager.Job;
-import org.thoughtcrime.securesms.jobmanager.JobManager;
-import org.thoughtcrime.securesms.jobs.MultiDeviceKeysUpdateJob;
-import org.thoughtcrime.securesms.jobs.StorageSyncJob;
 import org.thoughtcrime.securesms.keyvalue.SignalStore;
-import org.thoughtcrime.securesms.recipients.Recipient;
 import org.thoughtcrime.securesms.util.TextSecurePreferences;
 
 /**
@@ -48,18 +42,18 @@ public class StorageServiceMigrationJob extends MigrationJob {
       return;
     }
 
-    SignalDatabase.recipients().markNeedsSync(Recipient.self().getId());
+//    SignalDatabase.recipients().markNeedsSync(Recipient.self().getId());
 
-    JobManager jobManager = ApplicationDependencies.getJobManager();
+//    JobManager jobManager = ApplicationDependencies.getJobManager();
 
     if (TextSecurePreferences.isMultiDevice(context)) {
       Log.i(TAG, "Multi-device.");
-      jobManager.startChain(new StorageSyncJob())
-                .then(new MultiDeviceKeysUpdateJob())
-                .enqueue();
+//      jobManager.startChain(new StorageSyncJob())
+//                .then(new MultiDeviceKeysUpdateJob())
+//                .enqueue();
     } else {
       Log.i(TAG, "Single-device.");
-      jobManager.add(new StorageSyncJob());
+//      jobManager.add(new StorageSyncJob());
     }
   }
 

@@ -1574,7 +1574,7 @@ public class PushServiceSocket {
                                         CancelationSignal cancelationSignal)
       throws PushNetworkException, NonSuccessfulResponseCodeException
   {
-    ConnectionHolder connectionHolder = getRandom(cdnClientsMap.get(0), random);
+    ConnectionHolder connectionHolder = cdnClientsMap.get(0)[0];
     OkHttpClient okHttpClient = connectionHolder.getClient()
                                                 .newBuilder()
                                                 .connectTimeout(soTimeoutMillis, TimeUnit.MILLISECONDS)

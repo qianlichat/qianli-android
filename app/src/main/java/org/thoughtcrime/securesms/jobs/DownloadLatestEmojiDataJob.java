@@ -56,23 +56,23 @@ public class DownloadLatestEmojiDataJob extends BaseJob {
   private EmojiFiles.Version targetVersion;
 
   public static void scheduleIfNecessary(@NonNull Context context) {
-    long nextScheduledCheck = SignalStore.emojiValues().getNextScheduledImageCheck();
-
-    if (nextScheduledCheck <= System.currentTimeMillis()) {
-      Log.i(TAG, "Scheduling DownloadLatestEmojiDataJob.");
-      ApplicationDependencies.getJobManager().add(new DownloadLatestEmojiDataJob(false));
-
-      EmojiFiles.Version version = EmojiFiles.Version.readVersion(context);
-
-      long interval;
-      if (EmojiFiles.Version.isVersionValid(context, version)) {
-        interval = INTERVAL_WITH_REMOTE_DOWNLOAD;
-      } else {
-        interval = INTERVAL_WITHOUT_REMOTE_DOWNLOAD;
-      }
-
-      SignalStore.emojiValues().setNextScheduledImageCheck(System.currentTimeMillis() + interval);
-    }
+//    long nextScheduledCheck = SignalStore.emojiValues().getNextScheduledImageCheck();
+//
+//    if (nextScheduledCheck <= System.currentTimeMillis()) {
+//      Log.i(TAG, "Scheduling DownloadLatestEmojiDataJob.");
+//      ApplicationDependencies.getJobManager().add(new DownloadLatestEmojiDataJob(false));
+//
+//      EmojiFiles.Version version = EmojiFiles.Version.readVersion(context);
+//
+//      long interval;
+//      if (EmojiFiles.Version.isVersionValid(context, version)) {
+//        interval = INTERVAL_WITH_REMOTE_DOWNLOAD;
+//      } else {
+//        interval = INTERVAL_WITHOUT_REMOTE_DOWNLOAD;
+//      }
+//
+//      SignalStore.emojiValues().setNextScheduledImageCheck(System.currentTimeMillis() + interval);
+//    }
   }
 
   public DownloadLatestEmojiDataJob(boolean ignoreAutoDownloadConstraints) {
@@ -92,67 +92,67 @@ public class DownloadLatestEmojiDataJob extends BaseJob {
 
   @Override
   protected void onRun() throws Exception {
-    EmojiFiles.Version version       = EmojiFiles.Version.readVersion(context);
-    int                localVersion  = (version != null) ? version.getVersion() : 0;
-    int                serverVersion = EmojiRemote.getVersion();
-    String             bucket;
-
-    if (targetVersion == null) {
-      ScreenDensity density = ScreenDensity.get(context);
-
-      bucket = getDesiredRemoteBucketForDensity(density);
-    } else {
-      bucket = targetVersion.getDensity();
-    }
-
-    Log.d(TAG, "LocalVersion: " + localVersion + ", ServerVersion: " + serverVersion + ", Bucket: " + bucket);
-
-    if (bucket == null) {
-      Log.d(TAG, "This device has too low a display density to download remote emoji.");
-    } else if (localVersion == serverVersion) {
-      Log.d(TAG, "Already have latest emoji data. Skipping.");
-    } else if (serverVersion > localVersion) {
-      Log.d(TAG, "New server data detected. Starting download...");
-
-      if (targetVersion == null || targetVersion.getVersion() != serverVersion) {
-        targetVersion = new EmojiFiles.Version(serverVersion, UUID.randomUUID(), bucket);
-      }
-
-      if (isCanceled()) {
-        Log.w(TAG, "Job was cancelled prior to downloading json.");
-        return;
-      }
-
-      EmojiData    emojiData          = downloadJson(context, targetVersion);
-      List<String> supportedDensities = emojiData.getDensities();
-      String       format             = emojiData.getFormat();
-      List<String> imagePaths         = Stream.of(emojiData.getDataPages())
-                                              .map(EmojiPageModel::getSpriteUri)
-                                              .map(Uri::getLastPathSegment)
-                                              .toList();
-
-      String density = resolveDensity(supportedDensities, targetVersion.getDensity());
-      targetVersion = new EmojiFiles.Version(targetVersion.getVersion(), targetVersion.getUuid(), density);
-
-      if (isCanceled()) {
-        Log.w(TAG, "Job was cancelled after downloading json.");
-        return;
-      }
-
-      downloadImages(context, targetVersion, imagePaths, format, this::isCanceled);
-
-      if (isCanceled()) {
-        Log.w(TAG, "Job was cancelled during or after downloading images.");
-        return;
-      }
-
-      clearOldEmojiData(context, targetVersion);
-      markComplete(targetVersion);
-      EmojiSource.refresh();
-      JumboEmoji.updateCurrentVersion(context);
-    } else {
-      Log.d(TAG, "Server has an older version than we do. Skipping.");
-    }
+//    EmojiFiles.Version version       = EmojiFiles.Version.readVersion(context);
+//    int                localVersion  = (version != null) ? version.getVersion() : 0;
+//    int                serverVersion = EmojiRemote.getVersion();
+//    String             bucket;
+//
+//    if (targetVersion == null) {
+//      ScreenDensity density = ScreenDensity.get(context);
+//
+//      bucket = getDesiredRemoteBucketForDensity(density);
+//    } else {
+//      bucket = targetVersion.getDensity();
+//    }
+//
+//    Log.d(TAG, "LocalVersion: " + localVersion + ", ServerVersion: " + serverVersion + ", Bucket: " + bucket);
+//
+//    if (bucket == null) {
+//      Log.d(TAG, "This device has too low a display density to download remote emoji.");
+//    } else if (localVersion == serverVersion) {
+//      Log.d(TAG, "Already have latest emoji data. Skipping.");
+//    } else if (serverVersion > localVersion) {
+//      Log.d(TAG, "New server data detected. Starting download...");
+//
+//      if (targetVersion == null || targetVersion.getVersion() != serverVersion) {
+//        targetVersion = new EmojiFiles.Version(serverVersion, UUID.randomUUID(), bucket);
+//      }
+//
+//      if (isCanceled()) {
+//        Log.w(TAG, "Job was cancelled prior to downloading json.");
+//        return;
+//      }
+//
+//      EmojiData    emojiData          = downloadJson(context, targetVersion);
+//      List<String> supportedDensities = emojiData.getDensities();
+//      String       format             = emojiData.getFormat();
+//      List<String> imagePaths         = Stream.of(emojiData.getDataPages())
+//                                              .map(EmojiPageModel::getSpriteUri)
+//                                              .map(Uri::getLastPathSegment)
+//                                              .toList();
+//
+//      String density = resolveDensity(supportedDensities, targetVersion.getDensity());
+//      targetVersion = new EmojiFiles.Version(targetVersion.getVersion(), targetVersion.getUuid(), density);
+//
+//      if (isCanceled()) {
+//        Log.w(TAG, "Job was cancelled after downloading json.");
+//        return;
+//      }
+//
+//      downloadImages(context, targetVersion, imagePaths, format, this::isCanceled);
+//
+//      if (isCanceled()) {
+//        Log.w(TAG, "Job was cancelled during or after downloading images.");
+//        return;
+//      }
+//
+//      clearOldEmojiData(context, targetVersion);
+//      markComplete(targetVersion);
+//      EmojiSource.refresh();
+//      JumboEmoji.updateCurrentVersion(context);
+//    } else {
+//      Log.d(TAG, "Server has an older version than we do. Skipping.");
+//    }
   }
 
   @Override

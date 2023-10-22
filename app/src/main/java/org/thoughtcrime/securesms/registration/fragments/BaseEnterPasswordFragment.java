@@ -18,6 +18,7 @@ import androidx.navigation.Navigation;
 import com.google.android.material.button.MaterialButton;
 import com.google.android.material.dialog.MaterialAlertDialogBuilder;
 import com.google.android.material.textfield.TextInputEditText;
+import com.google.android.material.textfield.TextInputLayout;
 
 import org.signal.core.util.concurrent.LifecycleDisposable;
 import org.signal.core.util.logging.Log;
@@ -52,13 +53,15 @@ public abstract class BaseEnterPasswordFragment<ViewModel extends BaseRegistrati
 
   private static final String TAG = Log.tag(BaseEnterPasswordFragment.class);
 
-  private ScrollView              scrollView;
-  private TextView                subheader;
-  private MaterialButton          continueBtn;
-  private TextInputEditText       editTextPassword;
-  private TextInputEditText       editTextPasswordConfirm;
-  private VerificationPinKeyboard keyboard;
-  private ViewModel               viewModel;
+  private   ScrollView              scrollView;
+  protected TextView                verifyHeader;
+  protected TextView                subheader;
+  private   MaterialButton          continueBtn;
+  private   TextInputEditText       editTextPassword;
+  protected TextInputEditText       editTextPasswordConfirm;
+  protected TextInputLayout         passInputLayout;
+  private   VerificationPinKeyboard keyboard;
+  private   ViewModel               viewModel;
 
   protected final LifecycleDisposable disposables = new LifecycleDisposable();
 
@@ -71,8 +74,10 @@ public abstract class BaseEnterPasswordFragment<ViewModel extends BaseRegistrati
   public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
     super.onViewCreated(view, savedInstanceState);
 
-    setDebugLogSubmitMultiTapView(view.findViewById(R.id.verify_header));
+//    setDebugLogSubmitMultiTapView(view.findViewById(R.id.verify_header));
 
+    passInputLayout         = view.findViewById(R.id.password_layout);
+    verifyHeader            = view.findViewById(R.id.verify_header);
     scrollView              = view.findViewById(R.id.scroll_view);
     subheader               = view.findViewById(R.id.verification_subheader);
     continueBtn             = view.findViewById(R.id.continue_button);
@@ -103,18 +108,19 @@ public abstract class BaseEnterPasswordFragment<ViewModel extends BaseRegistrati
   }
 
   private void onNext() {
-    String pass        = Objects.requireNonNull(editTextPassword.getText()).toString();
-    String passConfirm = Objects.requireNonNull(editTextPasswordConfirm.getText()).toString();
+    String pass = Objects.requireNonNull(editTextPassword.getText()).toString();
     if (pass.length() < 9 || pass.length() > 18) {
       showErrorDialog(requireContext(), getString(R.string.RegistrationActivity_please_enter_a_valid_password_to_register));
       return;
     }
-    if (!pass.equals(passConfirm)) {
-      showErrorDialog(requireContext(), getString(R.string.RegistrationActivity_please_enter_a_same_password_to_register));
-      return;
+    if (!isAccountExists()) {
+      String passConfirm = Objects.requireNonNull(editTextPasswordConfirm.getText()).toString();
+      if (!pass.equals(passConfirm)) {
+        showErrorDialog(requireContext(), getString(R.string.RegistrationActivity_please_enter_a_same_password_to_register));
+        return;
+      }
     }
-    keyboard.setVisibility(View.VISIBLE);
-    keyboard.displayProgress();
+    displayProgress();
 //    return registrationRepository.registerAccount(getRegistrationData(), processor.getResult(), false)
 //                                 .map(VerifyResponseWithoutKbs::new);
 
@@ -139,6 +145,20 @@ public abstract class BaseEnterPasswordFragment<ViewModel extends BaseRegistrati
     disposables.add(verify);
   }
 
+  protected abstract boolean isAccountExists();
+
+  private void displayProgress() {
+    continueBtn.setVisibility(View.GONE);
+    keyboard.setVisibility(View.VISIBLE);
+    keyboard.displayProgress();
+  }
+
+  private void hideProgress() {
+    continueBtn.setVisibility(View.VISIBLE);
+    keyboard.setVisibility(View.GONE);
+//    keyboard.displayProgress();
+  }
+
   protected abstract ViewModel getViewModel();
 
   protected abstract void handleSuccessfulVerify();
@@ -149,12 +169,13 @@ public abstract class BaseEnterPasswordFragment<ViewModel extends BaseRegistrati
   }
 
   protected void displaySuccess(@NonNull Runnable runAfterAnimation) {
+    continueBtn.setVisibility(View.GONE);
     keyboard.setVisibility(View.VISIBLE);
     keyboard.displaySuccess().addListener(new AssertedSuccessListener<Boolean>() {
       @Override
       public void onSuccess(Boolean result) {
         runAfterAnimation.run();
-        keyboard.setVisibility(View.INVISIBLE);
+        hideProgress();
       }
     });
   }
@@ -162,10 +183,11 @@ public abstract class BaseEnterPasswordFragment<ViewModel extends BaseRegistrati
   protected void handleIncorrectCodeError() {
     Toast.makeText(requireContext(), R.string.RegistrationActivity_incorrect_code, Toast.LENGTH_LONG).show();
     keyboard.setVisibility(View.VISIBLE);
+    continueBtn.setVisibility(View.GONE);
     keyboard.displayFailure().addListener(new AssertedSuccessListener<Boolean>() {
       @Override
       public void onSuccess(Boolean result) {
-        keyboard.setVisibility(View.INVISIBLE);
+        hideProgress();
       }
     });
   }
@@ -173,10 +195,11 @@ public abstract class BaseEnterPasswordFragment<ViewModel extends BaseRegistrati
   protected void handleGeneralError() {
     Toast.makeText(requireContext(), R.string.RegistrationActivity_error_connecting_to_service, Toast.LENGTH_LONG).show();
     keyboard.setVisibility(View.VISIBLE);
+    continueBtn.setVisibility(View.GONE);
     keyboard.displayFailure().addListener(new AssertedSuccessListener<Boolean>() {
       @Override
       public void onSuccess(Boolean result) {
-        keyboard.setVisibility(View.INVISIBLE);
+        hideProgress();
       }
     });
   }

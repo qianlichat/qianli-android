@@ -48,6 +48,7 @@ open class SignalServiceNetworkAccess(context: Context) {
 
   private val serviceTrustStore: TrustStore = SignalServiceTrustStore(context)
   private val cdnTrustStore: TrustStore = CdnServiceTrustStore(context)
+  private val cdn2TrustStore: TrustStore = Cdn2ServiceTrustStore(context)
 
   private val interceptors: List<Interceptor> = listOf(
     StandardUserAgentInterceptor(),
@@ -71,7 +72,7 @@ open class SignalServiceNetworkAccess(context: Context) {
   open val uncensoredConfiguration: SignalServiceConfiguration = SignalServiceConfiguration(
     signalServiceUrls = arrayOf(SignalServiceUrl(BuildConfig.SIGNAL_URL, serviceTrustStore)),
     signalCdnUrlMap = mapOf(
-      0 to arrayOf(SignalCdnUrl(BuildConfig.SIGNAL_CDN_URL, cdnTrustStore)),
+      0 to arrayOf(SignalCdnUrl(BuildConfig.SIGNAL_CDN_URL2, cdn2TrustStore)),
       2 to arrayOf(SignalCdnUrl(BuildConfig.SIGNAL_CDN_URL, cdnTrustStore)),
       3 to arrayOf(SignalCdnUrl(BuildConfig.SIGNAL_CDN_URL, cdnTrustStore))
     ),

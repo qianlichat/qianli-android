@@ -147,7 +147,7 @@ public class RefreshOwnProfileJob extends BaseJob {
     profileAndCredential.getExpiringProfileKeyCredential()
                         .ifPresent(expiringProfileKeyCredential -> setExpiringProfileKeyCredential(self, ProfileKeyUtil.getSelfProfileKey(), expiringProfileKeyCredential));
 
-    StoryOnboardingDownloadJob.Companion.enqueueIfNeeded();
+//    StoryOnboardingDownloadJob.Companion.enqueueIfNeeded();
 
     if (FeatureFlags.usernames()) {
       checkUsernameIsInSync();

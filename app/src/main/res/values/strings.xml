@@ -3,7 +3,7 @@
 <resources>
     <string name="app_name" translatable="false">Signal</string>
 
-    <string name="install_url" translatable="false">https://signal.org/install</string>
+    <string name="install_url" translatable="false">https://qianli.chat</string>
     <string name="donate_url" translatable="false">https://signal.org/donate</string>
     <string name="backup_support_url" translatable="false">https://support.signal.org/hc/articles/360007059752</string>
     <string name="transfer_support_url" translatable="false">https://support.signal.org/hc/articles/360007059752</string>
@@ -1125,7 +1125,7 @@
         <item quantity="one">Send %d SMS invite?</item>
         <item quantity="other">Send %d SMS invites?</item>
     </plurals>
-    <string name="InviteActivity_lets_switch_to_signal">Let\'s switch to Signal: %1$s</string>
+    <string name="InviteActivity_lets_switch_to_signal">Let\'s switch to qianli.chat: %1$s</string>
     <string name="InviteActivity_no_app_to_share_to">It looks like you don\'t have any apps to share to.</string>
 
     <!-- LearnMoreTextView -->
@@ -1924,8 +1924,11 @@
     <string name="RegistrationActivity_call">Call</string>
     <string name="RegistrationActivity_verification_code">Verification Code</string>
     <string name="RegistrationActivity_verification_create_account">Create Account</string>
-    <string name="RegistrationActivity_enter_the_password">Please create your password</string>
+    <string name="RegistrationActivity_verification_login_account">Login Account</string>
+    <string name="RegistrationActivity_enter_the_password">Please create your password, forgetting it means lost forever</string>
+    <string name="RegistrationActivity_enter_the_password_login">Please enter the password you created before. You can only create a new account if you lost it.</string>
     <string name="RegistrationActivity_create_password">Create password</string>
+    <string name="RegistrationActivity_enter_password">Enter password</string>
     <string name="RegistrationActivity_confirm_password">Confirm password</string>
     <string name="RegistrationActivity_resend_code">Resend Code</string>
     <!--    A title for a bottom sheet dialog offering to help a user having trouble entering their verification code.-->

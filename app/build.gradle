@@ -155,6 +155,7 @@ android {
         buildConfigField "String", "SIGNAL_URL", "\"https://msg.qianli.chat\""
 //        buildConfigField "String", "STORAGE_URL", "\"https://storage.qianli.chat\""
         buildConfigField "String", "SIGNAL_CDN_URL", "\"https://cdn.qianli.chat\""
+        buildConfigField "String", "SIGNAL_CDN_URL2", "\"https://cdn2.qianli.chat\""
         buildConfigField "String", "SIGNAL_SERVICE_STATUS_URL", "\"uptime.signal.org\""
         buildConfigField "String", "SIGNAL_SFU_URL", "\"https://sfu.voip.signal.org\""
         buildConfigField "String", "SIGNAL_STAGING_SFU_URL", "\"https://sfu.staging.voip.signal.org\""

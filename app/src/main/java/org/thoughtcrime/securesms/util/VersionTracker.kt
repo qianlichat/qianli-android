@@ -6,7 +6,6 @@ import org.signal.core.util.logging.Log
 import org.thoughtcrime.securesms.dependencies.ApplicationDependencies
 import org.thoughtcrime.securesms.jobs.RefreshAttributesJob
 import org.thoughtcrime.securesms.jobs.RemoteConfigRefreshJob
-import org.thoughtcrime.securesms.jobs.RetrieveRemoteAnnouncementsJob
 import org.thoughtcrime.securesms.keyvalue.SignalStore
 import java.time.Duration
 
@@ -28,7 +27,7 @@ object VersionTracker {
       SignalStore.misc().clearClientDeprecated()
       val jobChain = listOf(RemoteConfigRefreshJob(), RefreshAttributesJob())
       ApplicationDependencies.getJobManager().startChain(jobChain).enqueue()
-      RetrieveRemoteAnnouncementsJob.enqueue(true)
+//      RetrieveRemoteAnnouncementsJob.enqueue(true)
       LocalMetrics.getInstance().clear()
     }
 
