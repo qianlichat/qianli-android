@@ -1084,7 +1084,7 @@
     <plurals name="InviteActivity_send_sms_invites">
         <item quantity="other">发送 %1$d 个短信邀请？</item>
     </plurals>
-    <string name="InviteActivity_lets_switch_to_signal">用 千里传音 来聊天吧。无需手机号注册，端到端加密，100%隐私保护 ：%1$s</string>
+    <string name="InviteActivity_lets_switch_to_signal">用 千里传音 来聊天吧。无需手机号注册，端到端加密，完全隐私保护 ：%1$s</string>
     <string name="InviteActivity_no_app_to_share_to">看起来设备上没有可用于分享的应用。</string>
 
     <!-- LearnMoreTextView -->

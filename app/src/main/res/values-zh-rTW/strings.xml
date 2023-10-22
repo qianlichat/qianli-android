@@ -1085,7 +1085,6 @@
     <plurals name="InviteActivity_send_sms_invites">
         <item quantity="other">傳送 %1$d 則簡訊邀請？</item>
     </plurals>
-    <string name="InviteActivity_lets_switch_to_signal">讓我們切換到 Signal：%1$s</string>
     <string name="InviteActivity_no_app_to_share_to">看起來您沒有任何可以分享的應用。</string>
 
     <!-- LearnMoreTextView -->
