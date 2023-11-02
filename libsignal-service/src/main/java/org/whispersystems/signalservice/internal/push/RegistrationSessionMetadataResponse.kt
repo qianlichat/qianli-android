@@ -23,7 +23,8 @@ data class RegistrationSessionMetadataJson(
   @JsonProperty("nextVerificationAttempt") val nextVerificationAttempt: Int?,
   @JsonProperty("allowedToRequestCode") val allowedToRequestCode: Boolean,
   @JsonProperty("requestedInformation") val requestedInformation: List<String>,
-  @JsonProperty("verified") val verified: Boolean
+  @JsonProperty("verified") val verified: Boolean,
+  @JsonProperty("publicKey") val publicKey: String
 ) {
   fun pushChallengedRequired(): Boolean {
     return requestedInformation.contains("pushChallenge")

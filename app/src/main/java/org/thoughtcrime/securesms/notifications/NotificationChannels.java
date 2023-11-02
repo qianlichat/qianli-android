@@ -653,12 +653,16 @@ public class NotificationChannels {
 
     notificationManager.createNotificationChannels(Arrays.asList(messages, calls, failures, backups, lockedStatus, other, voiceNotes, joinEvents, background, callStatus, appAlerts, additionalMessageNotifications));
 
-    if (BuildConfig.MANAGES_APP_UPDATES) {
-      NotificationChannel appUpdates = new NotificationChannel(APP_UPDATES, context.getString(R.string.NotificationChannel_app_updates), NotificationManager.IMPORTANCE_DEFAULT);
-      notificationManager.createNotificationChannel(appUpdates);
-    } else {
+//    if (BuildConfig.MANAGES_APP_UPDATES) {
+//      NotificationChannel appUpdates = new NotificationChannel(APP_UPDATES, context.getString(R.string.NotificationChannel_app_updates), NotificationManager.IMPORTANCE_DEFAULT);
+//      notificationManager.createNotificationChannel(appUpdates);
+//    } else {
+    try{
       notificationManager.deleteNotificationChannel(APP_UPDATES);
+    }catch (Throwable t){
+      t.printStackTrace();
     }
+//    }
   }
 
   @TargetApi(26)

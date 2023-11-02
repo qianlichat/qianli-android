@@ -15,15 +15,12 @@ import org.greenrobot.eventbus.EventBus;
 import org.signal.core.util.logging.Log;
 import org.signal.core.util.tracing.Tracer;
 import org.signal.devicetransfer.TransferStatus;
-import org.thoughtcrime.securesms.components.settings.app.changenumber.ChangeNumberLockActivity;
 import org.thoughtcrime.securesms.crypto.MasterSecretUtil;
 import org.thoughtcrime.securesms.dependencies.ApplicationDependencies;
 import org.thoughtcrime.securesms.devicetransfer.olddevice.OldDeviceTransferActivity;
 import org.thoughtcrime.securesms.keyvalue.SignalStore;
-import org.thoughtcrime.securesms.lock.v2.CreateSvrPinActivity;
 import org.thoughtcrime.securesms.migrations.ApplicationMigrationActivity;
 import org.thoughtcrime.securesms.migrations.ApplicationMigrations;
-import org.thoughtcrime.securesms.pin.PinRestoreActivity;
 import org.thoughtcrime.securesms.profiles.edit.EditProfileActivity;
 import org.thoughtcrime.securesms.push.SignalServiceNetworkAccess;
 import org.thoughtcrime.securesms.recipients.Recipient;
@@ -140,12 +137,12 @@ public abstract class PassphraseRequiredActivity extends BaseActivity implements
       case STATE_PROMPT_PASSPHRASE:   return getPromptPassphraseIntent();
       case STATE_UI_BLOCKING_UPGRADE: return getUiBlockingUpgradeIntent();
       case STATE_WELCOME_PUSH_SCREEN: return getPushRegistrationIntent();
-      case STATE_ENTER_SIGNAL_PIN:    return getEnterSignalPinIntent();
-      case STATE_CREATE_SIGNAL_PIN:   return getCreateSignalPinIntent();
+//      case STATE_ENTER_SIGNAL_PIN:    return getEnterSignalPinIntent();
+//      case STATE_CREATE_SIGNAL_PIN:   return getCreateSignalPinIntent();
       case STATE_CREATE_PROFILE_NAME: return getCreateProfileNameIntent();
       case STATE_TRANSFER_ONGOING:    return getOldDeviceTransferIntent();
       case STATE_TRANSFER_LOCKED:     return getOldDeviceTransferLockedIntent();
-      case STATE_CHANGE_NUMBER_LOCK:  return getChangeNumberLockIntent();
+//      case STATE_CHANGE_NUMBER_LOCK:  return getChangeNumberLockIntent();
       default:                        return null;
     }
   }
@@ -171,9 +168,11 @@ public abstract class PassphraseRequiredActivity extends BaseActivity implements
       return STATE_TRANSFER_ONGOING;
     } else if (SignalStore.misc().isOldDeviceTransferLocked()) {
       return STATE_TRANSFER_LOCKED;
-    } else if (SignalStore.misc().isChangeNumberLocked() && getClass() != ChangeNumberLockActivity.class) {
-      return STATE_CHANGE_NUMBER_LOCK;
-    } else {
+    }
+//    else if (SignalStore.misc().isChangeNumberLocked() && getClass() != ChangeNumberLockActivity.class) {
+//      return STATE_CHANGE_NUMBER_LOCK;
+//    }
+    else {
       return STATE_NORMAL;
     }
   }
@@ -211,21 +210,21 @@ public abstract class PassphraseRequiredActivity extends BaseActivity implements
     return RegistrationNavigationActivity.newIntentForNewRegistration(this, getIntent());
   }
 
-  private Intent getEnterSignalPinIntent() {
-    return getRoutedIntent(PinRestoreActivity.class, getIntent());
-  }
+//  private Intent getEnterSignalPinIntent() {
+//    return getRoutedIntent(PinRestoreActivity.class, getIntent());
+//  }
 
-  private Intent getCreateSignalPinIntent() {
-
-    final Intent intent;
-    if (userMustSetProfileName()) {
-      intent = getCreateProfileNameIntent();
-    } else {
-      intent = getIntent();
-    }
-
-    return getRoutedIntent(CreateSvrPinActivity.class, intent);
-  }
+//  private Intent getCreateSignalPinIntent() {
+//
+//    final Intent intent;
+//    if (userMustSetProfileName()) {
+//      intent = getCreateProfileNameIntent();
+//    } else {
+//      intent = getIntent();
+//    }
+//
+//    return getRoutedIntent(CreateSvrPinActivity.class, intent);
+//  }
 
   private Intent getCreateProfileNameIntent() {
     Intent intent = EditProfileActivity.getIntentForUserProfile(this);
@@ -245,9 +244,9 @@ public abstract class PassphraseRequiredActivity extends BaseActivity implements
     return MainActivity.clearTop(this);
   }
 
-  private Intent getChangeNumberLockIntent() {
-    return ChangeNumberLockActivity.createIntent(this);
-  }
+//  private Intent getChangeNumberLockIntent() {
+//    return ChangeNumberLockActivity.createIntent(this);
+//  }
 
   private Intent getRoutedIntent(Intent destination, @Nullable Intent nextIntent) {
     if (nextIntent != null)   destination.putExtra("next_intent", nextIntent);

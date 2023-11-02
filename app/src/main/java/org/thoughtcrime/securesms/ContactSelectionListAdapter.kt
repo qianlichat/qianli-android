@@ -24,7 +24,7 @@ class ContactSelectionListAdapter(
   init {
     registerFactory(NewGroupModel::class.java, LayoutFactory({ NewGroupViewHolder(it, onClickCallbacks::onNewGroupClicked) }, R.layout.contact_selection_new_group_item))
     registerFactory(InviteToSignalModel::class.java, LayoutFactory({ InviteToSignalViewHolder(it, onClickCallbacks::onInviteToSignalClicked) }, R.layout.contact_selection_invite_action_item))
-    registerFactory(RefreshContactsModel::class.java, LayoutFactory({ RefreshContactsViewHolder(it, onClickCallbacks::onRefreshContactsClicked) }, R.layout.contact_selection_refresh_action_item))
+//    registerFactory(RefreshContactsModel::class.java, LayoutFactory({ RefreshContactsViewHolder(it, onClickCallbacks::onRefreshContactsClicked) }, R.layout.contact_selection_refresh_action_item))
     registerFactory(MoreHeaderModel::class.java, LayoutFactory({ MoreHeaderViewHolder(it) }, R.layout.contact_search_section_header))
     registerFactory(EmptyModel::class.java, LayoutFactory({ EmptyViewHolder(it) }, R.layout.contact_selection_empty_state))
   }
@@ -39,10 +39,10 @@ class ContactSelectionListAdapter(
     override fun areContentsTheSame(newItem: InviteToSignalModel): Boolean = true
   }
 
-  class RefreshContactsModel : MappingModel<RefreshContactsModel> {
-    override fun areItemsTheSame(newItem: RefreshContactsModel): Boolean = true
-    override fun areContentsTheSame(newItem: RefreshContactsModel): Boolean = true
-  }
+//  class RefreshContactsModel : MappingModel<RefreshContactsModel> {
+//    override fun areItemsTheSame(newItem: RefreshContactsModel): Boolean = true
+//    override fun areContentsTheSame(newItem: RefreshContactsModel): Boolean = true
+//  }
 
   class MoreHeaderModel : MappingModel<MoreHeaderModel> {
     override fun areItemsTheSame(newItem: MoreHeaderModel): Boolean = true
@@ -66,13 +66,13 @@ class ContactSelectionListAdapter(
     override fun bind(model: NewGroupModel) = Unit
   }
 
-  private class RefreshContactsViewHolder(itemView: View, onClickListener: () -> Unit) : MappingViewHolder<RefreshContactsModel>(itemView) {
-    init {
-      itemView.setOnClickListener { onClickListener() }
-    }
-
-    override fun bind(model: RefreshContactsModel) = Unit
-  }
+//  private class RefreshContactsViewHolder(itemView: View, onClickListener: () -> Unit) : MappingViewHolder<RefreshContactsModel>(itemView) {
+//    init {
+//      itemView.setOnClickListener { onClickListener() }
+//    }
+//
+//    override fun bind(model: RefreshContactsModel) = Unit
+//  }
 
   private class MoreHeaderViewHolder(itemView: View) : MappingViewHolder<MoreHeaderModel>(itemView) {
 
@@ -97,8 +97,8 @@ class ContactSelectionListAdapter(
     enum class ArbitraryRow(val code: String) {
       NEW_GROUP("new-group"),
       INVITE_TO_SIGNAL("invite-to-signal"),
-      MORE_HEADING("more-heading"),
-      REFRESH_CONTACTS("refresh-contacts");
+      MORE_HEADING("more-heading");
+//      REFRESH_CONTACTS("refresh-contacts");
 
       companion object {
         fun fromCode(code: String) = values().first { it.code == code }
@@ -119,7 +119,7 @@ class ContactSelectionListAdapter(
         ArbitraryRow.NEW_GROUP -> NewGroupModel()
         ArbitraryRow.INVITE_TO_SIGNAL -> InviteToSignalModel()
         ArbitraryRow.MORE_HEADING -> MoreHeaderModel()
-        ArbitraryRow.REFRESH_CONTACTS -> RefreshContactsModel()
+//        ArbitraryRow.REFRESH_CONTACTS -> RefreshContactsModel()
       }
     }
   }

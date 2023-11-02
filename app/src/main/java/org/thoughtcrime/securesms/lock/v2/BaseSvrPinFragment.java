@@ -25,7 +25,6 @@ import com.google.android.material.button.MaterialButton;
 import org.thoughtcrime.securesms.LoggingFragment;
 import org.thoughtcrime.securesms.R;
 import org.thoughtcrime.securesms.keyvalue.SignalStore;
-import org.thoughtcrime.securesms.pin.PinOptOutDialog;
 import org.thoughtcrime.securesms.registration.RegistrationUtil;
 import org.thoughtcrime.securesms.util.CommunicationActions;
 import org.thoughtcrime.securesms.util.text.AfterTextChanged;
@@ -205,9 +204,9 @@ public abstract class BaseSvrPinFragment<ViewModel extends BaseSvrPinViewModel> 
   }
 
   private void onPinSkipped() {
-    PinOptOutDialog.show(requireContext(), () -> {
-      RegistrationUtil.maybeMarkRegistrationComplete();
-      closeNavGraphBranch();
-    });
+//    PinOptOutDialog.show(requireContext(), () -> {
+//      RegistrationUtil.maybeMarkRegistrationComplete();
+//      closeNavGraphBranch();
+//    });
   }
 }

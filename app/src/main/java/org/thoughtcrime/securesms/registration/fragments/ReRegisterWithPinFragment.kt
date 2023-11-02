@@ -1,7 +1,6 @@
 package org.thoughtcrime.securesms.registration.fragments
 
 import android.os.Bundle
-import android.text.InputType
 import android.view.View
 import android.view.inputmethod.EditorInfo
 import android.widget.Toast
@@ -14,8 +13,6 @@ import org.signal.core.util.logging.Log
 import org.thoughtcrime.securesms.LoggingFragment
 import org.thoughtcrime.securesms.R
 import org.thoughtcrime.securesms.databinding.PinRestoreEntryFragmentBinding
-import org.thoughtcrime.securesms.lock.v2.PinKeyboardType
-import org.thoughtcrime.securesms.lock.v2.SvrConstants
 import org.thoughtcrime.securesms.registration.VerifyResponseWithRegistrationLockProcessor
 import org.thoughtcrime.securesms.registration.viewmodel.ReRegisterWithPinViewModel
 import org.thoughtcrime.securesms.registration.viewmodel.RegistrationViewModel
@@ -72,13 +69,13 @@ class ReRegisterWithPinFragment : LoggingFragment(R.layout.pin_restore_entry_fra
       handlePinEntry()
     }
 
-    binding.pinRestoreKeyboardToggle.setOnClickListener {
-      val currentKeyboardType: PinKeyboardType = getPinEntryKeyboardType()
-      updateKeyboard(currentKeyboardType.other)
-      binding.pinRestoreKeyboardToggle.setIconResource(currentKeyboardType.iconResource)
-    }
+//    binding.pinRestoreKeyboardToggle.setOnClickListener {
+//      val currentKeyboardType: PinKeyboardType = getPinEntryKeyboardType()
+//      updateKeyboard(currentKeyboardType.other)
+//      binding.pinRestoreKeyboardToggle.setIconResource(currentKeyboardType.iconResource)
+//    }
 
-    binding.pinRestoreKeyboardToggle.setIconResource(getPinEntryKeyboardType().other.iconResource)
+//    binding.pinRestoreKeyboardToggle.setIconResource(getPinEntryKeyboardType().other.iconResource)
 
     reRegisterViewModel.updateSvrTriesRemaining(registrationViewModel.svrTriesRemaining)
 
@@ -200,23 +197,12 @@ class ReRegisterWithPinFragment : LoggingFragment(R.layout.pin_restore_entry_fra
     ViewUtil.focusAndShowKeyboard(binding.pinRestorePinInput)
   }
 
-  private fun getPinEntryKeyboardType(): PinKeyboardType {
-    val isNumeric = binding.pinRestorePinInput.inputType and InputType.TYPE_MASK_CLASS == InputType.TYPE_CLASS_NUMBER
-    return if (isNumeric) PinKeyboardType.NUMERIC else PinKeyboardType.ALPHA_NUMERIC
-  }
-
-  private fun updateKeyboard(keyboard: PinKeyboardType) {
-    val isAlphaNumeric = keyboard == PinKeyboardType.ALPHA_NUMERIC
-    binding.pinRestorePinInput.inputType = if (isAlphaNumeric) InputType.TYPE_CLASS_TEXT or InputType.TYPE_TEXT_VARIATION_PASSWORD else InputType.TYPE_CLASS_NUMBER or InputType.TYPE_NUMBER_VARIATION_PASSWORD
-    binding.pinRestorePinInput.text?.clear()
-  }
-
   private fun onNeedHelpClicked() {
     val message = if (reRegisterViewModel.isLocalVerification) R.string.ReRegisterWithPinFragment_need_help_local else R.string.PinRestoreEntryFragment_your_pin_is_a_d_digit_code
 
     MaterialAlertDialogBuilder(requireContext())
       .setTitle(R.string.PinRestoreEntryFragment_need_help)
-      .setMessage(getString(message, SvrConstants.MINIMUM_PIN_LENGTH))
+//      .setMessage(getString(message, SvrConstants.MINIMUM_PIN_LENGTH))
       .setPositiveButton(R.string.PinRestoreEntryFragment_skip) { _, _ -> onSkipPinEntry() }
       .setNeutralButton(R.string.PinRestoreEntryFragment_contact_support) { _, _ ->
         val body = SupportEmailUtil.generateSupportEmailBody(requireContext(), R.string.ReRegisterWithPinFragment_support_email_subject, null, null)

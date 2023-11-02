@@ -231,9 +231,9 @@ public abstract class BaseRegistrationViewModel extends ViewModel {
     savedState.getLiveData(STATE_CAN_SMS_AT_TIME).postValue(smsTimestamp);
   }
 
-  public Single<RegistrationSessionProcessor> requestVerificationCode(@NonNull Mode mode, @Nullable String mcc, @Nullable String mnc) {
+  public Single<RegistrationSessionProcessor> createSession( @Nullable String mcc, @Nullable String mnc) {
 
-    final String e164 = getNumber().getE164Number();
+    final String e164 = getNumber().getNationalNumber();
 
     return getValidSession(e164, mcc, mnc)
         .flatMap(processor -> {
@@ -252,25 +252,25 @@ public abstract class BaseRegistrationViewModel extends ViewModel {
             return Single.just(processor);
           }
 
-          if (!processor.isAllowedToRequestCode()) {
+//          if (!processor.isAllowedToRequestCode()) {
             return Single.just(processor);
-          }
+//          }
 
-          String sessionId = processor.getSessionId();
-          clearCaptchaResponse();
-          return verifyAccountRepository.requestVerificationCode(sessionId,
-                                                                 getNumber().getE164Number(),
-                                                                 getRegistrationSecret(),
-                                                                 mode)
-                                        .map(RegistrationSessionProcessor.RegistrationSessionProcessorForVerification::new);
+//          String sessionId = processor.getSessionId();
+//          clearCaptchaResponse();
+//          return verifyAccountRepository.requestVerificationCode(sessionId,
+//                                                                 getNumber().getE164Number(),
+//                                                                 getRegistrationSecret(),
+//                                                                 mode)
+//                                        .map(RegistrationSessionProcessor.RegistrationSessionProcessorForVerification::new);
         })
-        .observeOn(AndroidSchedulers.mainThread())
-        .doOnSuccess((RegistrationSessionProcessor processor) -> {
-          if (processor.hasResult() && processor.isAllowedToRequestCode()) {
-            setCanSmsAtTime(processor.getNextCodeViaSmsAttempt());
-            setCanCallAtTime(processor.getNextCodeViaCallAttempt());
-          }
-        });
+        .observeOn(AndroidSchedulers.mainThread());
+//        .doOnSuccess((RegistrationSessionProcessor processor) -> {
+//          if (processor.hasResult() && processor.isAllowedToRequestCode()) {
+//            setCanSmsAtTime(processor.getNextCodeViaSmsAttempt());
+//            setCanCallAtTime(processor.getNextCodeViaCallAttempt());
+//          }
+//        });
   }
 
   public Single<RegistrationSessionProcessor.RegistrationSessionProcessorForSession> validateSession(String e164) {
@@ -336,6 +336,10 @@ public abstract class BaseRegistrationViewModel extends ViewModel {
     return Single.just(processor);
   }
 
+  public Single<ServiceResponse<VerifyResponse>> registerAccount(String pass){
+    return null;
+  }
+
   public Single<VerifyResponseProcessor> verifyCodeWithoutRegistrationLock(@NonNull String code) {
     onVerificationCodeEntered(code);
 
@@ -390,7 +394,7 @@ public abstract class BaseRegistrationViewModel extends ViewModel {
 
   protected abstract Single<ServiceResponse<VerifyResponse>> verifyAccountWithRegistrationLock(@NonNull String pin, @NonNull SvrAuthCredentialSet svrAuthCredentials);
 
-  protected abstract Single<VerifyResponseProcessor> onVerifySuccess(@NonNull VerifyResponseProcessor processor);
+  public abstract Single<VerifyResponseProcessor> onVerifySuccess(@NonNull VerifyResponseProcessor processor);
 
   protected abstract Single<VerifyResponseWithRegistrationLockProcessor> onVerifySuccessWithRegistrationLock(@NonNull VerifyResponseWithRegistrationLockProcessor processor, String pin);
 

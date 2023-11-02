@@ -212,6 +212,8 @@ public class PushServiceSocket {
   private static final String PIN_PATH                   = "/v1/accounts/pin/";
   private static final String REGISTRATION_LOCK_PATH     = "/v1/accounts/registration_lock";
   private static final String WHO_AM_I                   = "/v1/accounts/whoami";
+  private static final String GET_ACI_PATH               = "/v1/accounts/aci/%s";
+  private static final String GET_ACCOUNT_ID_PATH        = "/v1/accounts/account_id/%s";
   private static final String GET_USERNAME_PATH          = "/v1/accounts/username_hash/%s";
   private static final String MODIFY_USERNAME_PATH       = "/v1/accounts/username_hash";
   private static final String RESERVE_USERNAME_PATH      = "/v1/accounts/username_hash/reserve";
@@ -224,51 +226,51 @@ public class PushServiceSocket {
   private static final String REQUEST_ACCOUNT_DATA_PATH  = "/v2/accounts/data_report";
   private static final String PNI_KEY_DISTRUBTION_PATH   = "/v2/accounts/phone_number_identity_key_distribution";
 
-  private static final String PREKEY_METADATA_PATH      = "/v2/keys?identity=%s";
-  private static final String PREKEY_PATH               = "/v2/keys?identity=%s";
-  private static final String PREKEY_DEVICE_PATH        = "/v2/keys/%s/%s?pq=true";
-  private static final String SIGNED_PREKEY_PATH        = "/v2/keys/signed?identity=%s";
+  private static final String PREKEY_METADATA_PATH = "/v2/keys?identity=%s";
+  private static final String PREKEY_PATH          = "/v2/keys?identity=%s";
+  private static final String PREKEY_DEVICE_PATH   = "/v2/keys/%s/%s?pq=true";
+  private static final String SIGNED_PREKEY_PATH   = "/v2/keys/signed?identity=%s";
 
   private static final String PROVISIONING_CODE_PATH    = "/v1/devices/provisioning/code";
   private static final String PROVISIONING_MESSAGE_PATH = "/v1/provisioning/%s";
   private static final String DEVICE_PATH               = "/v1/devices/%s";
 
-  private static final String DIRECTORY_AUTH_PATH       = "/v1/directory/auth";
-  private static final String MESSAGE_PATH              = "/v1/messages/%s";
-  private static final String GROUP_MESSAGE_PATH        = "/v1/messages/multi_recipient?ts=%s&online=%s&urgent=%s&story=%s";
-  private static final String SENDER_ACK_MESSAGE_PATH   = "/v1/messages/%s/%d";
-  private static final String UUID_ACK_MESSAGE_PATH     = "/v1/messages/uuid/%s";
-  private static final String ATTACHMENT_V2_PATH        = "/v2/attachments/form/upload";
-  private static final String ATTACHMENT_V4_PATH        = "/v4/attachments/form/upload";
+  private static final String DIRECTORY_AUTH_PATH     = "/v1/directory/auth";
+  private static final String MESSAGE_PATH            = "/v1/messages/%s";
+  private static final String GROUP_MESSAGE_PATH      = "/v1/messages/multi_recipient?ts=%s&online=%s&urgent=%s&story=%s";
+  private static final String SENDER_ACK_MESSAGE_PATH = "/v1/messages/%s/%d";
+  private static final String UUID_ACK_MESSAGE_PATH   = "/v1/messages/uuid/%s";
+  private static final String ATTACHMENT_V2_PATH      = "/v2/attachments/form/upload";
+  private static final String ATTACHMENT_V4_PATH      = "/v4/attachments/form/upload";
 
-  private static final String PAYMENTS_AUTH_PATH        = "/v1/payments/auth";
+  private static final String PAYMENTS_AUTH_PATH = "/v1/payments/auth";
 
-  private static final String PROFILE_PATH              = "/v1/profile/%s";
-  private static final String PROFILE_BATCH_CHECK_PATH  = "/v1/profile/identity_check/batch";
+  private static final String PROFILE_PATH             = "/v1/profile/%s";
+  private static final String PROFILE_BATCH_CHECK_PATH = "/v1/profile/identity_check/batch";
 
   private static final String SENDER_CERTIFICATE_PATH         = "/v1/certificate/delivery";
   private static final String SENDER_CERTIFICATE_NO_E164_PATH = "/v1/certificate/delivery?includeE164=false";
 
-  private static final String KBS_AUTH_PATH                  = "/v1/backup/auth";
-  private static final String KBS_AUTH_CHECK_PATH            = "/v1/backup/auth/check";
+  private static final String KBS_AUTH_PATH       = "/v1/backup/auth";
+  private static final String KBS_AUTH_CHECK_PATH = "/v1/backup/auth/check";
 
-  private static final String ATTACHMENT_KEY_DOWNLOAD_PATH   = "attachments/%s";
-  private static final String ATTACHMENT_ID_DOWNLOAD_PATH    = "attachments/%d";
-  private static final String ATTACHMENT_UPLOAD_PATH         = "attachments/";
-  private static final String AVATAR_UPLOAD_PATH             = "";
+  private static final String ATTACHMENT_KEY_DOWNLOAD_PATH = "attachments/%s";
+  private static final String ATTACHMENT_ID_DOWNLOAD_PATH  = "attachments/%d";
+  private static final String ATTACHMENT_UPLOAD_PATH       = "attachments/";
+  private static final String AVATAR_UPLOAD_PATH           = "";
 
-  private static final String STICKER_MANIFEST_PATH          = "stickers/%s/manifest.proto";
-  private static final String STICKER_PATH                   = "stickers/%s/full/%d";
+  private static final String STICKER_MANIFEST_PATH = "stickers/%s/manifest.proto";
+  private static final String STICKER_PATH          = "stickers/%s/full/%d";
 
-  private static final String GROUPSV2_CREDENTIAL       = "/v1/certificate/auth/group?redemptionStartSeconds=%d&redemptionEndSeconds=%d&pniAsServiceId=true";
-  private static final String GROUPSV2_GROUP            = "/v1/groups/";
-  private static final String GROUPSV2_GROUP_PASSWORD   = "/v1/groups/?inviteLinkPassword=%s";
-  private static final String GROUPSV2_GROUP_CHANGES    = "/v1/groups/logs/%s?maxSupportedChangeEpoch=%d&includeFirstState=%s&includeLastState=false";
-  private static final String GROUPSV2_AVATAR_REQUEST   = "/v1/groups/avatar/form";
-  private static final String GROUPSV2_GROUP_JOIN       = "/v1/groups/join/%s";
-  private static final String GROUPSV2_TOKEN            = "/v1/groups/token";
+  private static final String GROUPSV2_CREDENTIAL     = "/v1/certificate/auth/group?redemptionStartSeconds=%d&redemptionEndSeconds=%d&pniAsServiceId=true";
+  private static final String GROUPSV2_GROUP          = "/v1/groups/";
+  private static final String GROUPSV2_GROUP_PASSWORD = "/v1/groups/?inviteLinkPassword=%s";
+  private static final String GROUPSV2_GROUP_CHANGES  = "/v1/groups/logs/%s?maxSupportedChangeEpoch=%d&includeFirstState=%s&includeLastState=false";
+  private static final String GROUPSV2_AVATAR_REQUEST = "/v1/groups/avatar/form";
+  private static final String GROUPSV2_GROUP_JOIN     = "/v1/groups/join/%s";
+  private static final String GROUPSV2_TOKEN          = "/v1/groups/token";
 
-  private static final String PAYMENTS_CONVERSIONS      = "/v1/payments/conversions";
+  private static final String PAYMENTS_CONVERSIONS = "/v1/payments/conversions";
 
 
   private static final String SUBMIT_RATE_LIMIT_CHALLENGE       = "/v1/challenge";
@@ -294,7 +296,7 @@ public class PushServiceSocket {
   private static final String VERIFICATION_SESSION_PATH = "/v1/verification/session";
   private static final String VERIFICATION_CODE_PATH    = "/v1/verification/session/%s/code";
 
-  private static final String REGISTRATION_PATH    = "/v1/registration";
+  private static final String REGISTRATION_PATH = "/v1/registration";
 
   private static final String CDSI_AUTH = "/v2/directory/auth";
   private static final String SVR2_AUTH = "/v2/backup/auth";
@@ -303,7 +305,7 @@ public class PushServiceSocket {
 
   private static final String BACKUP_AUTH_CHECK = "/v2/backup/auth/check";
 
-  private static final String CALL_LINK_CREATION_AUTH = "/v1/call-link/create-auth";
+  private static final String CALL_LINK_CREATION_AUTH           = "/v1/call-link/create-auth";
   private static final String SERVER_DELIVERED_TIMESTAMP_HEADER = "X-Signal-Timestamp";
 
   private static final Map<String, String> NO_HEADERS = Collections.emptyMap();
@@ -318,13 +320,13 @@ public class PushServiceSocket {
 
   private final ServiceConnectionHolder[]        serviceClients;
   private final Map<Integer, ConnectionHolder[]> cdnClientsMap;
-  private final ConnectionHolder[]               storageClients;
+//  private final ConnectionHolder[]               storageClients;
 
-  private final CredentialsProvider              credentialsProvider;
-  private final String                           signalAgent;
-  private final SecureRandom                     random;
-  private final ClientZkProfileOperations        clientZkProfileOperations;
-  private final boolean                          automaticNetworkRetry;
+  private final CredentialsProvider       credentialsProvider;
+  private final String                    signalAgent;
+  private final SecureRandom              random;
+  private final ClientZkProfileOperations clientZkProfileOperations;
+  private final boolean                   automaticNetworkRetry;
 
   public PushServiceSocket(SignalServiceConfiguration configuration,
                            CredentialsProvider credentialsProvider,
@@ -337,7 +339,7 @@ public class PushServiceSocket {
     this.automaticNetworkRetry     = automaticNetworkRetry;
     this.serviceClients            = createServiceConnectionHolders(configuration.getSignalServiceUrls(), configuration.getNetworkInterceptors(), configuration.getDns(), configuration.getSignalProxy());
     this.cdnClientsMap             = createCdnClientsMap(configuration.getSignalCdnUrlMap(), configuration.getNetworkInterceptors(), configuration.getDns(), configuration.getSignalProxy());
-    this.storageClients            = createConnectionHolders(configuration.getSignalStorageUrls(), configuration.getNetworkInterceptors(), configuration.getDns(), configuration.getSignalProxy());
+//    this.storageClients            = createConnectionHolders(configuration.getSignalStorageUrls(), configuration.getNetworkInterceptors(), configuration.getDns(), configuration.getSignalProxy());
     this.random                    = new SecureRandom();
     this.clientZkProfileOperations = clientZkProfileOperations;
   }
@@ -367,7 +369,7 @@ public class PushServiceSocket {
   }
 
   public RegistrationSessionMetadataResponse requestVerificationCode(String sessionId, Locale locale, boolean androidSmsRetriever, VerificationCodeTransport transport) throws IOException {
-    String path = String.format(VERIFICATION_CODE_PATH, sessionId);
+    String              path    = String.format(VERIFICATION_CODE_PATH, sessionId);
     Map<String, String> headers = locale != null ? Collections.singletonMap("Accept-Language", locale.getLanguage() + "-" + locale.getCountry()) : NO_HEADERS;
     Map<String, String> body    = new HashMap<>();
 
@@ -388,15 +390,15 @@ public class PushServiceSocket {
   }
 
   public RegistrationSessionMetadataResponse submitVerificationCode(String sessionId, String verificationCode) throws IOException {
-    String path = String.format(VERIFICATION_CODE_PATH, sessionId);
-    Map<String, String> body =  new HashMap<>();
+    String              path = String.format(VERIFICATION_CODE_PATH, sessionId);
+    Map<String, String> body = new HashMap<>();
     body.put("code", verificationCode);
     try (Response response = makeServiceRequest(path, "PUT", jsonRequestBody(JsonUtil.toJson(body)), NO_HEADERS, new RegistrationCodeSubmissionResponseHandler(), Optional.empty(), false)) {
       return parseSessionMetadataResponse(response);
     }
   }
 
-  public VerifyAccountResponse submitRegistrationRequest(@Nullable String sessionId, @Nullable String recoveryPassword, AccountAttributes attributes, PreKeyCollection aciPreKeys, PreKeyCollection pniPreKeys, @Nullable String fcmToken, boolean skipDeviceTransfer) throws IOException {
+  public VerifyAccountResponse submitRegistrationRequest(@Nullable String sessionId, @Nonnull String pwd, @Nullable String recoveryPassword, AccountAttributes attributes, PreKeyCollection aciPreKeys, PreKeyCollection pniPreKeys, @Nullable String fcmToken, boolean skipDeviceTransfer) throws IOException {
     String path = REGISTRATION_PATH;
     if (sessionId == null && recoveryPassword == null) {
       throw new IllegalArgumentException("Neither Session ID nor Recovery Password provided.");
@@ -426,6 +428,7 @@ public class PushServiceSocket {
                                                                              pniPreKeys.getLastResortKyberPreKey().getKeyPair().getPublicKey(),
                                                                              pniPreKeys.getLastResortKyberPreKey().getSignature());
     RegistrationSessionRequestBody body = new RegistrationSessionRequestBody(sessionId,
+                                                                             pwd,
                                                                              recoveryPassword,
                                                                              attributes,
                                                                              Base64.encodeWithoutPadding(aciPreKeys.getIdentityKey().serialize()),
@@ -525,7 +528,9 @@ public class PushServiceSocket {
     patchVerificationSession(sessionId, gcmRegistrationId, null, null, null, null);
   }
 
-  /** Note: Setting a KBS Pin will clear this */
+  /**
+   * Note: Setting a KBS Pin will clear this
+   */
   public void removeRegistrationLockV1() throws IOException {
     makeServiceRequest(PIN_PATH, "DELETE", null);
   }
@@ -795,7 +800,7 @@ public class PushServiceSocket {
   }
 
   public void setCurrentSignedPreKey(ServiceIdType serviceIdType, SignedPreKeyRecord signedPreKey) throws IOException {
-    String             path               = String.format(SIGNED_PREKEY_PATH, serviceIdType.queryParam());
+    String path = String.format(SIGNED_PREKEY_PATH, serviceIdType.queryParam());
     SignedPreKeyEntity signedPreKeyEntity = new SignedPreKeyEntity(signedPreKey.getId(),
                                                                    signedPreKey.getKeyPair().getPublicKey(),
                                                                    signedPreKey.getSignature());
@@ -815,7 +820,8 @@ public class PushServiceSocket {
   }
 
   public byte[] retrieveSticker(byte[] packId, int stickerId)
-      throws NonSuccessfulResponseCodeException, PushNetworkException {
+      throws NonSuccessfulResponseCodeException, PushNetworkException
+  {
     String                hexPackId = Hex.toStringCondensed(packId);
     ByteArrayOutputStream output    = new ByteArrayOutputStream();
 
@@ -829,7 +835,8 @@ public class PushServiceSocket {
   }
 
   public byte[] retrieveStickerManifest(byte[] packId)
-      throws NonSuccessfulResponseCodeException, PushNetworkException {
+      throws NonSuccessfulResponseCodeException, PushNetworkException
+  {
     String                hexPackId = Hex.toStringCondensed(packId);
     ByteArrayOutputStream output    = new ByteArrayOutputStream();
 
@@ -924,7 +931,7 @@ public class PushServiceSocket {
   public Optional<String> writeProfile(SignalServiceProfileWrite signalServiceProfileWrite, ProfileAvatarData profileAvatar)
       throws NonSuccessfulResponseCodeException, PushNetworkException, MalformedResponseException
   {
-    String                        requestBody    = JsonUtil.toJson(signalServiceProfileWrite);
+    String                        requestBody = JsonUtil.toJson(signalServiceProfileWrite);
     ProfileAvatarUploadAttributes formAttributes;
 
     String response = makeServiceRequest(String.format(PROFILE_PATH, ""),
@@ -943,13 +950,13 @@ public class PushServiceSocket {
       }
 
       uploadToCdn0(AVATAR_UPLOAD_PATH, formAttributes.getAcl(), formAttributes.getKey(),
-                  formAttributes.getPolicy(), formAttributes.getAlgorithm(),
-                  formAttributes.getCredential(), formAttributes.getDate(),
-                  formAttributes.getSignature(), profileAvatar.getData(),
-                  profileAvatar.getContentType(), profileAvatar.getDataLength(),
-                  profileAvatar.getOutputStreamFactory(), null, null);
+                   formAttributes.getPolicy(), formAttributes.getAlgorithm(),
+                   formAttributes.getCredential(), formAttributes.getDate(),
+                   formAttributes.getSignature(), profileAvatar.getData(),
+                   profileAvatar.getContentType(), profileAvatar.getDataLength(),
+                   profileAvatar.getOutputStreamFactory(), null, null);
 
-       return Optional.of(formAttributes.getKey());
+      return Optional.of(formAttributes.getKey());
     }
 
     return Optional.empty();
@@ -961,7 +968,7 @@ public class PushServiceSocket {
   {
     Single<ServiceResponse<IdentityCheckResponse>> requestSingle = Single.fromCallable(() -> {
       try (Response response = getServiceConnection(PROFILE_BATCH_CHECK_PATH, "POST", jsonRequestBody(JsonUtil.toJson(request)), Collections.emptyMap(), unidentifiedAccess, false)) {
-        String body = response.body() != null ? readBodyString(response.body()): "";
+        String body = response.body() != null ? readBodyString(response.body()) : "";
         return responseMapper.map(response.code(), body, response::header, unidentifiedAccess.isPresent());
       }
     });
@@ -977,7 +984,7 @@ public class PushServiceSocket {
   {
     Single<ServiceResponse<BackupAuthCheckResponse>> requestSingle = Single.fromCallable(() -> {
       try (Response response = getServiceConnection(BACKUP_AUTH_CHECK, "POST", jsonRequestBody(JsonUtil.toJson(request)), Collections.emptyMap(), Optional.empty(), false)) {
-        String body = response.body() != null ? readBodyString(response.body()): "";
+        String body = response.body() != null ? readBodyString(response.body()) : "";
         return responseMapper.map(response.code(), body, response::header, false);
       }
     });
@@ -994,28 +1001,44 @@ public class PushServiceSocket {
   {
     return Single.fromCallable(() -> {
       try (Response response = getServiceConnection(path, "POST", jsonRequestBody(JsonUtil.toJson(request)), Collections.emptyMap(), Optional.empty(), false)) {
-        String body = response.body() != null ? readBodyString(response.body()): "";
+        String body = response.body() != null ? readBodyString(response.body()) : "";
         return responseMapper.map(response.code(), body, response::header, false);
       }
     });
   }
+  public @NonNull String getAccountIdByACI(ACI aci) throws IOException {
+    String response = makeServiceRequestWithoutAuthentication(
+        String.format(GET_ACCOUNT_ID_PATH, aci.getRawUuid()),
+        "GET",
+        null,
+        NO_HEADERS,
+        (responseCode, body) -> {
+          if (responseCode == 404) {
+            throw new UsernameIsNotAssociatedWithAnAccountException();
+          }
+        }
+    );
 
-  /**
-   * GET /v1/accounts/username_hash/{usernameHash}
-   *
-   * Gets the ACI for the given username hash, if it exists. This is an unauthenticated request.
-   *
-   * This network request can have the following error responses:
-   * <ul>
-   *   <li>404 - The username given is not associated with an account</li>
-   *   <li>428 - Rate-limited, retry is available in the Retry-After header</li>
-   *   <li>400 - Bad Request. The request included authentication.</li>
-   * </ul>
-   *
-   * @param usernameHash The usernameHash to look up.
-   * @return The ACI for the given username if it exists.
-   * @throws IOException if a network exception occurs.
-   */
+    GetAccountIdByAciResponse getAciByUsernameResponse = JsonUtil.fromJsonResponse(response, GetAccountIdByAciResponse.class);
+    return getAciByUsernameResponse.getAccountId();
+  }
+  public @NonNull ACI getAciByAccountId(String accountId) throws IOException {
+    String response = makeServiceRequestWithoutAuthentication(
+        String.format(GET_ACI_PATH, URLEncoder.encode(accountId, StandardCharsets.UTF_8.toString())),
+        "GET",
+        null,
+        NO_HEADERS,
+        (responseCode, body) -> {
+          if (responseCode == 404) {
+            throw new UsernameIsNotAssociatedWithAnAccountException();
+          }
+        }
+    );
+
+    GetAciByUsernameResponse getAciByUsernameResponse = JsonUtil.fromJsonResponse(response, GetAciByUsernameResponse.class);
+    return ACI.from(UUID.fromString(getAciByUsernameResponse.getUuid()));
+  }
+
   public @NonNull ACI getAciByUsernameHash(String usernameHash) throws IOException {
     String response = makeServiceRequestWithoutAuthentication(
         String.format(GET_USERNAME_PATH, URLEncoder.encode(usernameHash, StandardCharsets.UTF_8.toString())),
@@ -1038,17 +1061,19 @@ public class PushServiceSocket {
    * Reserve a username for the account. This replaces an existing reservation if one exists. The username is guaranteed to be available for 5 minutes and can
    * be confirmed with confirmUsername.
    *
-   * @param usernameHashes    A list of hashed usernames encoded as web-safe base64 strings without padding. The list will have a max length of 20, and each hash will be 32 bytes.
-   * @return                  The reserved username. It is available for confirmation for 5 minutes.
-   * @throws IOException      Thrown when the username is invalid or taken, or when another network error occurs.
+   * @param usernameHashes A list of hashed usernames encoded as web-safe base64 strings without padding. The list will have a max length of 20, and each hash will be 32 bytes.
+   * @return The reserved username. It is available for confirmation for 5 minutes.
+   * @throws IOException Thrown when the username is invalid or taken, or when another network error occurs.
    */
   public @NonNull ReserveUsernameResponse reserveUsername(@NonNull List<String> usernameHashes) throws IOException {
     ReserveUsernameRequest reserveUsernameRequest = new ReserveUsernameRequest(usernameHashes);
 
     String responseString = makeServiceRequest(RESERVE_USERNAME_PATH, "PUT", JsonUtil.toJson(reserveUsernameRequest), NO_HEADERS, (responseCode, body) -> {
       switch (responseCode) {
-        case 422: throw new UsernameMalformedException();
-        case 409: throw new UsernameTakenException();
+        case 422:
+          throw new UsernameMalformedException();
+        case 409:
+          throw new UsernameTakenException();
       }
     }, Optional.empty());
 
@@ -1061,14 +1086,14 @@ public class PushServiceSocket {
    *
    * @param username                The username the user wishes to confirm. For example, myusername.27
    * @param reserveUsernameResponse The response object from the reservation
-   * @throws IOException            Thrown when the username is invalid or taken, or when another network error occurs.
+   * @throws IOException Thrown when the username is invalid or taken, or when another network error occurs.
    */
   public void confirmUsername(String username, ReserveUsernameResponse reserveUsernameResponse) throws IOException {
     try {
       byte[] randomness = new byte[32];
       random.nextBytes(randomness);
 
-      byte[]                 proof                  = Username.generateProof(username, randomness);
+      byte[] proof = Username.generateProof(username, randomness);
       ConfirmUsernameRequest confirmUsernameRequest = new ConfirmUsernameRequest(reserveUsernameResponse.getUsernameHash(),
                                                                                  Base64.encodeUrlSafeWithoutPadding(proof));
 
@@ -1094,6 +1119,7 @@ public class PushServiceSocket {
 
   /**
    * Creates a new username link for a given username.
+   *
    * @param encryptedUsername URL-safe base64-encoded encrypted username
    * @return The serverId for the generated link.
    */
@@ -1104,12 +1130,16 @@ public class PushServiceSocket {
     return parsed.getUsernameLinkHandle();
   }
 
-  /** Deletes your active username link. */
+  /**
+   * Deletes your active username link.
+   */
   public void deleteUsernameLink() throws IOException {
     makeServiceRequest(USERNAME_LINK_PATH, "DELETE", null);
   }
 
-  /** Given a link serverId (see {@link #createUsernameLink(String)}), this will return the encrypted username associate with the link. */
+  /**
+   * Given a link serverId (see {@link #createUsernameLink(String)}), this will return the encrypted username associate with the link.
+   */
   public byte[] getEncryptedUsernameFromLinkServerId(UUID serverId) throws IOException {
     String                          response = makeServiceRequestWithoutAuthentication(String.format(USERNAME_FROM_LINK_PATH, serverId.toString()), "GET", null);
     GetUsernameFromLinkResponseBody parsed   = JsonUtil.fromJson(response, GetUsernameFromLinkResponseBody.class);
@@ -1168,7 +1198,7 @@ public class PushServiceSocket {
   }
 
   public ReceiptCredentialResponse submitBoostReceiptCredentials(String paymentIntentId, ReceiptCredentialRequest receiptCredentialRequest, DonationProcessor processor) throws IOException {
-    String payload  = JsonUtil.toJson(new BoostReceiptCredentialRequestJson(paymentIntentId, receiptCredentialRequest, processor));
+    String payload = JsonUtil.toJson(new BoostReceiptCredentialRequestJson(paymentIntentId, receiptCredentialRequest, processor));
     String response = makeServiceRequestWithoutAuthentication(
         BOOST_RECEIPT_CREDENTIALS,
         "POST",
@@ -1255,7 +1285,7 @@ public class PushServiceSocket {
   }
 
   public ReceiptCredentialResponse submitReceiptCredentials(String subscriptionId, ReceiptCredentialRequest receiptCredentialRequest) throws IOException {
-    String payload  = JsonUtil.toJson(new ReceiptCredentialRequestJson(receiptCredentialRequest));
+    String payload = JsonUtil.toJson(new ReceiptCredentialRequestJson(receiptCredentialRequest));
     String response = makeServiceRequestWithoutAuthentication(
         String.format(SUBSCRIPTION_RECEIPT_CREDENTIALS, subscriptionId),
         "POST",
@@ -1285,8 +1315,8 @@ public class PushServiceSocket {
   }
 
   private AuthCredentials getAuthCredentials(String authPath) throws IOException {
-    String              response = makeServiceRequest(authPath, "GET", null);
-    AuthCredentials     token    = JsonUtil.fromJson(response, AuthCredentials.class);
+    String          response = makeServiceRequest(authPath, "GET", null);
+    AuthCredentials token    = JsonUtil.fromJson(response, AuthCredentials.class);
     return token;
   }
 
@@ -1389,19 +1419,19 @@ public class PushServiceSocket {
       throws IOException
   {
     return uploadToCdn0(AVATAR_UPLOAD_PATH, uploadAttributes.acl, uploadAttributes.key,
-                       uploadAttributes.policy, uploadAttributes.algorithm,
-                       uploadAttributes.credential, uploadAttributes.date,
-                       uploadAttributes.signature,
-                       new ByteArrayInputStream(avatarCipherText),
-                       "application/octet-stream", avatarCipherText.length,
-                       new NoCipherOutputStreamFactory(),
-                       null, null);
+                        uploadAttributes.policy, uploadAttributes.algorithm,
+                        uploadAttributes.credential, uploadAttributes.date,
+                        uploadAttributes.signature,
+                        new ByteArrayInputStream(avatarCipherText),
+                        "application/octet-stream", avatarCipherText.length,
+                        new NoCipherOutputStreamFactory(),
+                        null, null);
   }
 
   public Pair<Long, AttachmentDigest> uploadAttachment(PushAttachmentData attachment, AttachmentV2UploadAttributes uploadAttributes)
       throws PushNetworkException, NonSuccessfulResponseCodeException
   {
-    long             id     = Long.parseLong(uploadAttributes.getAttachmentId());
+    long id = Long.parseLong(uploadAttributes.getAttachmentId());
     AttachmentDigest digest = uploadToCdn0(ATTACHMENT_UPLOAD_PATH, uploadAttributes.getAcl(), uploadAttributes.getKey(),
                                            uploadAttributes.getPolicy(), uploadAttributes.getAlgorithm(),
                                            uploadAttributes.getCredential(), uploadAttributes.getDate(),
@@ -1429,7 +1459,7 @@ public class PushServiceSocket {
       throw new ResumeLocationInvalidException();
     }
 
-    if (attachment.getResumableUploadSpec().getCdnNumber() == 2) {
+//    if (attachment.getResumableUploadSpec().getCdnNumber() == 2) {
       return uploadToCdn2(attachment.getResumableUploadSpec().getResumeLocation(),
                           attachment.getData(),
                           "application/octet-stream",
@@ -1437,16 +1467,16 @@ public class PushServiceSocket {
                           attachment.getOutputStreamFactory(),
                           attachment.getListener(),
                           attachment.getCancelationSignal());
-    } else {
-      return uploadToCdn3(attachment.getResumableUploadSpec().getResumeLocation(),
-                          attachment.getData(),
-                          "application/offset+octet-stream",
-                          attachment.getDataSize(),
-                          attachment.getOutputStreamFactory(),
-                          attachment.getListener(),
-                          attachment.getCancelationSignal(),
-                          attachment.getResumableUploadSpec().getHeaders());
-    }
+//    } else {
+//      return uploadToCdn3(attachment.getResumableUploadSpec().getResumeLocation(),
+//                          attachment.getData(),
+//                          "application/offset+octet-stream",
+//                          attachment.getDataSize(),
+//                          attachment.getOutputStreamFactory(),
+//                          attachment.getListener(),
+//                          attachment.getCancelationSignal(),
+//                          attachment.getResumableUploadSpec().getHeaders());
+//    }
   }
 
   private void downloadFromCdn(File destination, int cdnNumber, String path, long maxSizeBytes, ProgressListener listener)
@@ -1458,17 +1488,18 @@ public class PushServiceSocket {
   }
 
   private void downloadFromCdn(OutputStream outputStream, long offset, int cdnNumber, String path, long maxSizeBytes, ProgressListener listener)
-      throws PushNetworkException, NonSuccessfulResponseCodeException, MissingConfigurationException {
+      throws PushNetworkException, NonSuccessfulResponseCodeException, MissingConfigurationException
+  {
     ConnectionHolder[] cdnNumberClients = cdnClientsMap.get(cdnNumber);
     if (cdnNumberClients == null) {
       throw new MissingConfigurationException("Attempted to download from unsupported CDN number: " + cdnNumber + ", Our configuration supports: " + cdnClientsMap.keySet());
     }
-    ConnectionHolder   connectionHolder = getRandom(cdnNumberClients, random);
-    OkHttpClient       okHttpClient     = connectionHolder.getClient()
-                                                          .newBuilder()
-                                                          .connectTimeout(soTimeoutMillis, TimeUnit.MILLISECONDS)
-                                                          .readTimeout(soTimeoutMillis, TimeUnit.MILLISECONDS)
-                                                          .build();
+    ConnectionHolder connectionHolder = getRandom(cdnNumberClients, random);
+    OkHttpClient okHttpClient = connectionHolder.getClient()
+                                                .newBuilder()
+                                                .connectTimeout(soTimeoutMillis, TimeUnit.MILLISECONDS)
+                                                .readTimeout(soTimeoutMillis, TimeUnit.MILLISECONDS)
+                                                .build();
 
     Request.Builder request = new Request.Builder().url(connectionHolder.getUrl() + "/" + path).get();
 
@@ -1491,11 +1522,11 @@ public class PushServiceSocket {
       if (response.isSuccessful()) {
         ResponseBody body = response.body();
 
-        if (body == null)                        throw new PushNetworkException("No response body!");
+        if (body == null) throw new PushNetworkException("No response body!");
         if (body.contentLength() > maxSizeBytes) throw new PushNetworkException("Response exceeds max size!");
 
-        InputStream  in     = body.byteStream();
-        byte[]       buffer = new byte[32768];
+        InputStream in     = body.byteStream();
+        byte[]      buffer = new byte[32768];
 
         int  read      = 0;
         long totalRead = offset;
@@ -1534,31 +1565,31 @@ public class PushServiceSocket {
                                         CancelationSignal cancelationSignal)
       throws PushNetworkException, NonSuccessfulResponseCodeException
   {
-    ConnectionHolder connectionHolder = getRandom(cdnClientsMap.get(0), random);
-    OkHttpClient     okHttpClient     = connectionHolder.getClient()
-                                                        .newBuilder()
-                                                        .connectTimeout(soTimeoutMillis, TimeUnit.MILLISECONDS)
-                                                        .readTimeout(soTimeoutMillis, TimeUnit.MILLISECONDS)
-                                                        .build();
+    ConnectionHolder connectionHolder = cdnClientsMap.get(0)[0];
+    OkHttpClient okHttpClient = connectionHolder.getClient()
+                                                .newBuilder()
+                                                .connectTimeout(soTimeoutMillis, TimeUnit.MILLISECONDS)
+                                                .readTimeout(soTimeoutMillis, TimeUnit.MILLISECONDS)
+                                                .build();
 
     DigestingRequestBody file = new DigestingRequestBody(data, outputStreamFactory, contentType, length, progressListener, cancelationSignal, 0);
 
     RequestBody requestBody = new MultipartBody.Builder()
-                                               .setType(MultipartBody.FORM)
-                                               .addFormDataPart("acl", acl)
-                                               .addFormDataPart("key", key)
-                                               .addFormDataPart("policy", policy)
-                                               .addFormDataPart("Content-Type", contentType)
-                                               .addFormDataPart("x-amz-algorithm", algorithm)
-                                               .addFormDataPart("x-amz-credential", credential)
-                                               .addFormDataPart("x-amz-date", date)
-                                               .addFormDataPart("x-amz-signature", signature)
-                                               .addFormDataPart("file", "file", file)
-                                               .build();
+        .setType(MultipartBody.FORM)
+        .addFormDataPart("acl", acl)
+        .addFormDataPart("key", key)
+        .addFormDataPart("policy", policy)
+        .addFormDataPart("Content-Type", contentType)
+        .addFormDataPart("x-amz-algorithm", algorithm)
+        .addFormDataPart("x-amz-credential", credential)
+        .addFormDataPart("x-amz-date", date)
+        .addFormDataPart("x-amz-signature", signature)
+        .addFormDataPart("file", "file", file)
+        .build();
 
     Request.Builder request = new Request.Builder()
-                                         .url(connectionHolder.getUrl() + "/" + path)
-                                         .post(requestBody);
+        .url(connectionHolder.getUrl() + "/" + path)
+        .post(requestBody);
 
     if (connectionHolder.getHostHeader().isPresent()) {
       request.addHeader("Host", connectionHolder.getHostHeader().get());
@@ -1572,7 +1603,7 @@ public class PushServiceSocket {
 
     try (Response response = call.execute()) {
       if (response.isSuccessful()) return file.getAttachmentDigest();
-      else                         throw new NonSuccessfulResponseCodeException(response.code(), "Response: " + response);
+      else throw new NonSuccessfulResponseCodeException(response.code(), "Response: " + response);
     } catch (PushNetworkException | NonSuccessfulResponseCodeException e) {
       throw e;
     } catch (IOException e) {
@@ -1586,13 +1617,13 @@ public class PushServiceSocket {
 
   private String getResumableUploadUrl(int cdn, String signedUrl, Map<String, String> headers) throws IOException {
     ConnectionHolder connectionHolder = getRandom(cdnClientsMap.get(cdn), random);
-    OkHttpClient     okHttpClient     = connectionHolder.getClient()
-                                                        .newBuilder()
-                                                        .connectTimeout(soTimeoutMillis, TimeUnit.MILLISECONDS)
-                                                        .readTimeout(soTimeoutMillis, TimeUnit.MILLISECONDS)
-                                                        .build();
+    OkHttpClient okHttpClient = connectionHolder.getClient()
+                                                .newBuilder()
+                                                .connectTimeout(soTimeoutMillis, TimeUnit.MILLISECONDS)
+                                                .readTimeout(soTimeoutMillis, TimeUnit.MILLISECONDS)
+                                                .build();
 
-    Request.Builder request = new Request.Builder().url(buildConfiguredUrl(connectionHolder, signedUrl))
+    Request.Builder request = new Request.Builder().url(signedUrl)
                                                    .post(RequestBody.create(null, ""));
 
     for (Map.Entry<String, String> header : headers.entrySet()) {
@@ -1641,11 +1672,11 @@ public class PushServiceSocket {
 
   private AttachmentDigest uploadToCdn2(String resumableUrl, InputStream data, String contentType, long length, OutputStreamFactory outputStreamFactory, ProgressListener progressListener, CancelationSignal cancelationSignal) throws IOException {
     ConnectionHolder connectionHolder = getRandom(cdnClientsMap.get(2), random);
-    OkHttpClient     okHttpClient     = connectionHolder.getClient()
-                                                        .newBuilder()
-                                                        .connectTimeout(soTimeoutMillis, TimeUnit.MILLISECONDS)
-                                                        .readTimeout(soTimeoutMillis, TimeUnit.MILLISECONDS)
-                                                        .build();
+    OkHttpClient okHttpClient = connectionHolder.getClient()
+                                                .newBuilder()
+                                                .connectTimeout(soTimeoutMillis, TimeUnit.MILLISECONDS)
+                                                .readTimeout(soTimeoutMillis, TimeUnit.MILLISECONDS)
+                                                .build();
 
     ResumeInfo           resumeInfo = getResumeInfoCdn2(resumableUrl, length);
     DigestingRequestBody file       = new DigestingRequestBody(data, outputStreamFactory, contentType, length, progressListener, cancelationSignal, resumeInfo.contentStart);
@@ -1674,7 +1705,7 @@ public class PushServiceSocket {
 
     try (Response response = call.execute()) {
       if (response.isSuccessful()) return file.getAttachmentDigest();
-      else                         throw new NonSuccessfulResponseCodeException(response.code(), "Response: " + response);
+      else throw new NonSuccessfulResponseCodeException(response.code(), "Response: " + response);
     } catch (PushNetworkException | NonSuccessfulResponseCodeException e) {
       throw e;
     } catch (IOException e) {
@@ -1697,11 +1728,11 @@ public class PushServiceSocket {
       throws IOException
   {
     ConnectionHolder connectionHolder = getRandom(cdnClientsMap.get(3), random);
-    OkHttpClient     okHttpClient     = connectionHolder.getClient()
-                                                        .newBuilder()
-                                                        .connectTimeout(soTimeoutMillis, TimeUnit.MILLISECONDS)
-                                                        .readTimeout(soTimeoutMillis, TimeUnit.MILLISECONDS)
-                                                        .build();
+    OkHttpClient okHttpClient = connectionHolder.getClient()
+                                                .newBuilder()
+                                                .connectTimeout(soTimeoutMillis, TimeUnit.MILLISECONDS)
+                                                .readTimeout(soTimeoutMillis, TimeUnit.MILLISECONDS)
+                                                .build();
 
     ResumeInfo           resumeInfo = getResumeInfoCdn3(resumableUrl, headers);
     DigestingRequestBody file       = new DigestingRequestBody(data, outputStreamFactory, contentType, length, progressListener, cancelationSignal, resumeInfo.contentStart);
@@ -1755,11 +1786,11 @@ public class PushServiceSocket {
 
   private ResumeInfo getResumeInfoCdn2(String resumableUrl, long contentLength) throws IOException {
     ConnectionHolder connectionHolder = getRandom(cdnClientsMap.get(2), random);
-    OkHttpClient     okHttpClient     = connectionHolder.getClient()
-                                                        .newBuilder()
-                                                        .connectTimeout(soTimeoutMillis, TimeUnit.MILLISECONDS)
-                                                        .readTimeout(soTimeoutMillis, TimeUnit.MILLISECONDS)
-                                                        .build();
+    OkHttpClient okHttpClient = connectionHolder.getClient()
+                                                .newBuilder()
+                                                .connectTimeout(soTimeoutMillis, TimeUnit.MILLISECONDS)
+                                                .readTimeout(soTimeoutMillis, TimeUnit.MILLISECONDS)
+                                                .build();
 
     final long   offset;
     final String contentRange;
@@ -1812,13 +1843,13 @@ public class PushServiceSocket {
 
   private ResumeInfo getResumeInfoCdn3(String resumableUrl, Map<String, String> headers) throws IOException {
     ConnectionHolder connectionHolder = getRandom(cdnClientsMap.get(3), random);
-    OkHttpClient     okHttpClient     = connectionHolder.getClient()
-                                                        .newBuilder()
-                                                        .connectTimeout(soTimeoutMillis, TimeUnit.MILLISECONDS)
-                                                        .readTimeout(soTimeoutMillis, TimeUnit.MILLISECONDS)
-                                                        .build();
+    OkHttpClient okHttpClient = connectionHolder.getClient()
+                                                .newBuilder()
+                                                .connectTimeout(soTimeoutMillis, TimeUnit.MILLISECONDS)
+                                                .readTimeout(soTimeoutMillis, TimeUnit.MILLISECONDS)
+                                                .build();
 
-    final long   offset;
+    final long offset;
 
     Request.Builder request = new Request.Builder().url(buildConfiguredUrl(connectionHolder, resumableUrl))
                                                    .head()
@@ -1860,22 +1891,23 @@ public class PushServiceSocket {
   }
 
   private static HttpUrl buildConfiguredUrl(ConnectionHolder connectionHolder, String url) throws IOException {
-    final HttpUrl endpointUrl = HttpUrl.get(connectionHolder.url);
-    final HttpUrl resumableHttpUrl;
-    try {
-      resumableHttpUrl = HttpUrl.get(url);
-    } catch (IllegalArgumentException e) {
-      throw new IOException("Malformed URL!", e);
-    }
-
-    return new HttpUrl.Builder().scheme(endpointUrl.scheme())
-                                .host(endpointUrl.host())
-                                .port(endpointUrl.port())
-                                .encodedPath(endpointUrl.encodedPath())
-                                .addEncodedPathSegments(resumableHttpUrl.encodedPath().substring(1))
-                                .encodedQuery(resumableHttpUrl.encodedQuery())
-                                .encodedFragment(resumableHttpUrl.encodedFragment())
-                                .build();
+    return HttpUrl.get(url);
+//    final HttpUrl endpointUrl = HttpUrl.get(connectionHolder.url);
+//    final HttpUrl resumableHttpUrl;
+//    try {
+//      resumableHttpUrl = HttpUrl.get(url);
+//    } catch (IllegalArgumentException e) {
+//      throw new IOException("Malformed URL!", e);
+//    }
+//
+//    return new HttpUrl.Builder().scheme(endpointUrl.scheme())
+//                                .host(endpointUrl.host())
+//                                .port(endpointUrl.port())
+//                                .encodedPath(endpointUrl.encodedPath())
+//                                .addEncodedPathSegments(resumableHttpUrl.encodedPath().substring(1))
+//                                .encodedQuery(resumableHttpUrl.encodedQuery())
+//                                .encodedFragment(resumableHttpUrl.encodedFragment())
+//                                .build();
   }
 
   private String makeServiceRequestWithoutAuthentication(String urlFragment, String method, String jsonBody)
@@ -1966,7 +1998,8 @@ public class PushServiceSocket {
   }
 
   private Response validateServiceResponse(Response response)
-      throws NonSuccessfulResponseCodeException, PushNetworkException, MalformedResponseException {
+      throws NonSuccessfulResponseCodeException, PushNetworkException, MalformedResponseException
+  {
     int    responseCode    = response.code();
     String responseMessage = response.message();
 
@@ -2005,8 +2038,8 @@ public class PushServiceSocket {
                                   accountLockFailure.svr2Credentials);
       case 428:
         ProofRequiredResponse proofRequiredResponse = readResponseJson(response, ProofRequiredResponse.class);
-        String                retryAfterRaw = response.header("Retry-After");
-        long                  retryAfter    = Util.parseInt(retryAfterRaw, -1);
+        String retryAfterRaw = response.header("Retry-After");
+        long retryAfter = Util.parseInt(retryAfterRaw, -1);
 
         throw new ProofRequiredException(proofRequiredResponse, retryAfter);
 
@@ -2068,7 +2101,8 @@ public class PushServiceSocket {
                                       RequestBody body,
                                       Map<String, String> headers,
                                       Optional<UnidentifiedAccess> unidentifiedAccess,
-                                      boolean doNotAddAuthenticationOrUnidentifiedAccessKey) {
+                                      boolean doNotAddAuthenticationOrUnidentifiedAccessKey)
+  {
 
     ServiceConnectionHolder connectionHolder = (ServiceConnectionHolder) getRandom(serviceClients, random);
 
@@ -2105,12 +2139,12 @@ public class PushServiceSocket {
   private Response makeStorageRequest(String authorization, String path, String method, RequestBody body, ResponseCodeHandler responseCodeHandler)
       throws PushNetworkException, NonSuccessfulResponseCodeException
   {
-    ConnectionHolder connectionHolder = getRandom(storageClients, random);
-    OkHttpClient     okHttpClient     = connectionHolder.getClient()
-                                                        .newBuilder()
-                                                        .connectTimeout(soTimeoutMillis, TimeUnit.MILLISECONDS)
-                                                        .readTimeout(soTimeoutMillis, TimeUnit.MILLISECONDS)
-                                                        .build();
+    ConnectionHolder connectionHolder = serviceClients[0];
+    OkHttpClient okHttpClient = connectionHolder.getClient()
+                                                .newBuilder()
+                                                .connectTimeout(soTimeoutMillis, TimeUnit.MILLISECONDS)
+                                                .readTimeout(soTimeoutMillis, TimeUnit.MILLISECONDS)
+                                                .build();
 
 //    Log.d(TAG, "Opening URL: " + connectionHolder.getUrl());
 
@@ -2176,17 +2210,17 @@ public class PushServiceSocket {
 
   public CallingResponse makeCallingRequest(long requestId, String url, String httpMethod, List<Pair<String, String>> headers, byte[] body) {
     ConnectionHolder connectionHolder = getRandom(serviceClients, random);
-    OkHttpClient     okHttpClient     = connectionHolder.getClient()
-                                                        .newBuilder()
-                                                        .followRedirects(false)
-                                                        .connectTimeout(soTimeoutMillis, TimeUnit.MILLISECONDS)
-                                                        .readTimeout(soTimeoutMillis, TimeUnit.MILLISECONDS)
-                                                        .build();
+    OkHttpClient okHttpClient = connectionHolder.getClient()
+                                                .newBuilder()
+                                                .followRedirects(false)
+                                                .connectTimeout(soTimeoutMillis, TimeUnit.MILLISECONDS)
+                                                .readTimeout(soTimeoutMillis, TimeUnit.MILLISECONDS)
+                                                .build();
 
-    RequestBody     requestBody = body != null ? RequestBody.create(null, body) : null;
-    Request.Builder builder     = new Request.Builder()
-                                             .url(url)
-                                             .method(httpMethod, requestBody);
+    RequestBody requestBody = body != null ? RequestBody.create(null, body) : null;
+    Request.Builder builder = new Request.Builder()
+        .url(url)
+        .method(httpMethod, requestBody);
 
     if (headers != null) {
       for (Pair<String, String> header : headers) {
@@ -2243,7 +2277,8 @@ public class PushServiceSocket {
   private static Map<Integer, ConnectionHolder[]> createCdnClientsMap(final Map<Integer, SignalCdnUrl[]> signalCdnUrlMap,
                                                                       final List<Interceptor> interceptors,
                                                                       final Optional<Dns> dns,
-                                                                      final Optional<SignalProxy> proxy) {
+                                                                      final Optional<SignalProxy> proxy)
+  {
     validateConfiguration(signalCdnUrlMap);
     final Map<Integer, ConnectionHolder[]> result = new HashMap<>();
     for (Map.Entry<Integer, SignalCdnUrl[]> entry : signalCdnUrlMap.entrySet()) {
@@ -2277,15 +2312,15 @@ public class PushServiceSocket {
       context.init(null, trustManagers, null);
 
       OkHttpClient.Builder builder = new OkHttpClient.Builder()
-                                                     .sslSocketFactory(new Tls12SocketFactory(context.getSocketFactory()), (X509TrustManager)trustManagers[0])
-                                                     .connectionSpecs(url.getConnectionSpecs().orElse(Util.immutableList(ConnectionSpec.RESTRICTED_TLS)))
-                                                     .dns(dns.orElse(Dns.SYSTEM));
+          .sslSocketFactory(new Tls12SocketFactory(context.getSocketFactory()), (X509TrustManager) trustManagers[0])
+          .connectionSpecs(url.getConnectionSpecs().orElse(Util.immutableList(ConnectionSpec.RESTRICTED_TLS)))
+          .dns(dns.orElse(Dns.SYSTEM));
 
       if (proxy.isPresent()) {
         builder.socketFactory(new TlsProxySocketFactory(proxy.get().getHost(), proxy.get().getPort(), dns));
       }
 
-      builder.sslSocketFactory(new Tls12SocketFactory(context.getSocketFactory()), (X509TrustManager)trustManagers[0])
+      builder.sslSocketFactory(new Tls12SocketFactory(context.getSocketFactory()), (X509TrustManager) trustManagers[0])
              .connectionSpecs(url.getConnectionSpecs().orElse(Util.immutableList(ConnectionSpec.RESTRICTED_TLS)))
              .build();
 
@@ -2394,10 +2429,10 @@ public class PushServiceSocket {
   private static <T> T readResponseJson(Response response, Class<T> clazz)
       throws PushNetworkException, MalformedResponseException
   {
-      return readBodyJson(response.body(), clazz);
+    return readBodyJson(response.body(), clazz);
   }
 
-  public enum VerificationCodeTransport { SMS, VOICE }
+  public enum VerificationCodeTransport {SMS, VOICE}
 
   private static class RegistrationLock {
     @JsonProperty
@@ -2484,10 +2519,10 @@ public class PushServiceSocket {
 
   private static class EmptyResponseCodeHandler implements ResponseCodeHandler {
     @Override
-    public void handle(int responseCode, ResponseBody body) { }
+    public void handle(int responseCode, ResponseBody body) {}
   }
 
-  public enum ClientSet { KeyBackup }
+  public enum ClientSet {KeyBackup}
 
   public CredentialResponse retrieveGroupsV2Credentials(long todaySeconds)
       throws IOException
@@ -2503,14 +2538,17 @@ public class PushServiceSocket {
     return JsonUtil.fromJson(response, CredentialResponse.class);
   }
 
-  private static final ResponseCodeHandler GROUPS_V2_PUT_RESPONSE_HANDLER   = (responseCode, body) -> {
+  private static final ResponseCodeHandler GROUPS_V2_PUT_RESPONSE_HANDLER = (responseCode, body) -> {
     if (responseCode == 409) throw new GroupExistsException();
-  };;
+  };
+  ;
   private static final ResponseCodeHandler GROUPS_V2_GET_LOGS_HANDLER       = NO_HANDLER;
   private static final ResponseCodeHandler GROUPS_V2_GET_CURRENT_HANDLER    = (responseCode, body) -> {
     switch (responseCode) {
-      case 403: throw new NotInGroupException();
-      case 404: throw new GroupNotFoundException();
+      case 403:
+        throw new NotInGroupException();
+      case 404:
+        throw new GroupNotFoundException();
     }
   };
   private static final ResponseCodeHandler GROUPS_V2_PATCH_RESPONSE_HANDLER = (responseCode, body) -> {
@@ -2860,7 +2898,7 @@ public class PushServiceSocket {
     }
 
     RegistrationSessionMetadataHeaders responseHeaders = new RegistrationSessionMetadataHeaders(serverDeliveredTimestamp);
-    RegistrationSessionMetadataJson responseBody = JsonUtil.fromJson(readBodyString(response), RegistrationSessionMetadataJson.class);
+    RegistrationSessionMetadataJson    responseBody    = JsonUtil.fromJson(readBodyString(response), RegistrationSessionMetadataJson.class);
 
     return new RegistrationSessionMetadataResponse(responseHeaders, responseBody, null);
   }

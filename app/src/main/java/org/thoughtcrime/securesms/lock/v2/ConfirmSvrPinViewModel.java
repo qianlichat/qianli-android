@@ -7,15 +7,9 @@ import androidx.lifecycle.Transformations;
 import androidx.lifecycle.ViewModel;
 import androidx.lifecycle.ViewModelProvider;
 
-import org.thoughtcrime.securesms.pin.SvrRepository;
 import org.thoughtcrime.securesms.util.DefaultValueLiveData;
-import org.whispersystems.signalservice.api.svr.SecureValueRecovery;
 
-import io.reactivex.rxjava3.android.schedulers.AndroidSchedulers;
-import io.reactivex.rxjava3.core.Scheduler;
-import io.reactivex.rxjava3.core.Single;
 import io.reactivex.rxjava3.disposables.CompositeDisposable;
-import io.reactivex.rxjava3.schedulers.Schedulers;
 
 final class ConfirmSvrPinViewModel extends ViewModel implements BaseSvrPinViewModel {
 
@@ -49,18 +43,18 @@ final class ConfirmSvrPinViewModel extends ViewModel implements BaseSvrPinViewMo
       this.label.setValue(LabelState.CREATING_PIN);
       this.saveAnimation.setValue(SaveAnimation.LOADING);
 
-      disposables.add(
-          Single.fromCallable(() -> SvrRepository.setPin(pinToConfirm.toString(), this.keyboard.getValue()))
-                .subscribeOn(Schedulers.io())
-                .observeOn(AndroidSchedulers.mainThread())
-                .subscribe(result -> {
-                  if (result instanceof SecureValueRecovery.BackupResponse.Success) {
-                    this.saveAnimation.setValue(SaveAnimation.SUCCESS);
-                  } else {
-                    this.saveAnimation.setValue(SaveAnimation.FAILURE);
-                  }
-                })
-      );
+//      disposables.add(
+//          Single.fromCallable(() -> SvrRepository.setPin(pinToConfirm.toString(), this.keyboard.getValue()))
+//                .subscribeOn(Schedulers.io())
+//                .observeOn(AndroidSchedulers.mainThread())
+//                .subscribe(result -> {
+//                  if (result instanceof SecureValueRecovery.BackupResponse.Success) {
+//                    this.saveAnimation.setValue(SaveAnimation.SUCCESS);
+//                  } else {
+//                    this.saveAnimation.setValue(SaveAnimation.FAILURE);
+//                  }
+//                })
+//      );
     } else {
       this.userEntry.setValue(SvrPin.EMPTY);
       this.label.setValue(LabelState.PIN_DOES_NOT_MATCH);

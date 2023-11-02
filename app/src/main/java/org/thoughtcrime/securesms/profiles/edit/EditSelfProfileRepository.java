@@ -54,24 +54,26 @@ public class EditSelfProfileRepository implements EditProfileRepository {
     ProfileName storedProfileName = Recipient.self().getProfileName();
     if (!storedProfileName.isEmpty()) {
       profileNameConsumer.accept(storedProfileName);
-    } else if (!excludeSystem) {
-      SystemProfileUtil.getSystemProfileName(context).addListener(new ListenableFuture.Listener<String>() {
-        @Override
-        public void onSuccess(String result) {
-          if (!TextUtils.isEmpty(result)) {
-            profileNameConsumer.accept(ProfileName.fromSerialized(result));
-          } else {
-            profileNameConsumer.accept(storedProfileName);
-          }
-        }
-
-        @Override
-        public void onFailure(ExecutionException e) {
-          Log.w(TAG, e);
-          profileNameConsumer.accept(storedProfileName);
-        }
-      });
-    } else {
+    }
+//    else if (!excludeSystem) {
+//      SystemProfileUtil.getSystemProfileName(context).addListener(new ListenableFuture.Listener<String>() {
+//        @Override
+//        public void onSuccess(String result) {
+//          if (!TextUtils.isEmpty(result)) {
+//            profileNameConsumer.accept(ProfileName.fromSerialized(result));
+//          } else {
+//            profileNameConsumer.accept(storedProfileName);
+//          }
+//        }
+//
+//        @Override
+//        public void onFailure(ExecutionException e) {
+//          Log.w(TAG, e);
+//          profileNameConsumer.accept(storedProfileName);
+//        }
+//      });
+//    }
+  else {
       profileNameConsumer.accept(storedProfileName);
     }
   }

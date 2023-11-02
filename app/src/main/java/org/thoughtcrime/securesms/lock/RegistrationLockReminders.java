@@ -23,12 +23,12 @@ public class RegistrationLockReminders {
 
   public static final long INITIAL_INTERVAL = INTERVALS.first();
 
-  public static boolean needsReminder(@NonNull Context context) {
-    long lastReminderTime = TextSecurePreferences.getRegistrationLockLastReminderTime(context);
-    long nextIntervalTime = TextSecurePreferences.getRegistrationLockNextReminderInterval(context);
-
-    return System.currentTimeMillis() > lastReminderTime + nextIntervalTime;
-  }
+//  public static boolean needsReminder(@NonNull Context context) {
+//    long lastReminderTime = TextSecurePreferences.getRegistrationLockLastReminderTime(context);
+//    long nextIntervalTime = TextSecurePreferences.getRegistrationLockNextReminderInterval(context);
+//
+//    return System.currentTimeMillis() > lastReminderTime + nextIntervalTime;
+//  }
 
   public static void scheduleReminder(@NonNull Context context, boolean success) {
     if (success) {

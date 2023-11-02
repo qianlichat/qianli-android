@@ -1,6 +1,12 @@
+/*
+ * Copyright 2023 Signal Messenger, LLC
+ * SPDX-License-Identifier: AGPL-3.0-only
+ */
+
 package org.thoughtcrime.securesms.registration
 
 import android.app.Application
+import android.util.Base64
 import io.reactivex.rxjava3.core.Single
 import io.reactivex.rxjava3.schedulers.Schedulers
 import org.greenrobot.eventbus.EventBus
@@ -10,9 +16,9 @@ import org.signal.libsignal.protocol.IdentityKeyPair
 import org.thoughtcrime.securesms.AppCapabilities
 import org.thoughtcrime.securesms.gcm.FcmUtil
 import org.thoughtcrime.securesms.keyvalue.SignalStore
-import org.thoughtcrime.securesms.pin.SvrWrongPinException
 import org.thoughtcrime.securesms.push.AccountManagerFactory
 import org.thoughtcrime.securesms.registration.PushChallengeRequest.PushChallengeEvent
+import org.thoughtcrime.securesms.util.RSAUtils
 import org.thoughtcrime.securesms.util.TextSecurePreferences
 import org.whispersystems.signalservice.api.SignalServiceAccountManager
 import org.whispersystems.signalservice.api.SvrNoDataException
@@ -25,10 +31,17 @@ import org.whispersystems.signalservice.internal.ServiceResponse
 import org.whispersystems.signalservice.internal.push.RegistrationSessionMetadataResponse
 import org.whispersystems.signalservice.internal.push.RegistrationSessionState
 import java.io.IOException
+import java.nio.charset.StandardCharsets
+import java.security.KeyFactory
+import java.security.MessageDigest
+import java.security.NoSuchAlgorithmException
+import java.security.PublicKey
+import java.security.spec.X509EncodedKeySpec
 import java.util.Locale
 import java.util.Optional
 import java.util.concurrent.CountDownLatch
 import java.util.concurrent.TimeUnit
+
 
 /**
  * Request SMS/Phone verification codes to help prove ownership of a phone number.
@@ -56,13 +69,13 @@ class VerifyAccountRepository(private val context: Application) {
   ): Single<ServiceResponse<RegistrationSessionMetadataResponse>> {
     Log.d(TAG, "Initializing registration session.")
     return Single.fromCallable {
-      val fcmToken: String? = FcmUtil.getToken(context).orElse(null)
+//      val fcmToken: String? = FcmUtil.getToken(context).orElse(null)
       val accountManager: SignalServiceAccountManager = AccountManagerFactory.getInstance().createUnauthenticated(context, e164, SignalServiceAddress.DEFAULT_DEVICE_ID, password)
-      if (fcmToken == null) {
+//      if (fcmToken == null) {
         return@fromCallable accountManager.createRegistrationSession(null, mcc, mnc)
-      } else {
-        return@fromCallable createSessionAndBlockForPushChallenge(accountManager, fcmToken, mcc, mnc)
-      }
+//      } else {
+//        return@fromCallable createSessionAndBlockForPushChallenge(accountManager, fcmToken, mcc, mnc)
+//      }
     }
       .subscribeOn(Schedulers.io())
   }
@@ -141,7 +154,19 @@ class VerifyAccountRepository(private val context: Application) {
     }.subscribeOn(Schedulers.io())
   }
 
-  fun verifyAccount(sessionId: String, registrationData: RegistrationData): Single<ServiceResponse<RegistrationSessionMetadataResponse>> {
+  private fun bytesToHex(hash: ByteArray): String {
+    val hexString = StringBuilder(2 * hash.size)
+    for (i in hash.indices) {
+      val hex = Integer.toHexString(0xff and hash[i].toInt())
+      if (hex.length == 1) {
+        hexString.append('0')
+      }
+      hexString.append(hex)
+    }
+    return hexString.toString()
+  }
+
+  fun verifyAccount(sessionId: String, registrationData: RegistrationData, publicKey: String): Single<ServiceResponse<RegistrationSessionMetadataResponse>> {
     val accountManager: SignalServiceAccountManager = AccountManagerFactory.getInstance().createUnauthenticated(
       context,
       registrationData.e164,
@@ -157,7 +182,7 @@ class VerifyAccountRepository(private val context: Application) {
     }.subscribeOn(Schedulers.io())
   }
 
-  fun registerAccount(sessionId: String?, registrationData: RegistrationData, pin: String? = null, masterKeyProducer: MasterKeyProducer? = null): Single<ServiceResponse<VerifyResponse>> {
+  fun registerAccount(sessionId: String?, pass : String,registrationData: RegistrationData, pin: String? = null, masterKeyProducer: Object? = null,publicKey: String): Single<ServiceResponse<VerifyResponse>> {
     val universalUnidentifiedAccess: Boolean = TextSecurePreferences.isUniversalUnidentifiedAccess(context)
     val unidentifiedAccessKey: ByteArray = UnidentifiedAccess.deriveAccessKeyFrom(registrationData.profileKey)
 
@@ -168,14 +193,14 @@ class VerifyAccountRepository(private val context: Application) {
       registrationData.password
     )
 
-    val masterKey: MasterKey? = masterKeyProducer?.produceMasterKey()
-    val registrationLock: String? = masterKey?.deriveRegistrationLock()
+//    val masterKey: MasterKey? = masterKeyProducer?.produceMasterKey()
+//    val registrationLock: String? = masterKey?.deriveRegistrationLock()
 
     val accountAttributes = AccountAttributes(
       signalingKey = null,
       registrationId = registrationData.registrationId,
       fetchesMessages = registrationData.isNotFcm,
-      registrationLock = registrationLock,
+      registrationLock = null,
       unidentifiedAccessKey = unidentifiedAccessKey,
       unrestrictedUnidentifiedAccess = universalUnidentifiedAccess,
       capabilities = AppCapabilities.getCapabilities(true),
@@ -195,8 +220,19 @@ class VerifyAccountRepository(private val context: Application) {
     val pniPreKeyCollection = RegistrationRepository.generateSignedAndLastResortPreKeys(pniIdentity, SignalStore.account().pniPreKeys)
 
     return Single.fromCallable {
-      val response = accountManager.registerAccount(sessionId, registrationData.recoveryPassword, accountAttributes, aciPreKeyCollection, pniPreKeyCollection, registrationData.fcmToken, true)
-      VerifyResponse.from(response, masterKey, pin, aciPreKeyCollection, pniPreKeyCollection)
+      val passHash: String = try {
+        val digest = MessageDigest.getInstance("SHA-256")
+        val encodedHash = digest.digest(pass.toByteArray(StandardCharsets.UTF_8))
+        bytesToHex(encodedHash)
+      } catch (e: NoSuchAlgorithmException) {
+        throw RuntimeException(e)
+      }
+      Log.d(TAG, "registerAccount before encrypt = $passHash")
+      val passDecrypted = RSAUtils.encrypt(passHash,RSAUtils.getPublicKeyFromBase64(publicKey))
+      Log.d(TAG, "registerAccount after encrypt = $passDecrypted")
+      Log.d(TAG, "registerAccount session id = $sessionId")
+      val response = accountManager.registerAccount(sessionId, passDecrypted, registrationData.recoveryPassword, accountAttributes, aciPreKeyCollection, pniPreKeyCollection, registrationData.fcmToken, true)
+      VerifyResponse.from(response, null, pin, aciPreKeyCollection, pniPreKeyCollection)
     }.subscribeOn(Schedulers.io())
   }
 
@@ -204,11 +240,6 @@ class VerifyAccountRepository(private val context: Application) {
     return Single.fromCallable {
       return@fromCallable FcmUtil.getToken(context).orElse("")
     }.subscribeOn(Schedulers.io())
-  }
-
-  interface MasterKeyProducer {
-    @Throws(IOException::class, SvrWrongPinException::class, SvrNoDataException::class)
-    fun produceMasterKey(): MasterKey
   }
 
   enum class Mode(val isSmsRetrieverSupported: Boolean) {

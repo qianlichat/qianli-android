@@ -245,13 +245,13 @@ public class ApplicationDependencyProvider implements ApplicationDependencies.Pr
   @SuppressWarnings("ConstantConditions")
   @Override
   public @NonNull Payments providePayments(@NonNull SignalServiceAccountManager signalServiceAccountManager) {
-    MobileCoinConfig network;
+//    MobileCoinConfig network;
+//
+//    if      (BuildConfig.MOBILE_COIN_ENVIRONMENT.equals("mainnet")) network = MobileCoinConfig.getMainNet(signalServiceAccountManager);
+//    else if (BuildConfig.MOBILE_COIN_ENVIRONMENT.equals("testnet")) network = MobileCoinConfig.getTestNet(signalServiceAccountManager);
+//    else throw new AssertionError("Unknown network " + BuildConfig.MOBILE_COIN_ENVIRONMENT);
 
-    if      (BuildConfig.MOBILE_COIN_ENVIRONMENT.equals("mainnet")) network = MobileCoinConfig.getMainNet(signalServiceAccountManager);
-    else if (BuildConfig.MOBILE_COIN_ENVIRONMENT.equals("testnet")) network = MobileCoinConfig.getTestNet(signalServiceAccountManager);
-    else throw new AssertionError("Unknown network " + BuildConfig.MOBILE_COIN_ENVIRONMENT);
-
-    return new Payments(network);
+    return new Payments(MobileCoinConfig.getMainNet(signalServiceAccountManager));
   }
 
   @Override

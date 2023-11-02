@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
 <!-- smartling.instruction_comments_enabled = on -->
 <resources>
-    <string name="app_name" translatable="false">Signal</string>
+    <string name="app_name" translatable="false">千里传音</string>
 
-    <string name="install_url" translatable="false">https://signal.org/install</string>
+    <string name="install_url" translatable="false">https://qianli.chat</string>
     <string name="donate_url" translatable="false">https://signal.org/donate</string>
     <string name="backup_support_url" translatable="false">https://support.signal.org/hc/articles/360007059752</string>
     <string name="transfer_support_url" translatable="false">https://support.signal.org/hc/articles/360007059752</string>
@@ -18,6 +18,7 @@
     <string name="pending_transfer_url" translatable="false">https://support.signal.org/hc/articles/360031949872#pending</string>
     <string name="donate_faq_url" translatable="false">https://support.signal.org/hc/articles/360031949872#donate</string>
 
+    <string name="at">@</string>
     <string name="yes">Yes</string>
     <string name="no">No</string>
     <string name="delete">Delete</string>
@@ -1135,7 +1136,7 @@
         <item quantity="one">Send %d SMS invite?</item>
         <item quantity="other">Send %d SMS invites?</item>
     </plurals>
-    <string name="InviteActivity_lets_switch_to_signal">Let\'s switch to Signal: %1$s</string>
+    <string name="InviteActivity_lets_switch_to_signal">Let\'s switch to qianli.chat: %1$s</string>
     <string name="InviteActivity_no_app_to_share_to">It looks like you don\'t have any apps to share to.</string>
 
     <!-- LearnMoreTextView -->
@@ -1868,6 +1869,9 @@
         country code
     </string>
     <string name="RegistrationActivity_please_enter_a_valid_phone_number_to_register">Please enter a valid phone number to register.</string>
+    <string name="RegistrationActivity_please_enter_a_valid_account_name_to_register">The length of account name should be at 3 ~ 9</string>
+    <string name="RegistrationActivity_please_enter_a_valid_password_to_register">The length of password should be at 9 ~ 18</string>
+    <string name="RegistrationActivity_please_enter_a_same_password_to_register">Confirm password is not same as crated password</string>
     <string name="RegistrationActivity_invalid_number">Invalid number</string>
     <string name="RegistrationActivity_the_number_you_specified_s_is_invalid">The number you
         specified (%s) is invalid.
@@ -1920,14 +1924,23 @@
     <string name="RegistrationActivity_take_privacy_with_you_be_yourself_in_every_message">Take privacy with you.\nBe yourself in every message.</string>
     <!-- Title of registration screen when asking for the users phone number -->
     <string name="RegistrationActivity_phone_number">Phone number</string>
+    <string name="RegistrationActivity_account_name">User id</string>
     <!-- Subtitle of registration screen when asking for the users phone number -->
     <string name="RegistrationActivity_enter_your_phone_number_to_get_started">Enter your phone number to get started.</string>
+    <string name="RegistrationActivity_enter_your_account_name_to_get_started">You can only input alphabet or numbers, length is between 3~9.</string>
     <string name="RegistrationActivity_enter_the_code_we_sent_to_s">Enter the code we sent to %s</string>
 
     <string name="RegistrationActivity_phone_number_description">Phone number</string>
     <string name="RegistrationActivity_country_code_description">Country code</string>
     <string name="RegistrationActivity_call">Call</string>
     <string name="RegistrationActivity_verification_code">Verification Code</string>
+    <string name="RegistrationActivity_verification_create_account">Create Account</string>
+    <string name="RegistrationActivity_verification_login_account">Login Account</string>
+    <string name="RegistrationActivity_enter_the_password">Please create your password, forgetting it means lost forever</string>
+    <string name="RegistrationActivity_enter_the_password_login">Please enter the password you created before. You can only create a new account if you lost it.</string>
+    <string name="RegistrationActivity_create_password">Create password</string>
+    <string name="RegistrationActivity_enter_password">Enter password</string>
+    <string name="RegistrationActivity_confirm_password">Confirm password</string>
     <string name="RegistrationActivity_resend_code">Resend Code</string>
     <!--    A title for a bottom sheet dialog offering to help a user having trouble entering their verification code.-->
     <string name="RegistrationActivity_support_bottom_sheet_title">Having trouble registering?</string>
@@ -2426,7 +2439,9 @@
     <string name="ContactSelectionListFragment_signal_requires_the_contacts_permission_in_order_to_display_your_contacts">Signal requires the Contacts permission in order to display your contacts, but it has been permanently denied. Please continue to the app settings menu, select \"Permissions\", and enable \"Contacts\".</string>
     <string name="ContactSelectionListFragment_error_retrieving_contacts_check_your_network_connection">Error retrieving contacts, check your network connection</string>
     <string name="ContactSelectionListFragment_username_not_found">Username not found</string>
+    <string name="ContactSelectionListFragment_user_not_found">User not found</string>
     <string name="ContactSelectionListFragment_s_is_not_a_signal_user">"%1$s" is not a Signal user. Please check the username and try again.</string>
+    <string name="ContactSelectionListFragment_s_is_not_a_user">User ID "%1$s" is not yet registered. Please check and try again.</string>
     <string name="ContactSelectionListFragment_you_do_not_need_to_add_yourself_to_the_group">You do not need to add yourself to the group</string>
     <string name="ContactSelectionListFragment_maximum_group_size_reached">Maximum group size reached</string>
     <string name="ContactSelectionListFragment_signal_groups_can_have_a_maximum_of_d_members">Signal groups can have a maximum of %1$d members.</string>
@@ -3168,8 +3183,10 @@
     <string name="GrantPermissionsFragment__make_registering_easier">Make registering easier and enable additional calling features.</string>
     <!-- Storage permission row title -->
     <string name="GrantPermissionsFragment__storage">Storage</string>
+    <string name="GrantPermissionsFragment__none">That\'s all</string>
     <!-- Storage permission row description -->
     <string name="GrantPermissionsFragment__send_photos_videos_and_files">Send photos, videos and files from your device.</string>
+    <string name="GrantPermissionsFragment__none_detail">No additional permission required.</string>
 
     <!-- PaymentsSecuritySetupFragment -->
     <!-- Toolbar title -->
@@ -3652,7 +3669,7 @@
     <string name="RegistrationActivity_resend_sms_available_in">Resend Code (%1$02d:%2$02d)</string>
     <string name="RegistrationActivity_contact_signal_support">Contact Signal Support</string>
     <string name="RegistrationActivity_code_support_subject">Signal Registration - Verification Code for Android</string>
-    <string name="RegistrationActivity_incorrect_code">Incorrect code</string>
+    <string name="RegistrationActivity_incorrect_code">Login failed, incorrect password</string>
     <string name="BackupUtil_never">Never</string>
     <string name="BackupUtil_unknown">Unknown</string>
     <!-- Phone number heading displayed as a screen title -->
@@ -4572,6 +4589,7 @@
 
     <!-- ContactFilterView -->
     <string name="ContactFilterView__search_name_or_number">Search name or number</string>
+    <string name="ContactFilterView__search_user_id">Search user id</string>
 
     <!-- VoiceNotePlayerView -->
     <string name="VoiceNotePlayerView__dot_s">· %1$s</string>

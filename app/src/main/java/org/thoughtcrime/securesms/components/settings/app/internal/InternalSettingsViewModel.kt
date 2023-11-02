@@ -5,7 +5,6 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
 import io.reactivex.rxjava3.core.Observable
 import org.signal.ringrtc.CallManager
-import org.thoughtcrime.securesms.jobs.StoryOnboardingDownloadJob
 import org.thoughtcrime.securesms.keyvalue.InternalValues
 import org.thoughtcrime.securesms.keyvalue.SignalStore
 import org.thoughtcrime.securesms.recipients.Recipient
@@ -154,7 +153,7 @@ class InternalSettingsViewModel(private val repository: InternalSettingsReposito
     SignalStore.storyValues().userHasViewedOnboardingStory = false
     Stories.onStorySettingsChanged(Recipient.self().id)
     refresh()
-    StoryOnboardingDownloadJob.enqueueIfNeeded()
+//    StoryOnboardingDownloadJob.enqueueIfNeeded()
   }
 
   class Factory(private val repository: InternalSettingsRepository) : ViewModelProvider.Factory {

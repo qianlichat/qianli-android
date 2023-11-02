@@ -188,15 +188,17 @@ class ContactSearchPagedDataSource(
     if (query == null) {
       return false
     }
-
-    return if (FeatureFlags.usernames()) {
-      NumberUtil.isVisuallyValidNumberOrEmail(query)
-    } else {
-      NumberUtil.isValidSmsOrEmail(query)
-    }
+    return true;
+//
+//    return if (FeatureFlags.usernames()) {
+//      NumberUtil.isVisuallyValidNumberOrEmail(query)
+//    } else {
+//      NumberUtil.isValidSmsOrEmail(query)
+//    }
   }
   private fun isPossiblyUsername(query: String?): Boolean {
-    return query != null && FeatureFlags.usernames() && UsernameUtil.isValidUsernameForSearch(query)
+    return false;
+//    return query != null && FeatureFlags.usernames() && UsernameUtil.isValidUsernameForSearch(query)
   }
   private fun getPossiblePhoneNumber(section: ContactSearchConfiguration.Section.PhoneNumber, query: String?): List<ContactSearchData> {
     return if (isPossiblyPhoneNumber(query)) {

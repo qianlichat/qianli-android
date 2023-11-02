@@ -59,69 +59,69 @@ object Fonts {
   fun resolveFont(context: Context, font: TextFont, supportedScript: SupportedScript): FontResult {
     ThreadUtil.assertNotMainThread()
     synchronized(this) {
-      val errorFallback = FontResult.Immediate(Typeface.create(font.fallbackFamily, font.fallbackStyle))
-      val version = FontVersion.get(context)
-      if (version == FontVersion.NONE) {
-        return errorFallback
-      }
-
-      val manifest = FontManifest.get(context, version) ?: return errorFallback
-
-      Log.d(TAG, "Loaded manifest.")
-
-      val fontScript = resolveFontScriptFromScriptName(supportedScript, manifest)
-      if (fontScript == null) {
-        Log.d(TAG, "Manifest does not have an entry for $supportedScript. Using default.")
-        return FontResult.Immediate(getDefaultFontForScriptAndStyle(supportedScript, font))
-      }
-
-      Log.d(TAG, "Loaded script for locale.")
-
-      val fontNetworkPath = getScriptPath(font, fontScript)
-      if (fontNetworkPath == null) {
-        Log.d(TAG, "Manifest does not contain a network path for $supportedScript. Using default.")
-        return FontResult.Immediate(getDefaultFontForScriptAndStyle(supportedScript, font))
-      }
-
-      val fontLocalPath = FontFileMap.getNameOnDisk(context, version, fontNetworkPath)
-
-      if (fontLocalPath != null) {
-        Log.d(TAG, "Local font version found, returning immediate.")
-        return FontResult.Immediate(loadFontIntoTypeface(context, version, fontLocalPath) ?: errorFallback.typeface)
-      }
-
-      val fontDownloadKey = FontDownloadKey(
-        version,
-        supportedScript,
-        font
-      )
-
-      val taskInProgress = taskCache[fontDownloadKey]
-      return if (taskInProgress != null) {
-        Log.d(TAG, "Found a task in progress. Returning in-progress async.")
-        FontResult.Async(
-          future = taskInProgress,
-          placeholder = errorFallback.typeface
-        )
-      } else {
-        Log.d(TAG, "Could not find a task in progress. Returning new async.")
-        val newTask = ListenableFutureTask {
-          val newLocalPath = downloadFont(context, supportedScript, font, version, manifest)
-          Log.d(TAG, "Finished download, $newLocalPath")
-
-          val typeface = newLocalPath?.let { loadFontIntoTypeface(context, version, it) } ?: errorFallback.typeface
-          taskCache.remove(fontDownloadKey)
-          typeface
-        }
-
-        taskCache[fontDownloadKey] = newTask
-        SignalExecutors.BOUNDED.execute(newTask::run)
-
-        FontResult.Async(
-          future = newTask,
-          placeholder = errorFallback.typeface
-        )
-      }
+      return FontResult.Immediate(Typeface.create(font.fallbackFamily, font.fallbackStyle))
+//      val version = FontVersion.get(context)
+//      if (version == FontVersion.NONE) {
+//        return errorFallback
+//      }
+//
+//      val manifest = FontManifest.get(context, version) ?: return errorFallback
+//
+//      Log.d(TAG, "Loaded manifest.")
+//
+//      val fontScript = resolveFontScriptFromScriptName(supportedScript, manifest)
+//      if (fontScript == null) {
+//        Log.d(TAG, "Manifest does not have an entry for $supportedScript. Using default.")
+//        return FontResult.Immediate(getDefaultFontForScriptAndStyle(supportedScript, font))
+//      }
+//
+//      Log.d(TAG, "Loaded script for locale.")
+//
+//      val fontNetworkPath = getScriptPath(font, fontScript)
+//      if (fontNetworkPath == null) {
+//        Log.d(TAG, "Manifest does not contain a network path for $supportedScript. Using default.")
+//        return FontResult.Immediate(getDefaultFontForScriptAndStyle(supportedScript, font))
+//      }
+//
+//      val fontLocalPath = FontFileMap.getNameOnDisk(context, version, fontNetworkPath)
+//
+//      if (fontLocalPath != null) {
+//        Log.d(TAG, "Local font version found, returning immediate.")
+//        return FontResult.Immediate(loadFontIntoTypeface(context, version, fontLocalPath) ?: errorFallback.typeface)
+//      }
+//
+//      val fontDownloadKey = FontDownloadKey(
+//        version,
+//        supportedScript,
+//        font
+//      )
+//
+//      val taskInProgress = taskCache[fontDownloadKey]
+//      return if (taskInProgress != null) {
+//        Log.d(TAG, "Found a task in progress. Returning in-progress async.")
+//        FontResult.Async(
+//          future = taskInProgress,
+//          placeholder = errorFallback.typeface
+//        )
+//      } else {
+//        Log.d(TAG, "Could not find a task in progress. Returning new async.")
+//        val newTask = ListenableFutureTask {
+//          val newLocalPath = downloadFont(context, supportedScript, font, version, manifest)
+//          Log.d(TAG, "Finished download, $newLocalPath")
+//
+//          val typeface = newLocalPath?.let { loadFontIntoTypeface(context, version, it) } ?: errorFallback.typeface
+//          taskCache.remove(fontDownloadKey)
+//          typeface
+//        }
+//
+//        taskCache[fontDownloadKey] = newTask
+//        SignalExecutors.BOUNDED.execute(newTask::run)
+//
+//        FontResult.Async(
+//          future = newTask,
+//          placeholder = errorFallback.typeface
+//        )
+//      }
     }
   }
 

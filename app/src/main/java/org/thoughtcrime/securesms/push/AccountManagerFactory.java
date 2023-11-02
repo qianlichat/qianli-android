@@ -74,15 +74,15 @@ public class AccountManagerFactory {
                                                                     int deviceId,
                                                                     @NonNull String password)
   {
-    if (new SignalServiceNetworkAccess(context).isCensored(e164)) {
-      SignalExecutors.BOUNDED.execute(() -> {
-        try {
-          ProviderInstaller.installIfNeeded(context);
-        } catch (Throwable t) {
-          Log.w(TAG, t);
-        }
-      });
-    }
+//    if (new SignalServiceNetworkAccess(context).isCensored(e164)) {
+//      SignalExecutors.BOUNDED.execute(() -> {
+//        try {
+//          ProviderInstaller.installIfNeeded(context);
+//        } catch (Throwable t) {
+//          Log.w(TAG, t);
+//        }
+//      });
+//    }
 
     return new SignalServiceAccountManager(ApplicationDependencies.getSignalServiceNetworkAccess().getConfiguration(e164),
                                            null,

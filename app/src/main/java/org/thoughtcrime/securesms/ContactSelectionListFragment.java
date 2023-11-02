@@ -28,7 +28,6 @@ import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.view.WindowManager;
 import android.widget.Button;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -66,14 +65,13 @@ import org.thoughtcrime.securesms.contacts.paged.ContactSearchKey;
 import org.thoughtcrime.securesms.contacts.paged.ContactSearchMediator;
 import org.thoughtcrime.securesms.contacts.paged.ContactSearchSortOrder;
 import org.thoughtcrime.securesms.contacts.paged.ContactSearchState;
-import org.thoughtcrime.securesms.contacts.sync.ContactDiscovery;
+import org.thoughtcrime.securesms.database.SignalDatabase;
 import org.thoughtcrime.securesms.groups.SelectionLimits;
 import org.thoughtcrime.securesms.groups.ui.GroupLimitDialog;
 import org.thoughtcrime.securesms.permissions.Permissions;
 import org.thoughtcrime.securesms.recipients.Recipient;
 import org.thoughtcrime.securesms.recipients.RecipientId;
 import org.thoughtcrime.securesms.util.CommunicationActions;
-import org.thoughtcrime.securesms.util.TextSecurePreferences;
 import org.thoughtcrime.securesms.util.UsernameUtil;
 import org.thoughtcrime.securesms.util.ViewUtil;
 import org.thoughtcrime.securesms.util.adapter.mapping.MappingAdapter;
@@ -208,32 +206,6 @@ public final class ContactSelectionListFragment extends LoggingFragment {
     super.onActivityCreated(icicle);
 
     initializeCursor();
-  }
-
-  @Override
-  public void onStart() {
-    super.onStart();
-
-    Permissions.with(this)
-               .request(Manifest.permission.WRITE_CONTACTS, Manifest.permission.READ_CONTACTS)
-               .ifNecessary()
-               .onAllGranted(() -> {
-                 if (!TextSecurePreferences.hasSuccessfullyRetrievedDirectory(getActivity())) {
-                   handleContactPermissionGranted();
-                 } else {
-                   contactSearchMediator.refresh();
-                 }
-               })
-               .onAnyDenied(() -> {
-                 requireActivity().getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_STATE_ALWAYS_HIDDEN);
-
-                 if (safeArguments().getBoolean(RECENTS, requireActivity().getIntent().getBooleanExtra(RECENTS, false))) {
-                   contactSearchMediator.refresh();
-                 } else {
-                   initializeNoContactsPermission();
-                 }
-               })
-               .execute();
   }
 
   @Override
@@ -605,12 +577,12 @@ public final class ContactSelectionListFragment extends LoggingFragment {
 
       @Override
       protected Boolean doInBackground(Void... voids) {
-        try {
-          ContactDiscovery.refreshAll(context, false);
-          return true;
-        } catch (IOException e) {
-          Log.w(TAG, e);
-        }
+//        try {
+//          ContactDiscovery.refreshAll(context, false);
+//          return true;
+//        } catch (IOException e) {
+//          Log.w(TAG, e);
+//        }
         return false;
       }
 
@@ -707,19 +679,77 @@ public final class ContactSelectionListFragment extends LoggingFragment {
             }
           });
         } else {
-          if (onContactSelectedListener != null) {
-            onContactSelectedListener.onBeforeContactSelected(
-                isUnknown,
-                Optional.ofNullable(selectedContact.getRecipientId()),
-                selectedContact.getNumber(),
-                allowed -> {
-              if (allowed) {
-                markContactSelected(selectedContact);
+          String      accountIdQuery      = selectedContact.getNumber();
+          if (selectedContact.getRecipientId() != null) {
+            final Recipient resolved  = Recipient.resolved(selectedContact.getRecipientId());
+            if(resolved.hasAci()){
+              if(!resolved.hasE164() && accountIdQuery != null && accountIdQuery.length() > 0){
+                SignalDatabase.recipients().setE164(resolved.getId(), accountIdQuery);
               }
-            });
-          } else {
-            markContactSelected(selectedContact);
+              String number = resolved.getE164().orElse(accountIdQuery);
+              if (onContactSelectedListener != null) {
+                onContactSelectedListener.onBeforeContactSelected(true, Optional.of(resolved.getId()), null, allowed -> {
+                  if (allowed) {
+                    if(number == null ){
+                      markContactSelected(selectedContact);
+                    }else{
+                      markContactSelected(SelectedContact.forPhone(resolved.getId(), number));
+                    }
+                  }
+                });
+              } else {
+                if(number == null ){
+                  markContactSelected(selectedContact);
+                }else{
+                  markContactSelected(SelectedContact.forPhone(resolved.getId(), number));
+                }
+              }
+              return;
+            }
           }
+          if(accountIdQuery == null || accountIdQuery.isEmpty()){
+            return;
+          }
+          AlertDialog loadingDialog = SimpleProgressDialog.show(requireContext());
+          SimpleTask.run(getViewLifecycleOwner().getLifecycle(), () -> {
+            return UsernameUtil.fetchAciForAccountId(accountIdQuery);
+          }, uuid -> {
+            loadingDialog.dismiss();
+            if (uuid.isPresent()) {
+              Recipient       recipient = Recipient.externalPush(uuid.get(),accountIdQuery);
+              SelectedContact selected  = SelectedContact.forPhone(recipient.getId(), accountIdQuery);
+
+              if (onContactSelectedListener != null) {
+                onContactSelectedListener.onBeforeContactSelected(true, Optional.of(recipient.getId()), null, allowed -> {
+                  if (allowed) {
+                    markContactSelected(selected);
+                  }
+                });
+              } else {
+                markContactSelected(selected);
+              }
+            } else {
+              new MaterialAlertDialogBuilder(requireContext())
+                  .setTitle(R.string.ContactSelectionListFragment_user_not_found)
+                  .setMessage(getString(R.string.ContactSelectionListFragment_s_is_not_a_user, accountIdQuery))
+                  .setPositiveButton(android.R.string.ok, (dialog, which) -> dialog.dismiss())
+                  .show();
+            }
+          });
+
+//          if (onContactSelectedListener != null) {
+//            onContactSelectedListener.onBeforeContactSelected(
+//                isUnknown,
+//                Optional.ofNullable(selectedContact.getRecipientId()),
+//                selectedContact.getNumber(),
+//                allowed -> {
+//              if (allowed) {
+//                markContactSelected(selectedContact);
+//              }
+//            });
+//          } else {
+//            markContactSelected(selectedContact);
+//          }
         }
       } else {
         markContactUnselected(selectedContact);
@@ -924,7 +954,7 @@ public final class ContactSelectionListFragment extends LoggingFragment {
 
   private void addMoreSection(@NonNull ContactSearchConfiguration.Builder builder) {
     builder.arbitrary(ContactSelectionListAdapter.ArbitraryRepository.ArbitraryRow.MORE_HEADING.getCode());
-    builder.arbitrary(ContactSelectionListAdapter.ArbitraryRepository.ArbitraryRow.REFRESH_CONTACTS.getCode());
+//    builder.arbitrary(ContactSelectionListAdapter.ArbitraryRepository.ArbitraryRow.REFRESH_CONTACTS.getCode());
     builder.arbitrary(ContactSelectionListAdapter.ArbitraryRepository.ArbitraryRow.INVITE_TO_SIGNAL.getCode());
   }
 

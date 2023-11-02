@@ -40,7 +40,6 @@ import org.thoughtcrime.securesms.jobs.PnpInitializeDevicesJob
 import org.thoughtcrime.securesms.jobs.RefreshAttributesJob
 import org.thoughtcrime.securesms.jobs.RefreshOwnProfileJob
 import org.thoughtcrime.securesms.jobs.RemoteConfigRefreshJob
-import org.thoughtcrime.securesms.jobs.RetrieveRemoteAnnouncementsJob
 import org.thoughtcrime.securesms.jobs.RotateProfileKeyJob
 import org.thoughtcrime.securesms.jobs.StorageForcePushJob
 import org.thoughtcrime.securesms.jobs.SubscriptionKeepAliveJob
@@ -569,13 +568,13 @@ class InternalSettingsFragment : DSLSettingsFragment(R.string.preferences__inter
         }
       )
 
-      clickPref(
-        title = DSLSettingsText.from("Fetch release channel"),
-        onClick = {
-          SignalStore.releaseChannelValues().previousManifestMd5 = ByteArray(0)
-          RetrieveRemoteAnnouncementsJob.enqueue(force = true)
-        }
-      )
+//      clickPref(
+//        title = DSLSettingsText.from("Fetch release channel"),
+//        onClick = {
+//          SignalStore.releaseChannelValues().previousManifestMd5 = ByteArray(0)
+//          RetrieveRemoteAnnouncementsJob.enqueue(force = true)
+//        }
+//      )
 
       clickPref(
         title = DSLSettingsText.from("Add sample note"),

@@ -42,7 +42,6 @@ import org.whispersystems.signalservice.api.push.exceptions.NoContentException;
 import org.whispersystems.signalservice.api.push.exceptions.NonSuccessfulResponseCodeException;
 import org.whispersystems.signalservice.api.push.exceptions.NotFoundException;
 import org.whispersystems.signalservice.api.push.exceptions.PushNetworkException;
-import org.whispersystems.signalservice.api.services.CdsiV2Service;
 import org.whispersystems.signalservice.api.storage.SignalStorageCipher;
 import org.whispersystems.signalservice.api.storage.SignalStorageManifest;
 import org.whispersystems.signalservice.api.storage.SignalStorageModels;
@@ -50,7 +49,6 @@ import org.whispersystems.signalservice.api.storage.SignalStorageRecord;
 import org.whispersystems.signalservice.api.storage.StorageId;
 import org.whispersystems.signalservice.api.storage.StorageKey;
 import org.whispersystems.signalservice.api.storage.StorageManifestKey;
-import org.whispersystems.signalservice.api.svr.SecureValueRecoveryV2;
 import org.whispersystems.signalservice.api.util.CredentialsProvider;
 import org.whispersystems.signalservice.api.util.Preconditions;
 import org.whispersystems.signalservice.internal.ServiceResponse;
@@ -175,9 +173,9 @@ public class SignalServiceAccountManager {
     return this.pushServiceSocket.getUuidOnlySenderCertificate();
   }
 
-  public SecureValueRecoveryV2 getSecureValueRecoveryV2(String mrEnclave) {
-    return new SecureValueRecoveryV2(configuration, mrEnclave, pushServiceSocket);
-  }
+//  public SecureValueRecoveryV2 getSecureValueRecoveryV2(String mrEnclave) {
+//    return new SecureValueRecoveryV2(configuration, mrEnclave, pushServiceSocket);
+//  }
 
   public WhoAmIResponse getWhoAmI() throws IOException {
     return this.pushServiceSocket.getWhoAmI();
@@ -299,9 +297,9 @@ public class SignalServiceAccountManager {
     }
   }
 
-  public @Nonnull ServiceResponse<VerifyAccountResponse> registerAccount(@Nullable String sessionId, @Nullable String recoveryPassword, AccountAttributes attributes, PreKeyCollection aciPreKeys, PreKeyCollection pniPreKeys, String fcmToken, boolean skipDeviceTransfer) {
+  public @Nonnull ServiceResponse<VerifyAccountResponse> registerAccount(@Nullable String sessionId, @Nonnull String pwd, @Nullable String recoveryPassword, AccountAttributes attributes, PreKeyCollection aciPreKeys, PreKeyCollection pniPreKeys, String fcmToken, boolean skipDeviceTransfer) {
     try {
-      VerifyAccountResponse response = pushServiceSocket.submitRegistrationRequest(sessionId, recoveryPassword, attributes, aciPreKeys, pniPreKeys, fcmToken, skipDeviceTransfer);
+      VerifyAccountResponse response = pushServiceSocket.submitRegistrationRequest(sessionId, pwd,recoveryPassword, attributes, aciPreKeys, pniPreKeys, fcmToken, skipDeviceTransfer);
       return ServiceResponse.forResult(response, 200, null);
     } catch (IOException e) {
       return ServiceResponse.forUnknownError(e);
@@ -363,60 +361,6 @@ public class SignalServiceAccountManager {
    */
   public boolean isIdentifierRegistered(ServiceId identifier) throws IOException {
     return pushServiceSocket.isIdentifierRegistered(identifier);
-  }
-
-  @SuppressWarnings("SameParameterValue")
-  public CdsiV2Service.Response getRegisteredUsersWithCdsi(Set<String> previousE164s,
-                                                           Set<String> newE164s,
-                                                           Map<ServiceId, ProfileKey> serviceIds,
-                                                           boolean requireAcis,
-                                                           Optional<byte[]> token,
-                                                           String mrEnclave,
-                                                           Long timeoutMs,
-                                                           Consumer<byte[]> tokenSaver)
-      throws IOException
-  {
-    CdsiAuthResponse                                auth    = pushServiceSocket.getCdsiAuth();
-    CdsiV2Service                                   service = new CdsiV2Service(configuration, mrEnclave);
-    CdsiV2Service.Request                           request = new CdsiV2Service.Request(previousE164s, newE164s, serviceIds, requireAcis, token);
-    Single<ServiceResponse<CdsiV2Service.Response>> single  = service.getRegisteredUsers(auth.getUsername(), auth.getPassword(), request, tokenSaver);
-
-    ServiceResponse<CdsiV2Service.Response> serviceResponse;
-    try {
-      if (timeoutMs == null) {
-        serviceResponse = single
-            .blockingGet();
-      } else {
-        serviceResponse = single
-            .timeout(timeoutMs, TimeUnit.MILLISECONDS)
-            .blockingGet();
-      }
-    } catch (RuntimeException e) {
-      Throwable cause = e.getCause();
-      if (cause instanceof InterruptedException) {
-        throw new IOException("Interrupted", cause);
-      } else if (cause instanceof TimeoutException) {
-        throw new IOException("Timed out");
-      } else {
-        throw e;
-      }
-    } catch (Exception e) {
-      throw new RuntimeException("Unexpected exception when retrieving registered users!", e);
-    }
-
-    if (serviceResponse.getResult().isPresent()) {
-      return serviceResponse.getResult().get();
-    } else if (serviceResponse.getApplicationError().isPresent()) {
-      if (serviceResponse.getApplicationError().get() instanceof IOException) {
-        throw (IOException) serviceResponse.getApplicationError().get();
-      } else {
-        throw new IOException(serviceResponse.getApplicationError().get());
-      }
-    } else if (serviceResponse.getExecutionError().isPresent()) {
-      throw new IOException(serviceResponse.getExecutionError().get());
-    } else {
-      throw new IOException("Missing result!");
-    }
   }
 
 
@@ -763,6 +707,14 @@ public class SignalServiceAccountManager {
 
   public ACI getAciByUsernameHash(String usernameHash) throws IOException {
     return this.pushServiceSocket.getAciByUsernameHash(usernameHash);
+  }
+
+  public String getAccountIdByAci(ACI aci) throws IOException {
+    return this.pushServiceSocket.getAccountIdByACI(aci);
+  }
+
+  public ACI getAciByAccountId(String accountId) throws IOException {
+    return this.pushServiceSocket.getAciByAccountId(accountId);
   }
 
   public ReserveUsernameResponse reserveUsername(List<String> usernameHashes) throws IOException {

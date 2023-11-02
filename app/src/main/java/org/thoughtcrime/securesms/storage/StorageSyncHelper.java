@@ -16,7 +16,6 @@ import org.thoughtcrime.securesms.database.SignalDatabase;
 import org.thoughtcrime.securesms.database.model.RecipientRecord;
 import org.thoughtcrime.securesms.dependencies.ApplicationDependencies;
 import org.thoughtcrime.securesms.jobs.RetrieveProfileAvatarJob;
-import org.thoughtcrime.securesms.jobs.StorageSyncJob;
 import org.thoughtcrime.securesms.keyvalue.PhoneNumberPrivacyValues;
 import org.thoughtcrime.securesms.keyvalue.SignalStore;
 import org.thoughtcrime.securesms.payments.Entropy;
@@ -246,7 +245,7 @@ public final class StorageSyncHelper {
       Log.d(TAG, "Registration still ongoing. Ignore sync request.");
       return;
     }
-    ApplicationDependencies.getJobManager().add(new StorageSyncJob());
+//    ApplicationDependencies.getJobManager().add(new StorageSyncJob());
   }
 
   public static void scheduleRoutineSync() {

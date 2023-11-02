@@ -15,8 +15,9 @@ public class LogSectionPin implements LogSection {
 
   @Override
   public @NonNull CharSequence getContent(@NonNull Context context) {
-    return new StringBuilder().append("Last Successful Reminder Entry: ").append(SignalStore.pinValues().getLastSuccessfulEntryTime()).append("\n")
-                              .append("Next Reminder Interval: ").append(SignalStore.pinValues().getCurrentInterval()).append("\n")
+    return new StringBuilder()
+//        .append("Last Successful Reminder Entry: ").append(SignalStore.pinValues().getLastSuccessfulEntryTime()).append("\n")
+//                              .append("Next Reminder Interval: ").append(SignalStore.pinValues().getCurrentInterval()).append("\n")
                               .append("Reglock: ").append(SignalStore.svr().isRegistrationLockEnabled()).append("\n")
                               .append("Signal PIN: ").append(SignalStore.svr().hasPin()).append("\n")
                               .append("Opted Out: ").append(SignalStore.svr().hasOptedOut()).append("\n")

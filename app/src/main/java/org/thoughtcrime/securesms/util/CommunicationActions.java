@@ -29,7 +29,6 @@ import org.signal.ringrtc.CallLinkRootKey;
 import org.thoughtcrime.securesms.R;
 import org.thoughtcrime.securesms.WebRtcCallActivity;
 import org.thoughtcrime.securesms.calls.links.CallLinks;
-import org.thoughtcrime.securesms.contacts.sync.ContactDiscovery;
 import org.thoughtcrime.securesms.conversation.ConversationIntents;
 import org.thoughtcrime.securesms.database.CallLinkTable;
 import org.thoughtcrime.securesms.database.SignalDatabase;
@@ -303,12 +302,12 @@ public class CommunicationActions {
            recipient = Recipient.external(activity, e164);
 
           if (!recipient.isRegistered() || !recipient.hasServiceId()) {
-            try {
-              ContactDiscovery.refresh(activity, recipient, false, TimeUnit.SECONDS.toMillis(10));
+//            try {
+//              ContactDiscovery.refresh(activity, recipient, false, TimeUnit.SECONDS.toMillis(10));
               recipient = Recipient.resolved(recipient.getId());
-            } catch (IOException e) {
-              Log.w(TAG, "[handlePotentialSignalMeUrl] Failed to refresh directory for new contact.");
-            }
+//            } catch (IOException e) {
+//              Log.w(TAG, "[handlePotentialSignalMeUrl] Failed to refresh directory for new contact.");
+//            }
           }
         } else {
           Optional<ServiceId> serviceId = UsernameUtil.fetchAciForUsernameHash(username);

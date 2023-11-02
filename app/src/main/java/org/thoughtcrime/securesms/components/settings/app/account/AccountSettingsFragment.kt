@@ -19,7 +19,6 @@ import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.Navigation
 import com.google.android.material.button.MaterialButton
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
-import com.google.android.material.snackbar.Snackbar
 import org.thoughtcrime.securesms.R
 import org.thoughtcrime.securesms.components.settings.DSLConfiguration
 import org.thoughtcrime.securesms.components.settings.DSLSettingsFragment
@@ -28,10 +27,6 @@ import org.thoughtcrime.securesms.components.settings.configure
 import org.thoughtcrime.securesms.contactshare.SimpleTextWatcher
 import org.thoughtcrime.securesms.dependencies.ApplicationDependencies
 import org.thoughtcrime.securesms.keyvalue.SignalStore
-import org.thoughtcrime.securesms.lock.v2.CreateSvrPinActivity
-import org.thoughtcrime.securesms.lock.v2.PinKeyboardType
-import org.thoughtcrime.securesms.lock.v2.SvrConstants
-import org.thoughtcrime.securesms.pin.RegistrationLockV2Dialog
 import org.thoughtcrime.securesms.registration.RegistrationNavigationActivity
 import org.thoughtcrime.securesms.util.PlayStoreUtil
 import org.thoughtcrime.securesms.util.ServiceUtil
@@ -45,9 +40,9 @@ class AccountSettingsFragment : DSLSettingsFragment(R.string.AccountSettingsFrag
   lateinit var viewModel: AccountSettingsViewModel
 
   override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
-    if (requestCode == CreateSvrPinActivity.REQUEST_NEW_PIN && resultCode == CreateSvrPinActivity.RESULT_OK) {
-      Snackbar.make(requireView(), R.string.ConfirmKbsPinFragment__pin_created, Snackbar.LENGTH_LONG).show()
-    }
+//    if (requestCode == CreateSvrPinActivity.REQUEST_NEW_PIN && resultCode == CreateSvrPinActivity.RESULT_OK) {
+//      Snackbar.make(requireView(), R.string.ConfirmKbsPinFragment__pin_created, Snackbar.LENGTH_LONG).show()
+//    }
   }
 
   override fun onResume() {
@@ -72,11 +67,11 @@ class AccountSettingsFragment : DSLSettingsFragment(R.string.AccountSettingsFrag
         title = DSLSettingsText.from(if (state.hasPin) R.string.preferences_app_protection__change_your_pin else R.string.preferences_app_protection__create_a_pin),
         isEnabled = state.isDeprecatedOrUnregistered(),
         onClick = {
-          if (state.hasPin) {
-            startActivityForResult(CreateSvrPinActivity.getIntentForPinChangeFromSettings(requireContext()), CreateSvrPinActivity.REQUEST_NEW_PIN)
-          } else {
-            startActivityForResult(CreateSvrPinActivity.getIntentForPinCreate(requireContext()), CreateSvrPinActivity.REQUEST_NEW_PIN)
-          }
+//          if (state.hasPin) {
+//            startActivityForResult(CreateSvrPinActivity.getIntentForPinChangeFromSettings(requireContext()), CreateSvrPinActivity.REQUEST_NEW_PIN)
+//          } else {
+//            startActivityForResult(CreateSvrPinActivity.getIntentForPinCreate(requireContext()), CreateSvrPinActivity.REQUEST_NEW_PIN)
+//          }
         }
       )
 
@@ -184,11 +179,11 @@ class AccountSettingsFragment : DSLSettingsFragment(R.string.AccountSettingsFrag
   }
 
   private fun setRegistrationLockEnabled(enabled: Boolean) {
-    if (enabled) {
-      RegistrationLockV2Dialog.showEnableDialog(requireContext()) { viewModel.refreshState() }
-    } else {
-      RegistrationLockV2Dialog.showDisableDialog(requireContext()) { viewModel.refreshState() }
-    }
+//    if (enabled) {
+//      RegistrationLockV2Dialog.showEnableDialog(requireContext()) { viewModel.refreshState() }
+//    } else {
+//      RegistrationLockV2Dialog.showDisableDialog(requireContext()) { viewModel.refreshState() }
+//    }
   }
 
   private fun setPinRemindersEnabled(enabled: Boolean) {
@@ -213,10 +208,10 @@ class AccountSettingsFragment : DSLSettingsFragment(R.string.AccountSettingsFrag
       changeKeyboard.setOnClickListener {
         if (pinEditText.inputType and InputType.TYPE_CLASS_NUMBER == 0) {
           pinEditText.inputType = InputType.TYPE_CLASS_NUMBER or InputType.TYPE_NUMBER_VARIATION_PASSWORD
-          changeKeyboard.setIconResource(PinKeyboardType.ALPHA_NUMERIC.iconResource)
+//          changeKeyboard.setIconResource(PinKeyboardType.ALPHA_NUMERIC.iconResource)
         } else {
           pinEditText.inputType = InputType.TYPE_CLASS_TEXT or InputType.TYPE_TEXT_VARIATION_PASSWORD
-          changeKeyboard.setIconResource(PinKeyboardType.NUMERIC.iconResource)
+//          changeKeyboard.setIconResource(PinKeyboardType.NUMERIC.iconResource)
         }
         pinEditText.typeface = Typeface.DEFAULT
       }
@@ -227,20 +222,20 @@ class AccountSettingsFragment : DSLSettingsFragment(R.string.AccountSettingsFrag
 
       ViewCompat.setAutofillHints(pinEditText, HintConstants.AUTOFILL_HINT_PASSWORD)
 
-      when (SignalStore.pinValues().keyboardType) {
-        PinKeyboardType.NUMERIC -> {
-          pinEditText.inputType = InputType.TYPE_CLASS_NUMBER or InputType.TYPE_NUMBER_VARIATION_PASSWORD
-          changeKeyboard.setIconResource(PinKeyboardType.ALPHA_NUMERIC.iconResource)
-        }
-        PinKeyboardType.ALPHA_NUMERIC -> {
-          pinEditText.inputType = InputType.TYPE_CLASS_TEXT or InputType.TYPE_TEXT_VARIATION_PASSWORD
-          changeKeyboard.setIconResource(PinKeyboardType.NUMERIC.iconResource)
-        }
-      }
+//      when (SignalStore.pinValues().keyboardType) {
+//        PinKeyboardType.NUMERIC -> {
+//          pinEditText.inputType = InputType.TYPE_CLASS_NUMBER or InputType.TYPE_NUMBER_VARIATION_PASSWORD
+//          changeKeyboard.setIconResource(PinKeyboardType.ALPHA_NUMERIC.iconResource)
+//        }
+//        PinKeyboardType.ALPHA_NUMERIC -> {
+//          pinEditText.inputType = InputType.TYPE_CLASS_TEXT or InputType.TYPE_TEXT_VARIATION_PASSWORD
+//          changeKeyboard.setIconResource(PinKeyboardType.NUMERIC.iconResource)
+//        }
+//      }
 
       pinEditText.addTextChangedListener(object : SimpleTextWatcher() {
         override fun onTextChanged(text: String) {
-          turnOffButton.isEnabled = text.length >= SvrConstants.MINIMUM_PIN_LENGTH
+//          turnOffButton.isEnabled = text.length >= SvrConstants.MINIMUM_PIN_LENGTH
         }
       })
 
@@ -249,7 +244,7 @@ class AccountSettingsFragment : DSLSettingsFragment(R.string.AccountSettingsFrag
         val pin = pinEditText.text.toString()
         val correct = PinHashUtil.verifyLocalPinHash(SignalStore.svr().localPinHash!!, pin)
         if (correct) {
-          SignalStore.pinValues().setPinRemindersEnabled(false)
+//          SignalStore.pinValues().setPinRemindersEnabled(false)
           viewModel.refreshState()
           dialog.dismiss()
         } else {
@@ -259,7 +254,7 @@ class AccountSettingsFragment : DSLSettingsFragment(R.string.AccountSettingsFrag
 
       cancelButton.setOnClickListener { dialog.dismiss() }
     } else {
-      SignalStore.pinValues().setPinRemindersEnabled(true)
+//      SignalStore.pinValues().setPinRemindersEnabled(true)
       viewModel.refreshState()
     }
   }

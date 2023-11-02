@@ -10,9 +10,7 @@ import java.util.Optional
 class SignalServiceConfiguration(
   val signalServiceUrls: Array<SignalServiceUrl>,
   val signalCdnUrlMap: Map<Int, Array<SignalCdnUrl>>,
-  val signalStorageUrls: Array<SignalStorageUrl>,
-  val signalCdsiUrls: Array<SignalCdsiUrl>,
-  val signalSvr2Urls: Array<SignalSvr2Url>,
+//  val signalStorageUrls: Array<SignalStorageUrl>,
   val networkInterceptors: List<Interceptor>,
   val dns: Optional<Dns>,
   val signalProxy: Optional<SignalProxy>,

@@ -4,7 +4,6 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 
 import org.signal.core.util.logging.Log;
-import org.thoughtcrime.securesms.contacts.sync.ContactDiscovery;
 import org.thoughtcrime.securesms.jobmanager.Job;
 import org.thoughtcrime.securesms.keyvalue.SignalStore;
 
@@ -47,7 +46,7 @@ public final class DirectoryRefreshMigrationJob extends MigrationJob {
       return;
     }
 
-    ContactDiscovery.refreshAll(context, true);
+//    ContactDiscovery.refreshAll(context, true);
   }
 
   @Override

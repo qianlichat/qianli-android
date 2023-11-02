@@ -16,7 +16,6 @@ import org.thoughtcrime.securesms.ContactSelectionListFragment
 import org.thoughtcrime.securesms.InviteActivity
 import org.thoughtcrime.securesms.R
 import org.thoughtcrime.securesms.contacts.ContactSelectionDisplayMode
-import org.thoughtcrime.securesms.contacts.sync.ContactDiscovery.refresh
 import org.thoughtcrime.securesms.keyvalue.SignalStore
 import org.thoughtcrime.securesms.recipients.Recipient
 import org.thoughtcrime.securesms.recipients.RecipientId
@@ -50,7 +49,7 @@ class NewCallActivity : ContactSelectionActivity(), ContactSelectionListFragment
           if (!resolved.isRegistered || !resolved.hasServiceId()) {
             Log.i(TAG, "[onContactSelected] Not registered or no UUID. Doing a directory refresh.")
             resolved = try {
-              refresh(this, resolved, false, 10.seconds.inWholeMilliseconds)
+//              refresh(this, resolved, false, 10.seconds.inWholeMilliseconds)
               Recipient.resolved(resolved.id)
             } catch (e: IOException) {
               Log.w(TAG, "[onContactSelected] Failed to refresh directory for new contact.")

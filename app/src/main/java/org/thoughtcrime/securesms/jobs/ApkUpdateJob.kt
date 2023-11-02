@@ -55,46 +55,46 @@ class ApkUpdateJob private constructor(parameters: Parameters) : BaseJob(paramet
 
   @Throws(IOException::class)
   public override fun onRun() {
-    if (!BuildConfig.MANAGES_APP_UPDATES) {
-      Log.w(TAG, "Not an app-updating build! Exiting.")
-      return
-    }
-
-    Log.i(TAG, "Checking for APK update...")
-
-    val client = OkHttpClient()
-    val request = Request.Builder().url(BuildConfig.APK_UPDATE_MANIFEST_URL).build()
-
-    val rawUpdateDescriptor: String = client.newCall(request).execute().use { response ->
-      if (!response.isSuccessful || response.body() == null) {
-        throw IOException("Failed to read update descriptor")
-      }
-      response.body()!!.string()
-    }
-
-    val updateDescriptor: UpdateDescriptor = JsonUtils.fromJson(rawUpdateDescriptor, UpdateDescriptor::class.java)
-
-    if (updateDescriptor.versionCode <= 0 || updateDescriptor.versionName == null || updateDescriptor.url == null || updateDescriptor.digest == null) {
-      Log.w(TAG, "Invalid update descriptor! $updateDescriptor")
-      return
-    } else {
-      Log.i(TAG, "Got descriptor: $updateDescriptor")
-    }
-
-    if (updateDescriptor.versionCode > getCurrentAppVersionCode()) {
-      val digest: ByteArray = Hex.fromStringCondensed(updateDescriptor.digest)
-      val downloadStatus: DownloadStatus = getDownloadStatus(updateDescriptor.url, digest)
-
-      Log.i(TAG, "Download status: ${downloadStatus.status}")
-
-      if (downloadStatus.status == DownloadStatus.Status.COMPLETE) {
-        Log.i(TAG, "Download status complete, notifying...")
-        handleDownloadComplete(downloadStatus.downloadId)
-      } else if (downloadStatus.status == DownloadStatus.Status.MISSING) {
-        Log.i(TAG, "Download status missing, starting download...")
-        handleDownloadStart(updateDescriptor.url, updateDescriptor.versionName, digest)
-      }
-    }
+//    if (!BuildConfig.MANAGES_APP_UPDATES) {
+//      Log.w(TAG, "Not an app-updating build! Exiting.")
+//      return
+//    }
+//
+//    Log.i(TAG, "Checking for APK update...")
+//
+//    val client = OkHttpClient()
+//    val request = Request.Builder().url(BuildConfig.APK_UPDATE_MANIFEST_URL).build()
+//
+//    val rawUpdateDescriptor: String = client.newCall(request).execute().use { response ->
+//      if (!response.isSuccessful || response.body() == null) {
+//        throw IOException("Failed to read update descriptor")
+//      }
+//      response.body()!!.string()
+//    }
+//
+//    val updateDescriptor: UpdateDescriptor = JsonUtils.fromJson(rawUpdateDescriptor, UpdateDescriptor::class.java)
+//
+//    if (updateDescriptor.versionCode <= 0 || updateDescriptor.versionName == null || updateDescriptor.url == null || updateDescriptor.digest == null) {
+//      Log.w(TAG, "Invalid update descriptor! $updateDescriptor")
+//      return
+//    } else {
+//      Log.i(TAG, "Got descriptor: $updateDescriptor")
+//    }
+//
+//    if (updateDescriptor.versionCode > getCurrentAppVersionCode()) {
+//      val digest: ByteArray = Hex.fromStringCondensed(updateDescriptor.digest)
+//      val downloadStatus: DownloadStatus = getDownloadStatus(updateDescriptor.url, digest)
+//
+//      Log.i(TAG, "Download status: ${downloadStatus.status}")
+//
+//      if (downloadStatus.status == DownloadStatus.Status.COMPLETE) {
+//        Log.i(TAG, "Download status complete, notifying...")
+//        handleDownloadComplete(downloadStatus.downloadId)
+//      } else if (downloadStatus.status == DownloadStatus.Status.MISSING) {
+//        Log.i(TAG, "Download status missing, starting download...")
+//        handleDownloadStart(updateDescriptor.url, updateDescriptor.versionName, digest)
+//      }
+//    }
   }
 
   public override fun onShouldRetry(e: Exception): Boolean {

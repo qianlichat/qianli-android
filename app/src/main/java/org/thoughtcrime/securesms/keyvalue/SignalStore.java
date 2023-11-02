@@ -21,7 +21,7 @@ public final class SignalStore {
   private final AccountValues             accountValues;
   private final SvrValues                 svrValues;
   private final RegistrationValues        registrationValues;
-  private final PinValues                 pinValues;
+//  private final PinValues                 pinValues;
   private final RemoteConfigValues        remoteConfigValues;
   private final StorageServiceValues      storageServiceValues;
   private final UiHints                   uiHints;
@@ -66,7 +66,7 @@ public final class SignalStore {
     this.accountValues             = new AccountValues(store);
     this.svrValues                 = new SvrValues(store);
     this.registrationValues        = new RegistrationValues(store);
-    this.pinValues                 = new PinValues(store);
+//    this.pinValues                 = new PinValues(store);
     this.remoteConfigValues        = new RemoteConfigValues(store);
     this.storageServiceValues      = new StorageServiceValues(store);
     this.uiHints                   = new UiHints(store);
@@ -96,7 +96,7 @@ public final class SignalStore {
     account().onFirstEverAppLaunch();
     svr().onFirstEverAppLaunch();
     registrationValues().onFirstEverAppLaunch();
-    pinValues().onFirstEverAppLaunch();
+//    pinValues().onFirstEverAppLaunch();
     remoteConfigValues().onFirstEverAppLaunch();
     storageService().onFirstEverAppLaunch();
     uiHints().onFirstEverAppLaunch();
@@ -125,7 +125,7 @@ public final class SignalStore {
     keys.addAll(account().getKeysToIncludeInBackup());
     keys.addAll(svr().getKeysToIncludeInBackup());
     keys.addAll(registrationValues().getKeysToIncludeInBackup());
-    keys.addAll(pinValues().getKeysToIncludeInBackup());
+//    keys.addAll(pinValues().getKeysToIncludeInBackup());
     keys.addAll(remoteConfigValues().getKeysToIncludeInBackup());
     keys.addAll(storageService().getKeysToIncludeInBackup());
     keys.addAll(uiHints().getKeysToIncludeInBackup());
@@ -178,9 +178,9 @@ public final class SignalStore {
     return getInstance().registrationValues;
   }
 
-  public static @NonNull PinValues pinValues() {
-    return getInstance().pinValues;
-  }
+//  public static @NonNull PinValues pinValues() {
+//    return getInstance().pinValues;
+//  }
 
   public static @NonNull RemoteConfigValues remoteConfigValues() {
     return getInstance().remoteConfigValues;

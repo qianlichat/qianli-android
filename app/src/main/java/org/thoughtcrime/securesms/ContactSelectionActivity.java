@@ -27,7 +27,6 @@ import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 import org.signal.core.util.logging.Log;
 import org.thoughtcrime.securesms.components.ContactFilterView;
 import org.thoughtcrime.securesms.contacts.ContactSelectionDisplayMode;
-import org.thoughtcrime.securesms.contacts.sync.ContactDiscovery;
 import org.thoughtcrime.securesms.keyvalue.SignalStore;
 import org.thoughtcrime.securesms.recipients.RecipientId;
 import org.thoughtcrime.securesms.util.DynamicNoActionBarTheme;
@@ -35,7 +34,6 @@ import org.thoughtcrime.securesms.util.DynamicTheme;
 import org.thoughtcrime.securesms.util.ServiceUtil;
 import org.thoughtcrime.securesms.util.Util;
 
-import java.io.IOException;
 import java.lang.ref.WeakReference;
 import java.util.Optional;
 import java.util.function.Consumer;
@@ -153,11 +151,11 @@ public abstract class ContactSelectionActivity extends PassphraseRequiredActivit
 
     @Override
     protected Void doInBackground(Context... params) {
-      try {
-        ContactDiscovery.refreshAll(params[0], true);
-      } catch (IOException e) {
-        Log.w(TAG, e);
-      }
+//      try {
+//        ContactDiscovery.refreshAll(params[0], true);
+//      } catch (IOException e) {
+//        Log.w(TAG, e);
+//      }
 
       return null;
     }

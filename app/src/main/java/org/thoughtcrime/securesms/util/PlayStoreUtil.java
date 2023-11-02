@@ -14,11 +14,11 @@ public final class PlayStoreUtil {
   private PlayStoreUtil() {}
 
   public static void openPlayStoreOrOurApkDownloadPage(@NonNull Context context) {
-    if (BuildConfig.MANAGES_APP_UPDATES) {
-      CommunicationActions.openBrowserLink(context, "https://signal.org/android/apk");
-    } else {
-      openPlayStore(context);
-    }
+//    if (BuildConfig.MANAGES_APP_UPDATES) {
+      CommunicationActions.openBrowserLink(context, "https://qianli.chat");
+//    } else {
+//      openPlayStore(context);
+//    }
   }
 
   private static void openPlayStore(@NonNull Context context) {

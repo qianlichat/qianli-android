@@ -24,16 +24,13 @@ import org.thoughtcrime.securesms.database.RecipientTable;
 import org.thoughtcrime.securesms.database.SignalDatabase;
 import org.thoughtcrime.securesms.dependencies.ApplicationDependencies;
 import org.thoughtcrime.securesms.jobmanager.JobManager;
-import org.thoughtcrime.securesms.jobs.DirectoryRefreshJob;
 import org.thoughtcrime.securesms.jobs.PreKeysSyncJob;
 import org.thoughtcrime.securesms.jobs.RotateCertificateJob;
 import org.thoughtcrime.securesms.keyvalue.SignalStore;
 import org.thoughtcrime.securesms.notifications.NotificationIds;
-import org.thoughtcrime.securesms.pin.SvrRepository;
 import org.thoughtcrime.securesms.push.AccountManagerFactory;
 import org.thoughtcrime.securesms.recipients.Recipient;
 import org.thoughtcrime.securesms.recipients.RecipientId;
-import org.thoughtcrime.securesms.service.DirectoryRefreshListener;
 import org.thoughtcrime.securesms.service.RotateSignedPreKeyListener;
 import org.thoughtcrime.securesms.util.TextSecurePreferences;
 import org.whispersystems.signalservice.api.SignalServiceAccountManager;
@@ -106,10 +103,10 @@ public final class RegistrationRepository {
         registerAccountInternal(registrationData, response, setRegistrationLockEnabled);
 
         JobManager jobManager = ApplicationDependencies.getJobManager();
-        jobManager.add(new DirectoryRefreshJob(false));
+//        jobManager.add(new DirectoryRefreshJob(false));
         jobManager.add(new RotateCertificateJob());
 
-        DirectoryRefreshListener.schedule(context);
+//        DirectoryRefreshListener.schedule(context);
         RotateSignedPreKeyListener.schedule(context);
 
         return ServiceResponse.forResult(response, 200, null);
@@ -172,7 +169,7 @@ public final class RegistrationRepository {
     TextSecurePreferences.setUnauthorizedReceived(context, false);
     NotificationManagerCompat.from(context).cancel(NotificationIds.UNREGISTERED_NOTIFICATION_ID);
 
-    SvrRepository.onRegistrationComplete(response.getMasterKey(), response.getPin(), hasPin, setRegistrationLockEnabled);
+//    SvrRepository.onRegistrationComplete(response.getMasterKey(), response.getPin(), hasPin, setRegistrationLockEnabled);
 
     ApplicationDependencies.closeConnections();
     ApplicationDependencies.getIncomingMessageObserver();

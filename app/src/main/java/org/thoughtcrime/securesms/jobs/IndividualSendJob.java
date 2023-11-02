@@ -203,7 +203,7 @@ public class IndividualSendJob extends PushSendJob {
       warn(TAG, "Failure", ifae);
       database.markAsPendingInsecureSmsFallback(messageId);
       notifyMediaMessageDeliveryFailed(context, messageId);
-      ApplicationDependencies.getJobManager().add(new DirectoryRefreshJob(false));
+//      ApplicationDependencies.getJobManager().add(new DirectoryRefreshJob(false));
     } catch (UntrustedIdentityException uie) {
       warn(TAG, "Failure", uie);
       RecipientId recipientId = Recipient.external(context, uie.getIdentifier()).getId();

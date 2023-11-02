@@ -22,7 +22,9 @@ import org.thoughtcrime.securesms.database.RecipientTable;
 import org.thoughtcrime.securesms.database.SignalDatabase;
 import org.thoughtcrime.securesms.database.model.DistributionListRecord;
 import org.thoughtcrime.securesms.database.model.RecipientRecord;
+import org.thoughtcrime.securesms.util.UsernameUtil;
 import org.thoughtcrime.securesms.util.livedata.LiveDataUtil;
+import org.whispersystems.signalservice.api.push.ServiceId;
 
 import java.util.List;
 import java.util.Objects;
@@ -203,6 +205,13 @@ public final class LiveRecipient {
     }
 
     Recipient recipient = new Recipient(record.getId(), details, true);
+    if (!ThreadUtil.isMainThread()) {
+      if(record.getAci() != null && (record.getE164() == null || record.getE164().isEmpty())){
+        final Optional<String> e164AccountId = UsernameUtil.fetchAccountIdForAci(record.getAci());
+        e164AccountId.ifPresent(s -> SignalDatabase.recipients().setE164(recipient.getId(), s));
+      }
+    }
+
     RecipientIdCache.INSTANCE.put(recipient);
     return recipient;
   }

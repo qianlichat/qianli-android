@@ -148,25 +148,26 @@ object EmojiFiles {
       @JvmStatic
       @JvmOverloads
       fun readVersion(context: Context, skipValidation: Boolean = false): Version? {
-        val version = try {
-          getInputStream(context, context.getVersionFile()).use {
-            val tree: JsonNode = objectMapper.readTree(it)
-            Version(
-              version = tree["version"].asInt(),
-              uuid = objectMapper.convertValue(tree["uuid"], UUID::class.java),
-              density = tree["density"].asText()
-            )
-          }
-        } catch (e: Exception) {
-          Log.w(TAG, "Could not read current emoji version from disk.", e)
-          null
-        }
-
-        return if (skipValidation || isVersionValid(context, version)) {
-          version
-        } else {
-          null
-        }
+        return null;
+//        val version = try {
+//          getInputStream(context, context.getVersionFile()).use {
+//            val tree: JsonNode = objectMapper.readTree(it)
+//            Version(
+//              version = tree["version"].asInt(),
+//              uuid = objectMapper.convertValue(tree["uuid"], UUID::class.java),
+//              density = tree["density"].asText()
+//            )
+//          }
+//        } catch (e: Exception) {
+//          Log.w(TAG, "Could not read current emoji version from disk.", e)
+//          null
+//        }
+//
+//        return if (skipValidation || isVersionValid(context, version)) {
+//          version
+//        } else {
+//          null
+//        }
       }
 
       @JvmStatic

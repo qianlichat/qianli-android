@@ -16,8 +16,6 @@ import org.thoughtcrime.securesms.jobs.MultiDeviceProfileContentUpdateJob
 import org.thoughtcrime.securesms.jobs.MultiDeviceProfileKeyUpdateJob
 import org.thoughtcrime.securesms.jobs.ProfileUploadJob
 import org.thoughtcrime.securesms.keyvalue.SignalStore
-import org.thoughtcrime.securesms.lock.v2.CreateSvrPinActivity
-import org.thoughtcrime.securesms.pin.PinRestoreActivity
 import org.thoughtcrime.securesms.profiles.AvatarHelper
 import org.thoughtcrime.securesms.profiles.edit.EditProfileActivity
 import org.thoughtcrime.securesms.recipients.Recipient
@@ -44,10 +42,10 @@ class RegistrationCompleteFragment : LoggingFragment() {
       SignalStore.misc().shouldShowLinkedDevicesReminder = viewModel.isReregister
     }
 
-    if (SignalStore.storageService().needsAccountRestore()) {
-      Log.i(TAG, "Performing pin restore.")
-      activity.startActivity(Intent(activity, PinRestoreActivity::class.java))
-    } else {
+//    if (SignalStore.storageService().needsAccountRestore()) {
+//      Log.i(TAG, "Performing pin restore.")
+//      activity.startActivity(Intent(activity, PinRestoreActivity::class.java))
+//    } else {
       val isProfileNameEmpty = Recipient.self().profileName.isEmpty
       val isAvatarEmpty = !AvatarHelper.hasAvatar(activity, Recipient.self().id)
       val needsProfile = isProfileNameEmpty || isAvatarEmpty
@@ -65,16 +63,16 @@ class RegistrationCompleteFragment : LoggingFragment() {
 
       var startIntent = MainActivity.clearTop(activity)
 
-      if (needsPin) {
-        startIntent = chainIntents(CreateSvrPinActivity.getIntentForPinCreate(activity), startIntent)
-      }
+//      if (needsPin) {
+//        startIntent = chainIntents(CreateSvrPinActivity.getIntentForPinCreate(activity), startIntent)
+//      }
 
       if (needsProfile) {
         startIntent = chainIntents(EditProfileActivity.getIntentForUserProfile(activity), startIntent)
       }
 
       activity.startActivity(startIntent)
-    }
+//    }
 
     activity.finish()
     ActivityNavigator.applyPopAnimationsToPendingTransition(activity)

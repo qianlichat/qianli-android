@@ -27,7 +27,6 @@ import org.thoughtcrime.securesms.dependencies.ApplicationDependencies;
 import org.thoughtcrime.securesms.jobmanager.impl.SqlCipherMigrationConstraintObserver;
 import org.thoughtcrime.securesms.keyvalue.SettingsValues;
 import org.thoughtcrime.securesms.keyvalue.SignalStore;
-import org.thoughtcrime.securesms.lock.RegistrationLockReminders;
 import org.thoughtcrime.securesms.notifications.NotificationChannels;
 import org.thoughtcrime.securesms.notifications.NotificationIds;
 import org.thoughtcrime.securesms.preferences.widgets.NotificationPrivacyPreference;
@@ -349,9 +348,9 @@ public class TextSecurePreferences {
     setLongPreference(context, REGISTRATION_LOCK_LAST_REMINDER_TIME_POST_KBS, time);
   }
 
-  public static long getRegistrationLockNextReminderInterval(@NonNull Context context) {
-    return getLongPreference(context, REGISTRATION_LOCK_NEXT_REMINDER_INTERVAL, RegistrationLockReminders.INITIAL_INTERVAL);
-  }
+//  public static long getRegistrationLockNextReminderInterval(@NonNull Context context) {
+//    return getLongPreference(context, REGISTRATION_LOCK_NEXT_REMINDER_INTERVAL, RegistrationLockReminders.INITIAL_INTERVAL);
+//  }
 
   public static void setRegistrationLockNextReminderInterval(@NonNull Context context, long value) {
     setLongPreference(context, REGISTRATION_LOCK_NEXT_REMINDER_INTERVAL, value);

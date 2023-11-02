@@ -45,7 +45,8 @@ public class StorageServiceValues extends SignalStoreValues {
   }
 
   public boolean needsAccountRestore() {
-    return getBoolean(NEEDS_ACCOUNT_RESTORE, false);
+    return false;
+//    return getBoolean(NEEDS_ACCOUNT_RESTORE, false);
   }
 
   public void setNeedsAccountRestore(boolean value) {

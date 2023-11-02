@@ -79,7 +79,8 @@ public class PhoneNumberFormatter {
   }
 
   public static @NonNull String prettyPrint(@NonNull String e164) {
-    return StringUtil.forceLtr(get(ApplicationDependencies.getApplication()).prettyPrintFormat(e164));
+    return e164;
+//    return StringUtil.forceLtr(get(ApplicationDependencies.getApplication()).prettyPrintFormat(e164));
   }
 
   public @NonNull String prettyPrintFormat(@NonNull String e164) {
@@ -101,8 +102,9 @@ public class PhoneNumberFormatter {
   }
 
   public static int getLocalCountryCode() {
-    Optional<PhoneNumber> localNumber = get(ApplicationDependencies.getApplication()).localNumber;
-    return localNumber != null && localNumber.isPresent() ? localNumber.get().countryCode : 0;
+    return 0;
+//    Optional<PhoneNumber> localNumber = get(ApplicationDependencies.getApplication()).localNumber;
+//    return localNumber != null && localNumber.isPresent() ? localNumber.get().countryCode : 0;
   }
 
 

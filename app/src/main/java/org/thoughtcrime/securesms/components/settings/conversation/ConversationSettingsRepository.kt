@@ -10,7 +10,6 @@ import io.reactivex.rxjava3.schedulers.Schedulers
 import org.signal.core.util.concurrent.SignalExecutors
 import org.signal.core.util.logging.Log
 import org.signal.storageservice.protos.groups.local.DecryptedGroup
-import org.thoughtcrime.securesms.contacts.sync.ContactDiscovery
 import org.thoughtcrime.securesms.database.CallTable
 import org.thoughtcrime.securesms.database.MediaTable
 import org.thoughtcrime.securesms.database.SignalDatabase
@@ -130,13 +129,14 @@ class ConversationSettingsRepository(
   }
 
   fun refreshRecipient(recipientId: RecipientId) {
-    SignalExecutors.UNBOUNDED.execute {
-      try {
-        ContactDiscovery.refresh(context, Recipient.resolved(recipientId), false)
-      } catch (e: IOException) {
-        Log.w(TAG, "Failed to refresh user after adding to contacts.")
-      }
-    }
+    Log.w(TAG, "refreshRecipient !! Failed to refresh user after adding to contacts.")
+//    SignalExecutors.UNBOUNDED.execute {
+//      try {
+//        ContactDiscovery.refresh(context, Recipient.resolved(recipientId), false)
+//      } catch (e: IOException) {
+//        Log.w(TAG, "Failed to refresh user after adding to contacts.")
+//      }
+//    }
   }
 
   fun setMuteUntil(recipientId: RecipientId, until: Long) {

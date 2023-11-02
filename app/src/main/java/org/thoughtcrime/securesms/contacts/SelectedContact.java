@@ -29,7 +29,8 @@ public final class SelectedContact {
   }
 
   public static @NonNull SelectedContact forRecipientId(@NonNull RecipientId recipientId) {
-    return new SelectedContact(recipientId, null, null);
+    final Recipient resolved = Recipient.resolved(recipientId);
+    return new SelectedContact(recipientId, resolved.getE164().orElse(null),null);
   }
 
   private SelectedContact(@Nullable RecipientId recipientId, @Nullable String number, @Nullable String username) {

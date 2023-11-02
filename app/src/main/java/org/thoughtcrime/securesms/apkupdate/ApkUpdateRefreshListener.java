@@ -33,10 +33,10 @@ public class ApkUpdateRefreshListener extends PersistentAlarmManagerListener {
   protected long onAlarm(Context context, long scheduledTime) {
     Log.i(TAG, "onAlarm...");
 
-    if (scheduledTime != 0 && BuildConfig.MANAGES_APP_UPDATES) {
-      Log.i(TAG, "Queueing APK update job...");
-      ApplicationDependencies.getJobManager().add(new ApkUpdateJob());
-    }
+//    if (scheduledTime != 0 && BuildConfig.MANAGES_APP_UPDATES) {
+//      Log.i(TAG, "Queueing APK update job...");
+//      ApplicationDependencies.getJobManager().add(new ApkUpdateJob());
+//    }
 
     long newTime = System.currentTimeMillis() + INTERVAL;
     TextSecurePreferences.setUpdateApkRefreshTime(context, newTime);

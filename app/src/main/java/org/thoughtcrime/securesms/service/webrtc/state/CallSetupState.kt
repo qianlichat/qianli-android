@@ -17,7 +17,7 @@ data class CallSetupState(
   @get:JvmName("shouldWaitForTelecomApproval") var waitForTelecom: Boolean = false,
   @get:JvmName("isTelecomApproved") var telecomApproved: Boolean = false,
   var iceServers: MutableList<PeerConnection.IceServer> = mutableListOf(),
-  @get:JvmName("isAlwaysTurnServers") var alwaysTurnServers: Boolean = false
+  @get:JvmName("isAlwaysTurnServers") var alwaysTurnServers: Boolean = true
 ) {
 
   fun duplicate(): CallSetupState {
