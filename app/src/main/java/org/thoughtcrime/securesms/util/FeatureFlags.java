@@ -607,7 +607,7 @@ public final class FeatureFlags {
   }
 
   public static boolean editMessageSending() {
-    return getBoolean(EDIT_MESSAGE_SEND, false);
+    return getBoolean(EDIT_MESSAGE_SEND, true);
   }
 
   /**
