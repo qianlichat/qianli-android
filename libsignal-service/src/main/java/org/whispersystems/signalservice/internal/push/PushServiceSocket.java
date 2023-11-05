@@ -1007,7 +1007,7 @@ public class PushServiceSocket {
     });
   }
   public @NonNull String getAccountIdByACI(ACI aci) throws IOException {
-    String response = makeServiceRequestWithoutAuthentication(
+    String response = makeServiceRequest(
         String.format(GET_ACCOUNT_ID_PATH, aci.getRawUuid()),
         "GET",
         null,
@@ -1016,14 +1016,15 @@ public class PushServiceSocket {
           if (responseCode == 404) {
             throw new UsernameIsNotAssociatedWithAnAccountException();
           }
-        }
+        },
+        Optional.empty()
     );
 
     GetAccountIdByAciResponse getAciByUsernameResponse = JsonUtil.fromJsonResponse(response, GetAccountIdByAciResponse.class);
     return getAciByUsernameResponse.getAccountId();
   }
   public @NonNull ACI getAciByAccountId(String accountId) throws IOException {
-    String response = makeServiceRequestWithoutAuthentication(
+    String response = makeServiceRequest(
         String.format(GET_ACI_PATH, URLEncoder.encode(accountId, StandardCharsets.UTF_8.toString())),
         "GET",
         null,
@@ -1032,7 +1033,8 @@ public class PushServiceSocket {
           if (responseCode == 404) {
             throw new UsernameIsNotAssociatedWithAnAccountException();
           }
-        }
+        },
+        Optional.empty()
     );
 
     GetAciByUsernameResponse getAciByUsernameResponse = JsonUtil.fromJsonResponse(response, GetAciByUsernameResponse.class);
@@ -1040,7 +1042,7 @@ public class PushServiceSocket {
   }
 
   public @NonNull ACI getAciByUsernameHash(String usernameHash) throws IOException {
-    String response = makeServiceRequestWithoutAuthentication(
+    String response = makeServiceRequest(
         String.format(GET_USERNAME_PATH, URLEncoder.encode(usernameHash, StandardCharsets.UTF_8.toString())),
         "GET",
         null,
@@ -1049,7 +1051,8 @@ public class PushServiceSocket {
           if (responseCode == 404) {
             throw new UsernameIsNotAssociatedWithAnAccountException();
           }
-        }
+        },
+        Optional.empty()
     );
 
     GetAciByUsernameResponse getAciByUsernameResponse = JsonUtil.fromJsonResponse(response, GetAciByUsernameResponse.class);

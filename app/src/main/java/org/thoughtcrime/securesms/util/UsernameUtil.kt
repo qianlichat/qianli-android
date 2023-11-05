@@ -142,7 +142,7 @@ object UsernameUtil {
       val aci = ApplicationDependencies.getSignalServiceAccountManager().getAccountIdByAci(accountId)
       Optional.ofNullable(aci)
     } catch (e: IOException) {
-      Log.w(TAG, "Failed to get ACI for username hash", e)
+      Log.w(TAG, "Failed to get account id for aci", e)
       Optional.empty()
     }
   }
@@ -153,7 +153,7 @@ object UsernameUtil {
       val aci = ApplicationDependencies.getSignalServiceAccountManager().getAciByAccountId(accountId)
       Optional.ofNullable(aci)
     } catch (e: IOException) {
-      Log.w(TAG, "Failed to get ACI for username hash", e)
+      Log.w(TAG, "Failed to get ACI for account id", e)
       Optional.empty()
     }
   }
