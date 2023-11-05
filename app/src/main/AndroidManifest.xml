@@ -1388,6 +1388,8 @@
             android:name=".service.ScheduledMessageManager$ScheduledMessagesAlarm"
             android:exported="false" />
 
+        <receiver android:name=".messages.NotificationDismissedReceiver"/>
+
         <receiver
             android:name=".service.PendingRetryReceiptManager$PendingRetryReceiptAlarm"
             android:exported="false" />

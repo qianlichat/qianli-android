@@ -1,6 +1,7 @@
 package org.thoughtcrime.securesms.messages
 
 import android.app.Application
+import android.app.PendingIntent
 import android.app.Service
 import android.content.Context
 import android.content.Intent
@@ -45,6 +46,7 @@ import kotlin.concurrent.withLock
 import kotlin.math.round
 import kotlin.time.Duration.Companion.minutes
 import kotlin.time.Duration.Companion.seconds
+
 
 /**
  * The application-level manager of our websocket connection.
@@ -476,11 +478,14 @@ class IncomingMessageObserver(private val context: Application) {
     }
 
     private fun postForegroundNotification() {
+      val intent = Intent(applicationContext, NotificationDismissedReceiver::class.java)
+      val pendingIntent = PendingIntent.getBroadcast(applicationContext, 0, intent, PendingIntent.FLAG_UPDATE_CURRENT or PendingIntent.FLAG_IMMUTABLE)
       val notification = NotificationCompat.Builder(applicationContext, NotificationChannels.getInstance().BACKGROUND)
-        .setContentTitle(applicationContext.getString(R.string.MessageRetrievalService_signal))
+        .setContentTitle(applicationContext.getString(R.string.app_name))
         .setContentText(applicationContext.getString(R.string.MessageRetrievalService_background_connection_enabled))
         .setPriority(NotificationCompat.PRIORITY_MIN)
-        .setWhen(0)
+        .setContentIntent(pendingIntent)
+        .setAutoCancel(true)
         .setSmallIcon(R.drawable.ic_signal_background_connection)
         .build()
 

@@ -1110,7 +1110,7 @@
 
     <!-- MessageRetrievalService -->
     <string name="MessageRetrievalService_signal">Signal</string>
-    <string name="MessageRetrievalService_background_connection_enabled">后台连接已启用</string>
+    <string name="MessageRetrievalService_background_connection_enabled">已连接及时消息通道,可以点击关闭</string>
 
     <!-- MediaOverviewActivity -->
     <string name="MediaOverviewActivity_Media">媒体</string>
