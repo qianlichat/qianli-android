@@ -486,7 +486,7 @@ class IncomingMessageObserver(private val context: Application) {
         .setPriority(NotificationCompat.PRIORITY_MIN)
         .setContentIntent(pendingIntent)
         .setAutoCancel(true)
-        .setSmallIcon(R.drawable.ic_signal_background_connection)
+        .setSmallIcon(R.mipmap.ic_launcher)
         .build()
 
       startForeground(FOREGROUND_ID, notification)
