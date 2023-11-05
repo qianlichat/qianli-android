@@ -1855,6 +1855,12 @@
     <string name="RegistrationActivity_call">呼叫</string>
     <string name="RegistrationActivity_verification_code">验证码</string>
     <string name="RegistrationActivity_verification_create_account">创建账号</string>
+    <string name="ChangePasswordFragment_title">更改密码</string>
+    <string name="ChangePasswordFragment_enter_current">请输入当前密码</string>
+    <string name="ChangePasswordFragment_current">当前密码</string>
+    <string name="ChangePasswordFragment_enter_new">请输入新密码并确认</string>
+    <string name="ChangePasswordFragment_new">新密码</string>
+    <string name="ChangePasswordFragment_new_confirm">确认新密码</string>
     <string name="RegistrationActivity_verification_login_account">账号登录</string>
     <string name="RegistrationActivity_enter_the_password">请创建您的密码并牢记，一旦忘记将无法找回</string>
     <string name="RegistrationActivity_enter_the_password_login">请输入您的密码，如果忘记密码请注册新账号</string>
@@ -1863,6 +1869,12 @@
     <string name="RegistrationActivity_confirm_password">确认密码</string>
     <string name="RegistrationActivity_resend_code">重新发送验证码</string>
     <string name="RegistrationActivity_please_enter_a_valid_password_to_register">密码的长度在9-18位之间</string>
+    <string name="ChangePasswordFragment_wrong_pass_current">当前密码的长度在9-18位之间</string>
+    <string name="ChangePasswordFragment_wrong_pass_current_server">当前密码不正确</string>
+    <string name="ChangePasswordFragment_success">密码成功更改</string>
+    <string name="ChangePasswordFragment_rate_limit">修改密码的操作过于频繁，请稍候再试</string>
+    <string name="ChangePasswordFragment_wrong_pass_new">新密码的长度在9-18位之间</string>
+    <string name="ChangePasswordFragment_wrong_pass_new_confirm">确认密码的长度在9-18位之间</string>
     <string name="RegistrationActivity_please_enter_a_same_password_to_register">您两次输入的密码不一致</string>
     <!--    A title for a bottom sheet dialog offering to help a user having trouble entering their verification code.-->
     <string name="RegistrationActivity_support_bottom_sheet_title">在注册时遇到问题？</string>
@@ -4082,6 +4094,7 @@
     <string name="AccountSettingsFragment__youll_be_asked_less_frequently">提醒次数将逐渐减少</string>
     <string name="AccountSettingsFragment__require_your_signal_pin">再次用您的手机号码注册 Signal，要求输入 Signal PIN 码。</string>
     <string name="AccountSettingsFragment__change_phone_number">更改电话号码</string>
+    <string name="AccountSettingsFragment__change_password">更改密码</string>
     <!-- Account setting that allows user to request and export their signal account data -->
     <string name="AccountSettingsFragment__request_account_data">您的账户数据</string>
 

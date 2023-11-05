@@ -1935,6 +1935,18 @@
     <string name="RegistrationActivity_call">Call</string>
     <string name="RegistrationActivity_verification_code">Verification Code</string>
     <string name="RegistrationActivity_verification_create_account">Create Account</string>
+    <string name="ChangePasswordFragment_title">Change password</string>
+    <string name="ChangePasswordFragment_enter_current">Please enter your current password</string>
+    <string name="ChangePasswordFragment_current">Current password</string>
+    <string name="ChangePasswordFragment_enter_new">Please enter new password and confirm</string>
+    <string name="ChangePasswordFragment_new">New password</string>
+    <string name="ChangePasswordFragment_new_confirm">Confirm new password</string>
+    <string name="ChangePasswordFragment_wrong_pass_current">The length of current password should be at 9 ~ 18</string>
+    <string name="ChangePasswordFragment_wrong_pass_new">The length of new password should be at 9 ~ 18</string>
+    <string name="ChangePasswordFragment_wrong_pass_new_confirm">The length of confirm password should be at 9 ~ 18</string>
+    <string name="ChangePasswordFragment_wrong_pass_current_server">Current password is wrong</string>
+    <string name="ChangePasswordFragment_rate_limit">Too frequently to change password, try later</string>
+    <string name="ChangePasswordFragment_success">Successfully changed password</string>
     <string name="RegistrationActivity_verification_login_account">Login Account</string>
     <string name="RegistrationActivity_enter_the_password">Please create your password, forgetting it means lost forever</string>
     <string name="RegistrationActivity_enter_the_password_login">Please enter the password you created before. You can only create a new account if you lost it.</string>
@@ -4190,6 +4202,7 @@
     <string name="AccountSettingsFragment__youll_be_asked_less_frequently">You\'ll be asked less frequently over time</string>
     <string name="AccountSettingsFragment__require_your_signal_pin">Require your Signal PIN to register your phone number with Signal again</string>
     <string name="AccountSettingsFragment__change_phone_number">Change phone number</string>
+    <string name="AccountSettingsFragment__change_password">Change password</string>
     <!-- Account setting that allows user to request and export their signal account data -->
     <string name="AccountSettingsFragment__request_account_data">Your account data</string>
 

@@ -207,6 +207,8 @@ public class PushServiceSocket {
 
   private static final String VERIFY_ACCOUNT_CODE_PATH   = "/v1/accounts/code/%s";
   private static final String REGISTER_GCM_PATH          = "/v1/accounts/gcm/";
+  private static final String PASSWORD_SIGN              = "/v1/accounts/password_sign";
+  private static final String PASSWORD_CHANGE            = "/v1/accounts/password";
   private static final String TURN_SERVER_INFO           = "/v1/accounts/turn";
   private static final String SET_ACCOUNT_ATTRIBUTES     = "/v1/accounts/attributes/";
   private static final String PIN_PATH                   = "/v1/accounts/pin/";
@@ -334,14 +336,20 @@ public class PushServiceSocket {
                            ClientZkProfileOperations clientZkProfileOperations,
                            boolean automaticNetworkRetry)
   {
-    this.credentialsProvider       = credentialsProvider;
-    this.signalAgent               = signalAgent;
-    this.automaticNetworkRetry     = automaticNetworkRetry;
-    this.serviceClients            = createServiceConnectionHolders(configuration.getSignalServiceUrls(), configuration.getNetworkInterceptors(), configuration.getDns(), configuration.getSignalProxy());
-    this.cdnClientsMap             = createCdnClientsMap(configuration.getSignalCdnUrlMap(), configuration.getNetworkInterceptors(), configuration.getDns(), configuration.getSignalProxy());
+    this.credentialsProvider   = credentialsProvider;
+    this.signalAgent           = signalAgent;
+    this.automaticNetworkRetry = automaticNetworkRetry;
+    this.serviceClients        = createServiceConnectionHolders(configuration.getSignalServiceUrls(), configuration.getNetworkInterceptors(), configuration.getDns(), configuration.getSignalProxy());
+    this.cdnClientsMap         = createCdnClientsMap(configuration.getSignalCdnUrlMap(), configuration.getNetworkInterceptors(), configuration.getDns(), configuration.getSignalProxy());
 //    this.storageClients            = createConnectionHolders(configuration.getSignalStorageUrls(), configuration.getNetworkInterceptors(), configuration.getDns(), configuration.getSignalProxy());
     this.random                    = new SecureRandom();
     this.clientZkProfileOperations = clientZkProfileOperations;
+  }
+
+  public RegistrationSessionMetadataResponse getPasswordSign() throws IOException {
+    try (Response response = makeServiceRequest(PASSWORD_SIGN, "GET", null, NO_HEADERS, NO_HANDLER, Optional.empty(), false)) {
+      return parseSessionMetadataResponse(response);
+    }
   }
 
   public RegistrationSessionMetadataResponse createVerificationSession(@Nullable String pushToken, @Nullable String mcc, @Nullable String mnc) throws IOException {
@@ -494,6 +502,11 @@ public class PushServiceSocket {
       throws IOException
   {
     makeServiceRequest(SET_ACCOUNT_ATTRIBUTES, "PUT", JsonUtil.toJson(accountAttributes));
+  }
+
+  public void changePassword(String sessionId, String currentPass, String newPass) throws IOException {
+    ChangePasswordRequest req = new ChangePasswordRequest(sessionId, currentPass, newPass);
+    makeServiceRequest(PASSWORD_CHANGE, "PUT", JsonUtil.toJson(req));
   }
 
   public String getNewDeviceVerificationCode() throws IOException {
@@ -1006,6 +1019,7 @@ public class PushServiceSocket {
       }
     });
   }
+
   public @NonNull String getAccountIdByACI(ACI aci) throws IOException {
     String response = makeServiceRequest(
         String.format(GET_ACCOUNT_ID_PATH, aci.getRawUuid()),
@@ -1023,6 +1037,7 @@ public class PushServiceSocket {
     GetAccountIdByAciResponse getAciByUsernameResponse = JsonUtil.fromJsonResponse(response, GetAccountIdByAciResponse.class);
     return getAciByUsernameResponse.getAccountId();
   }
+
   public @NonNull ACI getAciByAccountId(String accountId) throws IOException {
     String response = makeServiceRequest(
         String.format(GET_ACI_PATH, URLEncoder.encode(accountId, StandardCharsets.UTF_8.toString())),
@@ -1463,13 +1478,13 @@ public class PushServiceSocket {
     }
 
 //    if (attachment.getResumableUploadSpec().getCdnNumber() == 2) {
-      return uploadToCdn2(attachment.getResumableUploadSpec().getResumeLocation(),
-                          attachment.getData(),
-                          "application/octet-stream",
-                          attachment.getDataSize(),
-                          attachment.getOutputStreamFactory(),
-                          attachment.getListener(),
-                          attachment.getCancelationSignal());
+    return uploadToCdn2(attachment.getResumableUploadSpec().getResumeLocation(),
+                        attachment.getData(),
+                        "application/octet-stream",
+                        attachment.getDataSize(),
+                        attachment.getOutputStreamFactory(),
+                        attachment.getListener(),
+                        attachment.getCancelationSignal());
 //    } else {
 //      return uploadToCdn3(attachment.getResumableUploadSpec().getResumeLocation(),
 //                          attachment.getData(),

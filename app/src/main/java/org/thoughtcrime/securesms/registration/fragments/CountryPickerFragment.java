@@ -44,10 +44,10 @@ public final class CountryPickerFragment extends ListFragment implements LoaderM
   public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
     super.onViewCreated(view, savedInstanceState);
 
-    if (getArguments() != null) {
-      CountryPickerFragmentArgs arguments = CountryPickerFragmentArgs.fromBundle(requireArguments());
-      resultKey = arguments.getResultKey();
-    }
+//    if (getArguments() != null) {
+//      CountryPickerFragmentArgs arguments = CountryPickerFragmentArgs.fromBundle(requireArguments());
+//      resultKey = arguments.getResultKey();
+//    }
 
     if (resultKey == null) {
       model = new ViewModelProvider(requireActivity()).get(RegistrationViewModel.class);

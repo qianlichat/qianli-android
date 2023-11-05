@@ -108,6 +108,7 @@ public abstract class BaseEnterPasswordFragment<ViewModel extends BaseRegistrati
   }
 
   private void onNext() {
+    ViewUtil.hideKeyboard(requireContext(), editTextPassword);
     String pass = Objects.requireNonNull(editTextPassword.getText()).toString();
     if (pass.length() < 9 || pass.length() > 18) {
       showErrorDialog(requireContext(), getString(R.string.RegistrationActivity_please_enter_a_valid_password_to_register));

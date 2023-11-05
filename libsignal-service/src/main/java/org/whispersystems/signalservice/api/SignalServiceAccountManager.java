@@ -212,6 +212,15 @@ public class SignalServiceAccountManager {
     pushServiceSocket.requestPushChallenge(sessionId, gcmRegistrationId);
   }
 
+  public ServiceResponse<RegistrationSessionMetadataResponse> getPasswordSign() throws IOException {
+      final RegistrationSessionMetadataResponse response =  pushServiceSocket.getPasswordSign();
+      return ServiceResponse.forResult(response, 200, null);
+  }
+
+  public void changePassword(String sessionId,String currentPass,String newPass) throws IOException {
+    pushServiceSocket.changePassword(sessionId,currentPass,newPass);
+  }
+
   public ServiceResponse<RegistrationSessionMetadataResponse> createRegistrationSession(@Nullable String fcmToken, @Nullable String mcc, @Nullable String mnc) {
     try {
       final RegistrationSessionMetadataResponse response =  pushServiceSocket.createVerificationSession(fcmToken, mcc, mnc);
