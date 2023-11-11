@@ -3,21 +3,16 @@ package org.thoughtcrime.securesms.registration.util
 import android.annotation.SuppressLint
 import android.content.Context
 import android.text.Editable
-import android.text.TextUtils
 import android.text.TextWatcher
 import android.view.KeyEvent
 import android.view.View
 import android.view.View.OnFocusChangeListener
 import android.view.inputmethod.EditorInfo
-import android.widget.ArrayAdapter
 import android.widget.EditText
 import android.widget.TextView
-import com.google.android.material.textfield.MaterialAutoCompleteTextView
-import com.google.android.material.textfield.TextInputLayout
-import com.google.i18n.phonenumbers.AsYouTypeFormatter
-import com.google.i18n.phonenumbers.PhoneNumberUtil
-import org.thoughtcrime.securesms.R
+import androidx.compose.ui.text.toLowerCase
 import org.thoughtcrime.securesms.registration.viewmodel.NumberViewState
+import java.util.Locale
 
 /**
  * Handle the logic and formatting of phone number input specifically for registration number the flow.
@@ -145,11 +140,25 @@ class RegistrationNumberInputController(
       if(!isUpdating) {
         if (!s.toString().startsWith("@")) {
           isUpdating = true
-          phoneNumberInputLayout.setText("@" + s.toString());
-          phoneNumberInputLayout.setSelection(s.length + 1);
+          phoneNumberInputLayout.setText("@$s");
+          phoneNumberInputLayout.setSelection(s.length + 1)
           isUpdating = false
         }
+        val se = phoneNumberInputLayout.selectionEnd
+        if(containsUpperCase(s)){
+          phoneNumberInputLayout.setText(s.toString().lowercase())
+          phoneNumberInputLayout.setSelection(se)
+        }
       }
+    }
+
+    private fun containsUpperCase(str: CharSequence): Boolean {
+      for (element in str) {
+        if (element != '@' && Character.isUpperCase(element)) {
+            return true
+          }
+      }
+      return false
     }
   }
 

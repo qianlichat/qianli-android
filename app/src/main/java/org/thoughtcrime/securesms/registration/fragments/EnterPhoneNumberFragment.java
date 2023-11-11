@@ -429,46 +429,6 @@ public final class EnterPhoneNumberFragment extends LoggingFragment implements R
     disposables.add(request);
   }
 
-  private void handleNonNormalizedNumberError(@NonNull String originalNumber, @NonNull String normalizedNumber) {
-    try {
-      Phonenumber.PhoneNumber phoneNumber = PhoneNumberUtil.getInstance().parse(normalizedNumber, null);
-
-      new MaterialAlertDialogBuilder(requireContext())
-          .setTitle(R.string.RegistrationActivity_non_standard_number_format)
-          .setMessage(getString(R.string.RegistrationActivity_the_number_you_entered_appears_to_be_a_non_standard, originalNumber, normalizedNumber))
-          .setNegativeButton(android.R.string.no, (d, i) -> d.dismiss())
-          .setNeutralButton(R.string.RegistrationActivity_contact_signal_support, (d, i) -> {
-            String subject = getString(R.string.RegistrationActivity_signal_android_phone_number_format);
-            String body    = SupportEmailUtil.generateSupportEmailBody(requireContext(), R.string.RegistrationActivity_signal_android_phone_number_format, null, null);
-
-            CommunicationActions.openEmail(requireContext(), SupportEmailUtil.getSupportEmailAddress(requireContext()), subject, body);
-            d.dismiss();
-          })
-          .setPositiveButton(R.string.yes, (d, i) -> {
-//            countryCode.getEditText().setText(String.valueOf(phoneNumber.getCountryCode()));
-            number.setText(String.valueOf(phoneNumber.getNationalNumber()));
-            requestVerificationCode();
-            d.dismiss();
-          })
-          .show();
-    } catch (NumberParseException e) {
-      Log.w(TAG, "Failed to parse number!", e);
-
-      Dialogs.showAlertDialog(requireContext(),
-                              getString(R.string.RegistrationActivity_invalid_number),
-                              String.format(getString(R.string.RegistrationActivity_the_number_you_specified_s_is_invalid), viewModel.getNumber().getFullFormattedNumber()));
-    }
-  }
-
-//  private void handlePromptForNoPlayServices(@NonNull Context context) {
-//    new MaterialAlertDialogBuilder(context)
-//        .setTitle(R.string.RegistrationActivity_missing_google_play_services)
-//        .setMessage(R.string.RegistrationActivity_this_device_is_missing_google_play_services)
-//        .setPositiveButton(R.string.RegistrationActivity_i_understand, (dialog1, which) -> onE164EnteredSuccessfully(context, false))
-//        .setNegativeButton(android.R.string.cancel, null)
-//        .show();
-//  }
-
   private void confirmNumberPrompt(@NonNull Context context,
                                    @NonNull String e164number,
                                    @NonNull Runnable onConfirmed)
