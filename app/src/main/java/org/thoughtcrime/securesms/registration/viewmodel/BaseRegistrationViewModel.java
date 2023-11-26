@@ -340,6 +340,10 @@ public abstract class BaseRegistrationViewModel extends ViewModel {
     return null;
   }
 
+  public Single<ServiceResponse<VerifyResponse>> registerAccount(String pass, String otp){
+    return null;
+  }
+
   public Single<VerifyResponseProcessor> verifyCodeWithoutRegistrationLock(@NonNull String code) {
     onVerificationCodeEntered(code);
 

@@ -9,6 +9,7 @@ import org.whispersystems.signalservice.api.push.SignedPreKeyEntity
 data class RegistrationSessionRequestBody(
   @JsonProperty val sessionId: String? = null,
   @JsonProperty val pwd: String? = null,
+  @JsonProperty val otp: String? = null,
   @JsonProperty val recoveryPassword: String? = null,
   @JsonProperty val accountAttributes: AccountAttributes,
   @JsonProperty val aciIdentityKey: String,

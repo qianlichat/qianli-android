@@ -71,7 +71,7 @@ public abstract class ServiceResponseProcessor<T> {
     return response.getStatus() == 404;
   }
 
-  protected boolean mismatchedDevices() {
+  public boolean needOtp() {
     return response.getStatus() == 409;
   }
 

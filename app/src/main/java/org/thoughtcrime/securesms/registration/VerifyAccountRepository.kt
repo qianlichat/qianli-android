@@ -182,7 +182,7 @@ class VerifyAccountRepository(private val context: Application) {
     }.subscribeOn(Schedulers.io())
   }
 
-  fun registerAccount(sessionId: String?, pass : String,registrationData: RegistrationData, pin: String? = null, masterKeyProducer: Object? = null,publicKey: String): Single<ServiceResponse<VerifyResponse>> {
+  fun registerAccount(sessionId: String?, pass :String,otp: String?, registrationData: RegistrationData, pin: String? = null, masterKeyProducer: Object? = null,publicKey: String): Single<ServiceResponse<VerifyResponse>> {
     val universalUnidentifiedAccess: Boolean = TextSecurePreferences.isUniversalUnidentifiedAccess(context)
     val unidentifiedAccessKey: ByteArray = UnidentifiedAccess.deriveAccessKeyFrom(registrationData.profileKey)
 
@@ -231,7 +231,7 @@ class VerifyAccountRepository(private val context: Application) {
       val passDecrypted = RSAUtils.encrypt(passHash,RSAUtils.getPublicKeyFromBase64(publicKey))
       Log.d(TAG, "registerAccount after encrypt = $passDecrypted")
       Log.d(TAG, "registerAccount session id = $sessionId")
-      val response = accountManager.registerAccount(sessionId, passDecrypted, registrationData.recoveryPassword, accountAttributes, aciPreKeyCollection, pniPreKeyCollection, registrationData.fcmToken, true)
+      val response = accountManager.registerAccount(sessionId, passDecrypted, otp,registrationData.recoveryPassword, accountAttributes, aciPreKeyCollection, pniPreKeyCollection, registrationData.fcmToken, true)
       VerifyResponse.from(response, null, pin, aciPreKeyCollection, pniPreKeyCollection)
     }.subscribeOn(Schedulers.io())
   }

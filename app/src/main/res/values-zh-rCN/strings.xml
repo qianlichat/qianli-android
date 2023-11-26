@@ -6322,6 +6322,9 @@
     <string name="Bind2FAActivity__copied">已复制</string>
     <string name="Bind2FAActivity__success">成功绑定2FA!</string>
     <string name="Bind2FAActivity__failed">绑定失败，请检查验证码是否正确</string>
+    <string name="Fragment_enter_pass__enter_otp">输入2FA一次性密码</string>
+    <string name="Fragment_enter_pass__2fa">双步验证2FA</string>
+    <string name="Fragment_enter_pass__require_2fa">必须输入双步验证一次性密码</string>
 
     <!-- EOF -->
 </resources>

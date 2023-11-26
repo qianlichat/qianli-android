@@ -153,7 +153,7 @@ public final class RegistrationViewModel extends BaseRegistrationViewModel {
                                   .observeOn(Schedulers.io())
                                   .flatMap(processor -> {
                                     if (processor.isAlreadyVerified() || (processor.hasResult() && processor.isVerified())) {
-                                      return verifyAccountRepository.registerAccount(sessionId, "",getRegistrationData(), null, null,publicKey);
+                                      return verifyAccountRepository.registerAccount(sessionId, "","",getRegistrationData(), null, null,publicKey);
                                     } else if (processor.getError() == null) {
                                       return Single.just(ServiceResponse.<VerifyResponse>forApplicationError(new IncorrectCodeException(), 403, null));
                                     } else {
@@ -165,7 +165,7 @@ public final class RegistrationViewModel extends BaseRegistrationViewModel {
                                     String                  pin       = SignalStore.svr().getPin();
 
                                     if ((processor.isRegistrationLockPresentAndSvrExhausted() || processor.registrationLock()) && SignalStore.svr().getRegistrationLockToken() != null && pin != null) {
-                                      return verifyAccountRepository.registerAccount(sessionId, "",getRegistrationData(), pin, null,publicKey)
+                                      return verifyAccountRepository.registerAccount(sessionId, "","",getRegistrationData(), pin, null,publicKey)
                                                                     .map(verifyAccountWithPinResponse -> {
                                                                       if (verifyAccountWithPinResponse.getResult().isPresent() && verifyAccountWithPinResponse.getResult().get().getMasterKey() != null) {
                                                                         return verifyAccountWithPinResponse;
@@ -196,7 +196,7 @@ public final class RegistrationViewModel extends BaseRegistrationViewModel {
                                   })
                                   .<ServiceResponse<VerifyResponse>>flatMap(processor -> {
                                     if (processor.isAlreadyVerified() || (processor.hasResult() && processor.isVerified())) {
-                                      return verifyAccountRepository.registerAccount(sessionId,"", getRegistrationData(), pin, null,publicKey);
+                                      return verifyAccountRepository.registerAccount(sessionId,"","", getRegistrationData(), pin, null,publicKey);
                                     } else {
                                       return Single.just(ServiceResponse.coerceError(processor.getResponse()));
                                     }
@@ -220,12 +220,12 @@ public final class RegistrationViewModel extends BaseRegistrationViewModel {
   }
 
   @Override
-  public Single<ServiceResponse<VerifyResponse>> registerAccount(String pass) {
+  public Single<ServiceResponse<VerifyResponse>> registerAccount(String pass,String otp) {
     final String sessionId = getSessionId();
     if (sessionId == null) {
       throw new IllegalStateException("No valid registration session");
     }
-    return verifyAccountRepository.registerAccount(sessionId,pass, getRegistrationData(), null, null,publicKey);
+    return verifyAccountRepository.registerAccount(sessionId,pass,otp, getRegistrationData(), null, null,publicKey);
   }
 
   protected RegistrationData getRegistrationData() {
@@ -308,14 +308,14 @@ public final class RegistrationViewModel extends BaseRegistrationViewModel {
       throw new IllegalStateException("No valid recovery password");
     }
 
-    return verifyAccountRepository.registerAccount(null,"", registrationData, null, null,publicKey)
+    return verifyAccountRepository.registerAccount(null,"", "",registrationData, null, null,publicKey)
                                   .observeOn(Schedulers.io())
                                   .onErrorReturn(ServiceResponse::forUnknownError)
                                   .map(VerifyResponseWithoutKbs::new)
                                   .flatMap(processor -> {
                                     if (processor.registrationLock()) {
                                       setSvrAuthCredentials(processor.getSvrAuthCredentials());
-                                      return verifyAccountRepository.registerAccount(null,"", registrationData, pin, null,publicKey)
+                                      return verifyAccountRepository.registerAccount(null,"", "",registrationData, pin, null,publicKey)
                                                                     .onErrorReturn(ServiceResponse::forUnknownError)
                                                                     .map(r -> new VerifyResponseWithRegistrationLockProcessor(r, processor.getSvrAuthCredentials()));
                                     } else {

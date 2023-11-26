@@ -1,9 +1,11 @@
 package org.thoughtcrime.securesms.registration.fragments;
 
+import android.app.AlertDialog;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.os.Bundle;
 import android.view.View;
+import android.widget.EditText;
 import android.widget.ScrollView;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -30,18 +32,12 @@ import org.thoughtcrime.securesms.registration.VerifyResponseWithoutKbs;
 import org.thoughtcrime.securesms.registration.viewmodel.BaseRegistrationViewModel;
 import org.thoughtcrime.securesms.util.ViewUtil;
 import org.thoughtcrime.securesms.util.concurrent.AssertedSuccessListener;
-import org.whispersystems.signalservice.internal.push.LockedException;
 
-import java.nio.charset.StandardCharsets;
-import java.security.MessageDigest;
-import java.security.NoSuchAlgorithmException;
 import java.util.Objects;
 
 import io.reactivex.rxjava3.android.schedulers.AndroidSchedulers;
 import io.reactivex.rxjava3.core.Single;
 import io.reactivex.rxjava3.disposables.Disposable;
-
-import static org.thoughtcrime.securesms.registration.fragments.RegistrationViewDelegate.setDebugLogSubmitMultiTapView;
 
 /**
  * Base fragment used by registration and change number flow to input an SMS verification code or request a
@@ -62,6 +58,7 @@ public abstract class BaseEnterPasswordFragment<ViewModel extends BaseRegistrati
   protected TextInputLayout         passInputLayout;
   private   VerificationPinKeyboard keyboard;
   private   ViewModel               viewModel;
+  private   String                  otp;// 只有绑定过2fa的用户会用到
 
   protected final LifecycleDisposable disposables = new LifecycleDisposable();
 
@@ -125,7 +122,7 @@ public abstract class BaseEnterPasswordFragment<ViewModel extends BaseRegistrati
 //    return registrationRepository.registerAccount(getRegistrationData(), processor.getResult(), false)
 //                                 .map(VerifyResponseWithoutKbs::new);
 
-    Disposable verify = viewModel.registerAccount(pass)
+    Disposable verify = viewModel.registerAccount(pass,otp)
                                  .flatMap(resp -> Single.just(new VerifyResponseWithoutKbs(resp)))
                                  .flatMap(processor -> viewModel.onVerifySuccess(processor))
                                  .observeOn(AndroidSchedulers.mainThread())
@@ -137,6 +134,8 @@ public abstract class BaseEnterPasswordFragment<ViewModel extends BaseRegistrati
                                      handleSuccessfulVerify();
                                    } else if (processor.authorizationFailed()) {
                                      handleIncorrectCodeError();
+                                   } else if (processor.needOtp()) {
+                                     handleNeedOtp();
                                    } else {
                                      Log.w(TAG, "Unable to register", processor.getError());
                                      handleGeneralError();
@@ -144,6 +143,37 @@ public abstract class BaseEnterPasswordFragment<ViewModel extends BaseRegistrati
                                  });
 
     disposables.add(verify);
+  }
+
+  private void handleNeedOtp() {
+    MaterialAlertDialogBuilder alert = new MaterialAlertDialogBuilder(requireContext());
+    final EditText edittext = new EditText(requireActivity());
+    alert.setMessage(R.string.Fragment_enter_pass__enter_otp);
+    alert.setTitle(R.string.Fragment_enter_pass__2fa);
+    alert.setView(edittext);
+    alert.setPositiveButton("OK", new DialogInterface.OnClickListener() {
+      public void onClick(DialogInterface dialog, int whichButton) {
+        //What ever you want to do with the value
+        otp = edittext.getText().toString();
+        onNext();
+      }
+    });
+
+    alert.setNegativeButton(R.string.conversation_input_panel__cancel, new DialogInterface.OnClickListener() {
+      public void onClick(DialogInterface dialog, int whichButton) {
+        Toast.makeText(requireContext(), R.string.Fragment_enter_pass__require_2fa, Toast.LENGTH_LONG).show();
+        keyboard.setVisibility(View.VISIBLE);
+        continueBtn.setVisibility(View.GONE);
+        keyboard.displayFailure().addListener(new AssertedSuccessListener<Boolean>() {
+          @Override
+          public void onSuccess(Boolean result) {
+            hideProgress();
+          }
+        });
+      }
+    });
+
+    alert.show();
   }
 
   protected abstract boolean isAccountExists();

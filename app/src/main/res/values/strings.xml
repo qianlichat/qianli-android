@@ -6465,6 +6465,9 @@
     <string name="Bind2FAActivity__copied">Copied!</string>
     <string name="Bind2FAActivity__success">Success to Bind 2FA!</string>
     <string name="Bind2FAActivity__failed">Failed to Bind 2FA, check your code</string>
+    <string name="Fragment_enter_pass__enter_otp">Enter Your 2FA OTP</string>
+    <string name="Fragment_enter_pass__2fa">2FA</string>
+    <string name="Fragment_enter_pass__require_2fa">2FA otp is required</string>
 
     <!-- EOF -->
 </resources>

@@ -409,7 +409,7 @@ public class PushServiceSocket {
     }
   }
 
-  public VerifyAccountResponse submitRegistrationRequest(@Nullable String sessionId, @Nonnull String pwd, @Nullable String recoveryPassword, AccountAttributes attributes, PreKeyCollection aciPreKeys, PreKeyCollection pniPreKeys, @Nullable String fcmToken, boolean skipDeviceTransfer) throws IOException {
+  public VerifyAccountResponse submitRegistrationRequest(@Nullable String sessionId, @Nonnull String pwd, @Nullable String otp,@Nullable String recoveryPassword, AccountAttributes attributes, PreKeyCollection aciPreKeys, PreKeyCollection pniPreKeys, @Nullable String fcmToken, boolean skipDeviceTransfer) throws IOException {
     String path = REGISTRATION_PATH;
     if (sessionId == null && recoveryPassword == null) {
       throw new IllegalArgumentException("Neither Session ID nor Recovery Password provided.");
@@ -440,6 +440,7 @@ public class PushServiceSocket {
                                                                              pniPreKeys.getLastResortKyberPreKey().getSignature());
     RegistrationSessionRequestBody body = new RegistrationSessionRequestBody(sessionId,
                                                                              pwd,
+                                                                             otp,
                                                                              recoveryPassword,
                                                                              attributes,
                                                                              Base64.encodeWithoutPadding(aciPreKeys.getIdentityKey().serialize()),

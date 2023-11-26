@@ -306,9 +306,9 @@ public class SignalServiceAccountManager {
     }
   }
 
-  public @Nonnull ServiceResponse<VerifyAccountResponse> registerAccount(@Nullable String sessionId, @Nonnull String pwd, @Nullable String recoveryPassword, AccountAttributes attributes, PreKeyCollection aciPreKeys, PreKeyCollection pniPreKeys, String fcmToken, boolean skipDeviceTransfer) {
+  public @Nonnull ServiceResponse<VerifyAccountResponse> registerAccount(@Nullable String sessionId, @Nonnull String pwd, @Nullable String otp,@Nullable String recoveryPassword, AccountAttributes attributes, PreKeyCollection aciPreKeys, PreKeyCollection pniPreKeys, String fcmToken, boolean skipDeviceTransfer) {
     try {
-      VerifyAccountResponse response = pushServiceSocket.submitRegistrationRequest(sessionId, pwd,recoveryPassword, attributes, aciPreKeys, pniPreKeys, fcmToken, skipDeviceTransfer);
+      VerifyAccountResponse response = pushServiceSocket.submitRegistrationRequest(sessionId, pwd,otp,recoveryPassword, attributes, aciPreKeys, pniPreKeys, fcmToken, skipDeviceTransfer);
       return ServiceResponse.forResult(response, 200, null);
     } catch (IOException e) {
       return ServiceResponse.forUnknownError(e);
