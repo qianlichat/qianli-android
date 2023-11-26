@@ -3,6 +3,7 @@ package org.thoughtcrime.securesms.components.settings.app.account
 import android.content.Context
 import android.content.DialogInterface
 import android.content.Intent
+import android.content.SharedPreferences
 import android.graphics.Typeface
 import android.text.InputType
 import android.util.DisplayMetrics
@@ -17,11 +18,22 @@ import androidx.core.content.ContextCompat
 import androidx.core.view.ViewCompat
 import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.Navigation
+import androidx.preference.PreferenceManager
 import com.google.android.material.button.MaterialButton
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
+import io.reactivex.rxjava3.android.schedulers.AndroidSchedulers
+import io.reactivex.rxjava3.core.Completable
+import io.reactivex.rxjava3.core.CompletableEmitter
+import io.reactivex.rxjava3.core.CompletableObserver
+import io.reactivex.rxjava3.disposables.Disposable
+import io.reactivex.rxjava3.schedulers.Schedulers
+import org.signal.glide.Log
+import org.thoughtcrime.securesms.Bind2FAActivity
+import org.thoughtcrime.securesms.MainActivity
 import org.thoughtcrime.securesms.R
 import org.thoughtcrime.securesms.components.settings.DSLConfiguration
 import org.thoughtcrime.securesms.components.settings.DSLSettingsFragment
+import org.thoughtcrime.securesms.components.settings.DSLSettingsIcon
 import org.thoughtcrime.securesms.components.settings.DSLSettingsText
 import org.thoughtcrime.securesms.components.settings.configure
 import org.thoughtcrime.securesms.contactshare.SimpleTextWatcher
@@ -34,9 +46,12 @@ import org.thoughtcrime.securesms.util.ViewUtil
 import org.thoughtcrime.securesms.util.adapter.mapping.MappingAdapter
 import org.thoughtcrime.securesms.util.navigation.safeNavigate
 import org.whispersystems.signalservice.api.kbs.PinHashUtil
+import java.io.IOException
 
 class AccountSettingsFragment : DSLSettingsFragment(R.string.AccountSettingsFragment__account) {
 
+  private lateinit var settingState: AccountSettingsState
+  private lateinit var settingAdapter: MappingAdapter
   lateinit var viewModel: AccountSettingsViewModel
 
   override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
@@ -54,15 +69,78 @@ class AccountSettingsFragment : DSLSettingsFragment(R.string.AccountSettingsFrag
     viewModel = ViewModelProvider(this)[AccountSettingsViewModel::class.java]
 
     viewModel.state.observe(viewLifecycleOwner) { state ->
-      adapter.submitList(getConfiguration(state).toMappingModelList())
+      this.settingAdapter = adapter
+      this.settingState = state
+      update()
     }
   }
 
-  private fun getConfiguration(state: AccountSettingsState): DSLConfiguration {
+  private fun update() {
+    val defaultSharedPreferences = PreferenceManager.getDefaultSharedPreferences(requireContext())
+    val otpBind = defaultSharedPreferences.getInt(MainActivity.OTP_BIND_ALREADY, 0)
+    if(otpBind == 0){
+      //从服务器获取状态
+      updateBindState(defaultSharedPreferences)
+    }
+    settingAdapter.submitList(getConfiguration(settingState, otpBind).toMappingModelList())
+  }
+
+  private fun updateBindState(defaultSharedPreferences: SharedPreferences) {
+    Completable.create {
+      try {
+        val has = ApplicationDependencies.getSignalServiceAccountManager().queryUserBindOtpOrNot()
+        defaultSharedPreferences.edit().putInt(MainActivity.OTP_BIND_ALREADY, if (has) 1 else -1).apply()
+      } catch (e: IOException) {
+        Log.e("Leyzer", "otp绑定查询失败")
+      }
+    }.subscribeOn(Schedulers.io())
+      .observeOn(AndroidSchedulers.mainThread())
+      .subscribe(object : CompletableObserver {
+        override fun onSubscribe(d: Disposable) {}
+        override fun onComplete() {
+          update()
+        }
+
+        override fun onError(e: Throwable) {}
+      })
+  }
+
+  private fun getConfiguration(state: AccountSettingsState, otpBind: Int): DSLConfiguration {
     return configure {
       sectionHeaderPref(R.string.AccountSettingsFragment__account)
 
       if (SignalStore.account().isRegistered) {
+        when (otpBind) {
+          -1 -> {
+            clickPref(
+              title = DSLSettingsText.from(R.string.AccountSettingsFragment__bind_2fa),
+              isEnabled = true,
+              onClick = {
+                startActivity(Intent(requireContext(), Bind2FAActivity::class.java))
+              }
+            )
+          }
+          1 -> {
+            clickPref(
+              title = DSLSettingsText.from(R.string.AccountSettingsFragment__bind_2fa_bound),
+              isEnabled = false,
+              onClick = {
+                startActivity(Intent(requireContext(), Bind2FAActivity::class.java))
+              }
+            )
+          }
+          else -> {
+            clickPref(
+              title = DSLSettingsText.from(R.string.AccountSettingsFragment__bind_2fa),
+              isEnabled = false,
+              onClick = {
+                startActivity(Intent(requireContext(), Bind2FAActivity::class.java))
+              } ,
+              iconEnd = DSLSettingsIcon.from(R.drawable.loading_rotate)
+            )
+          }
+        }
+
         clickPref(
           title = DSLSettingsText.from(R.string.AccountSettingsFragment__change_password),
           isEnabled = state.isDeprecatedOrUnregistered(),

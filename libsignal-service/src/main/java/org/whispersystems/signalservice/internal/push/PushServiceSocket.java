@@ -216,6 +216,9 @@ public class PushServiceSocket {
   private static final String WHO_AM_I                   = "/v1/accounts/whoami";
   private static final String GET_ACI_PATH               = "/v1/accounts/aci/%s";
   private static final String GET_ACCOUNT_ID_PATH        = "/v1/accounts/account_id/%s";
+  private static final String GET_ACCOUNT_TOTP_HAS        = "/v1/accounts/totp/has";
+  private static final String GET_ACCOUNT_TOTP_GEN        = "/v1/accounts/totp";
+  private static final String GET_ACCOUNT_TOTP_BIND        = "/v1/accounts/totp/%s";
   private static final String GET_USERNAME_PATH          = "/v1/accounts/username_hash/%s";
   private static final String MODIFY_USERNAME_PATH       = "/v1/accounts/username_hash";
   private static final String RESERVE_USERNAME_PATH      = "/v1/accounts/username_hash/reserve";
@@ -1018,6 +1021,50 @@ public class PushServiceSocket {
         return responseMapper.map(response.code(), body, response::header, false);
       }
     });
+  }
+  public @NonNull boolean bind2FA(String otp) throws IOException {
+    String response = makeServiceRequest(
+        String.format(GET_ACCOUNT_TOTP_BIND,otp),
+        "GET",
+        null,
+        NO_HEADERS,
+        (responseCode, body) -> {
+        },
+        Optional.empty()
+    );
+
+    GetAccountTotpBindResponse resp = JsonUtil.fromJsonResponse(response, GetAccountTotpBindResponse.class);
+    return resp.isSuccess();
+  }
+
+  public @NonNull String genOtpToBind() throws IOException {
+    String response = makeServiceRequest(
+        GET_ACCOUNT_TOTP_GEN,
+        "GET",
+        null,
+        NO_HEADERS,
+        (responseCode, body) -> {
+        },
+        Optional.empty()
+    );
+
+    GetAccountTotpGenResponse resp = JsonUtil.fromJsonResponse(response, GetAccountTotpGenResponse.class);
+    return resp.getTotp();
+  }
+
+  public @NonNull boolean queryUserBindOtpOrNot() throws IOException {
+    String response = makeServiceRequest(
+        GET_ACCOUNT_TOTP_HAS,
+        "GET",
+        null,
+        NO_HEADERS,
+        (responseCode, body) -> {
+        },
+        Optional.empty()
+    );
+
+    GetAccountTotpBindResponse resp = JsonUtil.fromJsonResponse(response, GetAccountTotpBindResponse.class);
+    return resp.isSuccess();
   }
 
   public @NonNull String getAccountIdByACI(ACI aci) throws IOException {

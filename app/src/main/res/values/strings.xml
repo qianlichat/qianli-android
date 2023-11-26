@@ -3861,6 +3861,8 @@
 
     <!-- OldDeviceTransferLockedDialog -->
     <string name="OldDeviceTransferLockedDialog__complete_registration_on_your_new_device">Complete registration on your new device</string>
+    <string name="MainActivity_pls_bind_otp">Pls protect your account</string>
+    <string name="MainActivity_pls_bind_otp_msg">Do you want to bind Microsoft Authenticator as your 2FA method?</string>
     <string name="OldDeviceTransferLockedDialog__your_signal_account_has_been_transferred_to_your_new_device">Your Signal account has been transferred to your new device, but you must complete registration on it to continue. Signal will be inactive on this device.</string>
     <string name="OldDeviceTransferLockedDialog__done">Done</string>
     <string name="OldDeviceTransferLockedDialog__cancel_and_activate_this_device">Cancel and activate this device</string>
@@ -4203,6 +4205,8 @@
     <string name="AccountSettingsFragment__require_your_signal_pin">Require your Signal PIN to register your phone number with Signal again</string>
     <string name="AccountSettingsFragment__change_phone_number">Change phone number</string>
     <string name="AccountSettingsFragment__change_password">Change password</string>
+    <string name="AccountSettingsFragment__bind_2fa">Bind 2FA</string>
+    <string name="AccountSettingsFragment__bind_2fa_bound">already bound 2FA</string>
     <!-- Account setting that allows user to request and export their signal account data -->
     <string name="AccountSettingsFragment__request_account_data">Your account data</string>
 
@@ -4570,6 +4574,8 @@
 
     <!-- PaymentRecipientSelectionFragment -->
     <string name="PaymentRecipientSelectionFragment__new_payment">New payment</string>
+
+    <string name="Bind2FAActivity__title">Bind 2FA</string>
 
     <!-- NewConversationActivity -->
     <string name="NewConversationActivity__new_message">New message</string>
@@ -6440,6 +6446,25 @@
     <string name="GrantFullScreenIntentPermission_bottomsheet_subtitle">To receive call notifications from your contacts and groups:</string>
     <!-- Step 2 of bottom sheet shown after tapping "Turn on" from the megaphone to re-enable full screen notifications for incoming call notifications, it indicates the name of the setting that needs to be re-enabled -->
     <string name="GrantFullScreenIntentPermission_bottomsheet_step2">2. %1$s Allow full screen notifications</string>
+    <string name="Bind2FAActivity__steps">Steps:</string>
+    <string name="Bind2FAActivity__step_1">1. Download and Install \"Microsoft Authenticator\" in your phone</string>
+    <string name="Bind2FAActivity__step_2">2. Open \"Microsoft Authenticator\", click add account</string>
+    <string name="Bind2FAActivity__step_2.1">3. Select \"Other Account\"</string>
+    <string name="Bind2FAActivity__step_3">4. Click \"OR ENTER CODE MANUALLY\" in the bottom</string>
+    <string name="Bind2FAActivity__step_4">5. \"Account Name\" input：</string>
+    <string name="Bind2FAActivity__step_4.1">qianli.chat</string>
+    <string name="Bind2FAActivity__step_5">6. \"Secret Key\" input：</string>
+    <string name="Bind2FAActivity__step_6">7. Click FINISH，then select the item we just added</string>
+    <string name="Bind2FAActivity__step_7">8. Type the opt below：</string>
+    <string name="Bind2FAActivity__click_to_copy">(Click to copy）</string>
+    <string name="Bind2FAActivity__type_otp">Please type otp here</string>
+    <string name="Bind2FAActivity__submit">Submit</string>
+
+    <string name="text_empty">No data!</string>
+    <string name="text_retry">Something went wrong!\n\nTap to retry</string>
+    <string name="Bind2FAActivity__copied">Copied!</string>
+    <string name="Bind2FAActivity__success">Success to Bind 2FA!</string>
+    <string name="Bind2FAActivity__failed">Failed to Bind 2FA, check your code</string>
 
     <!-- EOF -->
 </resources>

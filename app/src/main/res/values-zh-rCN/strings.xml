@@ -395,6 +395,8 @@
     <string name="ConversationActivity_delete_and_leave">删除并离开</string>
     <string name="ConversationActivity__to_call_s_signal_needs_access_to_your_microphone">Signal 需要访问您的麦克风来呼叫 %1$s</string>
 
+    <string name="MainActivity_pls_bind_otp">请保护您的账号</string>
+    <string name="MainActivity_pls_bind_otp_msg">你想绑定微软验证器做为双因子登录凭证吗？</string>
 
     <string name="ConversationActivity_join">加入</string>
     <string name="ConversationActivity_full">已满</string>
@@ -4095,6 +4097,8 @@
     <string name="AccountSettingsFragment__require_your_signal_pin">再次用您的手机号码注册 Signal，要求输入 Signal PIN 码。</string>
     <string name="AccountSettingsFragment__change_phone_number">更改电话号码</string>
     <string name="AccountSettingsFragment__change_password">更改密码</string>
+    <string name="AccountSettingsFragment__bind_2fa">绑定 2FA</string>
+    <string name="AccountSettingsFragment__bind_2fa_bound">已绑定 2FA</string>
     <!-- Account setting that allows user to request and export their signal account data -->
     <string name="AccountSettingsFragment__request_account_data">您的账户数据</string>
 
@@ -4460,6 +4464,8 @@
 
     <!-- PaymentRecipientSelectionFragment -->
     <string name="PaymentRecipientSelectionFragment__new_payment">新付款</string>
+
+    <string name="Bind2FAActivity__title">绑定 2FA</string>
 
     <!-- NewConversationActivity -->
     <string name="NewConversationActivity__new_message">新消息</string>
@@ -6297,6 +6303,25 @@
     <string name="GrantFullScreenIntentPermission_bottomsheet_subtitle">如要接收来自联系人和群组的通话通知：</string>
     <!-- Step 2 of bottom sheet shown after tapping "Turn on" from the megaphone to re-enable full screen notifications for incoming call notifications, it indicates the name of the setting that needs to be re-enabled -->
     <string name="GrantFullScreenIntentPermission_bottomsheet_step2">2. %1$s 允许全屏通知</string>
+    <string name="Bind2FAActivity__steps">步骤:</string>
+    <string name="Bind2FAActivity__step_1">1. 下载安装“微软验证器”（Microsoft Authenticator)，各个应用市场都能下载</string>
+    <string name="Bind2FAActivity__step_2">2. 打开微软验证器，点击+号添加个人账户</string>
+    <string name="Bind2FAActivity__step_2.1">3. 再点“其他账户”</string>
+    <string name="Bind2FAActivity__step_3">4. 此时会打开扫描二维码的界面，点击底部的“手动输入”</string>
+    <string name="Bind2FAActivity__step_4">5. "账户名称"输入：</string>
+    <string name="Bind2FAActivity__step_4.1">千里传音</string>
+    <string name="Bind2FAActivity__step_5">6. "密钥"输入：</string>
+    <string name="Bind2FAActivity__step_6">7. 点击完成，然后点击刚刚添加的条目，就能看到一次性密码了</string>
+    <string name="Bind2FAActivity__step_7">8. 将一次性验证码输入在下面：</string>
+    <string name="Bind2FAActivity__click_to_copy">(点击复制）</string>
+    <string name="Bind2FAActivity__type_otp">请输入一次性密码</string>
+    <string name="Bind2FAActivity__submit">提交</string>
+
+    <string name="text_empty">还没有数据呢！</string>
+    <string name="text_retry">获取数据失败，点击重试！</string>
+    <string name="Bind2FAActivity__copied">已复制</string>
+    <string name="Bind2FAActivity__success">成功绑定2FA!</string>
+    <string name="Bind2FAActivity__failed">绑定失败，请检查验证码是否正确</string>
 
     <!-- EOF -->
 </resources>

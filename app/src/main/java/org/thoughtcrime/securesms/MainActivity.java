@@ -4,6 +4,7 @@ import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.net.Uri;
 import android.os.Bundle;
 import android.view.View;
@@ -13,15 +14,18 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.core.content.ContextCompat;
 import androidx.lifecycle.ViewModelProvider;
+import androidx.preference.PreferenceManager;
 
 import com.google.android.material.dialog.MaterialAlertDialogBuilder;
 
 import org.signal.core.util.concurrent.LifecycleDisposable;
+import org.signal.glide.Log;
 import org.thoughtcrime.securesms.components.DebugLogsPromptDialogFragment;
 import org.thoughtcrime.securesms.components.PromptBatterySaverDialogFragment;
 import org.thoughtcrime.securesms.components.voice.VoiceNoteMediaController;
 import org.thoughtcrime.securesms.components.voice.VoiceNoteMediaControllerOwner;
 import org.thoughtcrime.securesms.conversationlist.RelinkDevicesReminderBottomSheetFragment;
+import org.thoughtcrime.securesms.dependencies.ApplicationDependencies;
 import org.thoughtcrime.securesms.devicetransfer.olddevice.OldDeviceExitActivity;
 import org.thoughtcrime.securesms.keyvalue.SignalStore;
 import org.thoughtcrime.securesms.net.DeviceTransferBlockingInterceptor;
@@ -36,9 +40,20 @@ import org.thoughtcrime.securesms.util.DynamicTheme;
 import org.thoughtcrime.securesms.util.SplashScreenUtil;
 import org.thoughtcrime.securesms.util.WindowUtil;
 
+import java.io.IOException;
+
+import io.reactivex.rxjava3.android.schedulers.AndroidSchedulers;
+import io.reactivex.rxjava3.core.Completable;
+import io.reactivex.rxjava3.core.CompletableEmitter;
+import io.reactivex.rxjava3.core.CompletableObserver;
+import io.reactivex.rxjava3.core.CompletableOnSubscribe;
+import io.reactivex.rxjava3.disposables.Disposable;
+import io.reactivex.rxjava3.schedulers.Schedulers;
+
 public class MainActivity extends PassphraseRequiredActivity implements VoiceNoteMediaControllerOwner {
 
-  public static final int RESULT_CONFIG_CHANGED = Activity.RESULT_FIRST_USER + 901;
+  public static final int    RESULT_CONFIG_CHANGED = Activity.RESULT_FIRST_USER + 901;
+  public static final String OTP_BIND_ALREADY      = "OTP_BIND_ALREADY";
 
   private final DynamicTheme  dynamicTheme = new DynamicNoActionBarTheme();
   private final MainNavigator navigator    = new MainNavigator(this);
@@ -106,6 +121,51 @@ public class MainActivity extends PassphraseRequiredActivity implements VoiceNot
             .getVitalsState()
             .subscribe(this::presentVitalsState)
     );
+
+    checkOtopBind();
+  }
+
+  private void checkOtopBind() {
+    final SharedPreferences defaultSharedPreferences = PreferenceManager.getDefaultSharedPreferences(this);
+    final int               otpBind                  = defaultSharedPreferences.getInt(OTP_BIND_ALREADY, 0);
+    //0 未知； -1 未绑定； 1 已绑定
+    if (otpBind == 0) {
+      //从服务器获取状态
+      Completable.create(emitter ->
+         {
+           try {
+             boolean has = ApplicationDependencies.getSignalServiceAccountManager().queryUserBindOtpOrNot();
+             defaultSharedPreferences.edit().putInt(OTP_BIND_ALREADY, has ? 1 : -1).apply();
+           } catch (IOException e) {
+             Log.e("Leyzer", "otp绑定查询失败");
+           }
+         }
+     ).subscribeOn(Schedulers.io())
+      .observeOn(AndroidSchedulers.mainThread())
+     .subscribe(new CompletableObserver() {
+       @Override public void onSubscribe(@io.reactivex.rxjava3.annotations.NonNull Disposable d) {
+       }
+
+       @Override public void onComplete() {
+         checkOtopBind();
+       }
+
+       @Override public void onError(@io.reactivex.rxjava3.annotations.NonNull Throwable e) {
+       }
+     });
+    } else if (otpBind == -1) {
+      guideToBind();
+    }
+  }
+
+  private void guideToBind() {
+    new MaterialAlertDialogBuilder(this)
+        .setTitle(R.string.MainActivity_pls_bind_otp)
+        .setMessage(R.string.MainActivity_pls_bind_otp_msg)
+        .setPositiveButton(R.string.ok, (d, w) -> startActivity(new Intent(this, Bind2FAActivity.class)))
+        .setNegativeButton(R.string.conversation_input_panel__cancel, (d, w) -> {})
+        .setCancelable(false)
+        .show();
   }
 
   @SuppressLint("NewApi")

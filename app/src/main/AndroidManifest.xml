@@ -180,6 +180,8 @@
             android:theme="@style/TextSecure.DarkTheme.WebRTCCall"
             android:windowSoftInputMode="stateAlwaysHidden" />
 
+        <activity android:name=".Bind2FAActivity"/>
+
         <activity
             android:name=".messagerequests.CalleeMustAcceptMessageRequestActivity"
             android:configChanges="touchscreen|keyboard|keyboardHidden|orientation|screenLayout|screenSize"

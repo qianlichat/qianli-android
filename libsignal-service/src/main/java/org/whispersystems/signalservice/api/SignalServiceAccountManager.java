@@ -722,6 +722,18 @@ public class SignalServiceAccountManager {
     return this.pushServiceSocket.getAccountIdByACI(aci);
   }
 
+  public boolean queryUserBindOtpOrNot() throws IOException {
+    return this.pushServiceSocket.queryUserBindOtpOrNot();
+  }
+
+  public String genOtpToBind() throws IOException {
+    return this.pushServiceSocket.genOtpToBind();
+  }
+
+  public boolean bind2FA(String otp) throws IOException {
+    return this.pushServiceSocket.bind2FA(otp);
+  }
+
   public ACI getAciByAccountId(String accountId) throws IOException {
     return this.pushServiceSocket.getAciByAccountId(accountId);
   }
