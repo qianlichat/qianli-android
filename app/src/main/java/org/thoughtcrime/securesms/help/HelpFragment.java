@@ -108,8 +108,8 @@ public class HelpFragment extends LoggingFragment {
   private void initializeListeners() {
     problem.addTextChangedListener(new AfterTextChanged(e -> helpViewModel.onProblemChanged(e.toString())));
     Stream.of(emoji).forEach(view -> view.setOnClickListener(this::handleEmojiClicked));
-    faq.setOnClickListener(v -> launchFaq());
-    debugLogInfo.setOnClickListener(v -> launchDebugLogInfo());
+//    faq.setOnClickListener(v -> launchFaq());
+//    debugLogInfo.setOnClickListener(v -> launchDebugLogInfo());
     next.setOnClickListener(v -> submitForm());
     toaster.setOnClickListener(v -> {
       if (helpViewModel.getCategoryIndex() == 0) {
@@ -147,12 +147,12 @@ public class HelpFragment extends LoggingFragment {
     }
   }
 
-  private void launchFaq() {
-    Uri    data   = Uri.parse(getString(R.string.HelpFragment__link__faq));
-    Intent intent = new Intent(Intent.ACTION_VIEW, data);
-
-    startActivity(intent);
-  }
+//  private void launchFaq() {
+//    Uri    data   = Uri.parse(getString(R.string.HelpFragment__link__faq));
+//    Intent intent = new Intent(Intent.ACTION_VIEW, data);
+//
+//    startActivity(intent);
+//  }
 
   private void launchDebugLogInfo() {
     Uri    data   = Uri.parse(getString(R.string.HelpFragment__link__debug_info));
