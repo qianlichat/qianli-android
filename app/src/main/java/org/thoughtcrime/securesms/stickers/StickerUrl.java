@@ -41,7 +41,7 @@ public class StickerUrl {
   }
 
   public static @NonNull Uri createActionUri(@NonNull String packId, @NonNull String packKey) {
-    return Uri.parse(String.format("sgnl://addstickers?pack_id=%s&pack_key=%s", packId, packKey));
+    return Uri.parse(String.format("qlcy://addstickers?pack_id=%s&pack_key=%s", packId, packKey));
   }
 
   public static boolean isValidShareLink(@Nullable String url) {

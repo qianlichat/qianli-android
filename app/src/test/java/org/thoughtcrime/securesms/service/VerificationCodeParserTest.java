@@ -47,9 +47,9 @@ public class VerificationCodeParserTest extends BaseUnitTest {
         {">1234-5678 is your verification code.", "12345678"},
         {"1234-5678 is your verification code.", "12345678"},
         {"$1234-5678", "12345678"},
-        {"hi 1234-5678\n\nsgnl://verify/1234-5678\n\naAbBcCdDeEf", "12345678"},
-        {"howdy 1234-5678\n\nsgnl://verify/1234-5678\n\naAbBcCdDeEf", "12345678"},
-        {"test 1234-5678\n\nsgnl://verify/1234-5678", "12345678"},
+        {"hi 1234-5678\n\nqlcy://verify/1234-5678\n\naAbBcCdDeEf", "12345678"},
+        {"howdy 1234-5678\n\nqlcy://verify/1234-5678\n\naAbBcCdDeEf", "12345678"},
+        {"test 1234-5678\n\nqlcy://verify/1234-5678", "12345678"},
         {"%#($#&@**$@(@*1234-5678\naAbBcCdDeEf", "12345678"},
 
         {"<#>あなたのSignal 認証コード： 832985\nabAbCDEFO1g", "832985"},

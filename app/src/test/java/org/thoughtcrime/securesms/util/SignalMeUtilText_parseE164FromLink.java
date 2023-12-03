@@ -33,10 +33,10 @@ public class SignalMeUtilText_parseE164FromLink {
         { "https://signal.me",                 null },
         { "https://signal.me/#p/",             null },
         { "signal.me/#p/+15555555555",         null },
-        { "sgnl://signal.me/#p/+15555555555",  "+15555555555" },
-        { "sgnl://signal.me/#p/5555555555",    null },
-        { "sgnl://signal.me",                  null },
-        { "sgnl://signal.me/#p/",              null },
+        { "qlcy://signal.me/#p/+15555555555",  "+15555555555" },
+        { "qlcy://signal.me/#p/5555555555",    null },
+        { "qlcy://signal.me",                  null },
+        { "qlcy://signal.me/#p/",              null },
         { "",                                  null },
         { null,                                null }
     });

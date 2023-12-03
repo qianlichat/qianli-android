@@ -20,8 +20,8 @@ public class SignalProxyUtilText_generateProxyUrl {
     return Arrays.asList(new Object[][]{
         { "https://signal.tube/#proxy.parker.org",     "https://signal.tube/#proxy.parker.org" },
         { "https://signal.tube/#proxy.parker.org:443", "https://signal.tube/#proxy.parker.org" },
-        { "sgnl://signal.tube/#proxy.parker.org",      "https://signal.tube/#proxy.parker.org" },
-        { "sgnl://signal.tube/#proxy.parker.org:443",  "https://signal.tube/#proxy.parker.org" },
+        { "qlcy://signal.tube/#proxy.parker.org",      "https://signal.tube/#proxy.parker.org" },
+        { "qlcy://signal.tube/#proxy.parker.org:443",  "https://signal.tube/#proxy.parker.org" },
         { "proxy.parker.org",                          "https://signal.tube/#proxy.parker.org" },
         { "proxy.parker.org:443",                      "https://signal.tube/#proxy.parker.org" },
         { "x",                                         "https://signal.tube/#x" },

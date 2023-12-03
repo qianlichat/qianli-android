@@ -229,7 +229,7 @@
 
                 <data
                     android:host="linkdevice"
-                    android:scheme="sgnl" />
+                    android:scheme="qlcy" />
             </intent-filter>
         </activity>
 
@@ -297,7 +297,7 @@
 
                 <data
                     android:host="addstickers"
-                    android:scheme="sgnl" />
+                    android:scheme="qlcy" />
             </intent-filter>
             <intent-filter android:autoVerify="true">
                 <action android:name="android.intent.action.VIEW" />
@@ -652,8 +652,8 @@
                 <category android:name="android.intent.category.BROWSABLE" />
 
                 <data
-                    android:host="signal.group"
-                    android:scheme="sgnl" />
+                    android:host="group.qianli.chat"
+                    android:scheme="qlcy" />
             </intent-filter>
 
             <intent-filter
@@ -665,7 +665,7 @@
                 <category android:name="android.intent.category.BROWSABLE" />
 
                 <data
-                    android:host="signal.group"
+                    android:host="group.qianli.chat"
                     android:scheme="https" />
             </intent-filter>
 
@@ -680,7 +680,7 @@
                     android:scheme="https" />
                 <data
                     android:host="signal.tube"
-                    android:scheme="sgnl" />
+                    android:scheme="qlcy" />
             </intent-filter>
 
             <intent-filter android:autoVerify="true">
@@ -694,7 +694,7 @@
                     android:scheme="https" />
                 <data
                     android:host="signal.me"
-                    android:scheme="sgnl" />
+                    android:scheme="qlcy" />
             </intent-filter>
 
             <intent-filter android:autoVerify="true">
@@ -703,7 +703,7 @@
                 <category android:name="android.intent.category.DEFAULT" />
                 <category android:name="android.intent.category.BROWSABLE" />
 
-                <data android:scheme="sgnl" />
+                <data android:scheme="qlcy" />
                 <data android:scheme="https" />
                 <data android:host="signal.link" />
             </intent-filter>

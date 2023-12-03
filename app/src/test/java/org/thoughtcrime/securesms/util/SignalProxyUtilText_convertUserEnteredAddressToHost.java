@@ -20,8 +20,8 @@ public class SignalProxyUtilText_convertUserEnteredAddressToHost {
     return Arrays.asList(new Object[][]{
         { "https://signal.tube/#proxy.parker.org",     "proxy.parker.org" },
         { "https://signal.tube/#proxy.parker.org:443", "proxy.parker.org" },
-        { "sgnl://signal.tube/#proxy.parker.org",      "proxy.parker.org" },
-        { "sgnl://signal.tube/#proxy.parker.org:443",  "proxy.parker.org" },
+        { "qlcy://signal.tube/#proxy.parker.org",      "proxy.parker.org" },
+        { "qlcy://signal.tube/#proxy.parker.org:443",  "proxy.parker.org" },
         { "proxy.parker.org",                          "proxy.parker.org" },
         { "proxy.parker.org:443",                      "proxy.parker.org" },
         { "x",                                         "x" },
