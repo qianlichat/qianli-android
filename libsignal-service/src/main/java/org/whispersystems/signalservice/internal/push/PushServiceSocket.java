@@ -2372,13 +2372,13 @@ public class PushServiceSocket {
 
   private static OkHttpClient createConnectionClient(SignalUrl url, List<Interceptor> interceptors, Optional<Dns> dns, Optional<SignalProxy> proxy) {
     try {
-      TrustManager[] trustManagers = BlacklistingTrustManager.createFor(url.getTrustStore());
+//      TrustManager[] trustManagers = BlacklistingTrustManager.createFor(url.getTrustStore());
 
       SSLContext context = SSLContext.getInstance("TLS");
-      context.init(null, trustManagers, null);
+//      context.init(null, trustManagers, null);
 
       OkHttpClient.Builder builder = new OkHttpClient.Builder()
-          .sslSocketFactory(new Tls12SocketFactory(context.getSocketFactory()), (X509TrustManager) trustManagers[0])
+//          .sslSocketFactory(new Tls12SocketFactory(context.getSocketFactory()), (X509TrustManager) trustManagers[0])
           .connectionSpecs(url.getConnectionSpecs().orElse(Util.immutableList(ConnectionSpec.RESTRICTED_TLS)))
           .dns(dns.orElse(Dns.SYSTEM));
 
@@ -2386,7 +2386,8 @@ public class PushServiceSocket {
         builder.socketFactory(new TlsProxySocketFactory(proxy.get().getHost(), proxy.get().getPort(), dns));
       }
 
-      builder.sslSocketFactory(new Tls12SocketFactory(context.getSocketFactory()), (X509TrustManager) trustManagers[0])
+      builder
+//          .sslSocketFactory(new Tls12SocketFactory(context.getSocketFactory()), (X509TrustManager) trustManagers[0])
              .connectionSpecs(url.getConnectionSpecs().orElse(Util.immutableList(ConnectionSpec.RESTRICTED_TLS)))
              .build();
 
@@ -2397,7 +2398,7 @@ public class PushServiceSocket {
       }
 
       return builder.build();
-    } catch (NoSuchAlgorithmException | KeyManagementException e) {
+    } catch (NoSuchAlgorithmException e) {
       throw new AssertionError(e);
     }
   }

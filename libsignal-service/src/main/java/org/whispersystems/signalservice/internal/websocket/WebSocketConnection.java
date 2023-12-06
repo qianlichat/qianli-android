@@ -61,7 +61,6 @@ public class WebSocketConnection extends WebSocketListener {
   private final Set<Long>                           keepAlives       = new HashSet<>();
 
   private final String                                    name;
-  private final TrustStore                                trustStore;
   private final Optional<CredentialsProvider>             credentialsProvider;
   private final String                                    signalAgent;
   private final HealthMonitor                             healthMonitor;
@@ -94,7 +93,6 @@ public class WebSocketConnection extends WebSocketListener {
                              boolean allowStories)
   {
     this.name                = "[" + name + ":" + System.identityHashCode(this) + "]";
-    this.trustStore          = serviceConfiguration.getSignalServiceUrls()[0].getTrustStore();
     this.credentialsProvider = credentialsProvider;
     this.signalAgent         = signalAgent;
     this.interceptors        = serviceConfiguration.getNetworkInterceptors();
@@ -142,10 +140,10 @@ public class WebSocketConnection extends WebSocketListener {
         filledUri = wsUri;
       }
 
-      Pair<SSLSocketFactory, X509TrustManager> socketFactory = createTlsSocketFactory(trustStore);
+//      Pair<SSLSocketFactory, X509TrustManager> socketFactory = createTlsSocketFactory(trustStore);
 
-      OkHttpClient.Builder clientBuilder = new OkHttpClient.Builder().sslSocketFactory(new Tls12SocketFactory(socketFactory.first()),
-                                                                                       socketFactory.second())
+      OkHttpClient.Builder clientBuilder = new OkHttpClient.Builder()
+//          .sslSocketFactory(new Tls12SocketFactory(socketFactory.first()),socketFactory.second())
                                                                      .connectionSpecs(serviceUrl.getConnectionSpecs().orElse(Util.immutableList(ConnectionSpec.RESTRICTED_TLS)))
                                                                      .readTimeout(KEEPALIVE_FREQUENCY_SECONDS + 10, TimeUnit.SECONDS)
                                                                      .dns(dns.orElse(Dns.SYSTEM))

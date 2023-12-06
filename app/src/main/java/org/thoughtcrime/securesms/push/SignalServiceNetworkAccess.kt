@@ -15,11 +15,9 @@ import org.thoughtcrime.securesms.net.RemoteDeprecationDetectorInterceptor
 import org.thoughtcrime.securesms.net.SequentialDns
 import org.thoughtcrime.securesms.net.StandardUserAgentInterceptor
 import org.thoughtcrime.securesms.net.StaticDns
-import org.whispersystems.signalservice.api.push.TrustStore
 import org.whispersystems.signalservice.internal.configuration.SignalCdnUrl
 import org.whispersystems.signalservice.internal.configuration.SignalServiceConfiguration
 import org.whispersystems.signalservice.internal.configuration.SignalServiceUrl
-import org.whispersystems.signalservice.internal.configuration.SignalStorageUrl
 import java.io.IOException
 import java.util.Optional
 
@@ -48,9 +46,9 @@ open class SignalServiceNetworkAccess(context: Context) {
     }
   }
 
-  private val serviceTrustStore: TrustStore = SignalServiceTrustStore(context)
-  private val cdnTrustStore: TrustStore = CdnServiceTrustStore(context)
-  private val cdn2TrustStore: TrustStore = Cdn2ServiceTrustStore(context)
+//  private val serviceTrustStore: TrustStore = SignalServiceTrustStore(context)
+//  private val cdnTrustStore: TrustStore = CdnServiceTrustStore(context)
+//  private val cdn2TrustStore: TrustStore = Cdn2ServiceTrustStore(context)
 
   private val interceptors: List<Interceptor> = listOf(
     StandardUserAgentInterceptor(),
@@ -72,11 +70,11 @@ open class SignalServiceNetworkAccess(context: Context) {
   }
 
   open val uncensoredConfiguration: SignalServiceConfiguration = SignalServiceConfiguration(
-    signalServiceUrls = arrayOf(SignalServiceUrl(BuildConfig.SIGNAL_URL, serviceTrustStore)),
+    signalServiceUrls = arrayOf(SignalServiceUrl(BuildConfig.SIGNAL_URL)),
     signalCdnUrlMap = mapOf(
-      0 to arrayOf(SignalCdnUrl(BuildConfig.SIGNAL_CDN_URL2, cdn2TrustStore)),
-      2 to arrayOf(SignalCdnUrl(BuildConfig.SIGNAL_CDN_URL, cdnTrustStore)),
-      3 to arrayOf(SignalCdnUrl(BuildConfig.SIGNAL_CDN_URL, cdnTrustStore))
+      0 to arrayOf(SignalCdnUrl(BuildConfig.SIGNAL_CDN_URL2)),
+      2 to arrayOf(SignalCdnUrl(BuildConfig.SIGNAL_CDN_URL)),
+      3 to arrayOf(SignalCdnUrl(BuildConfig.SIGNAL_CDN_URL))
     ),
 //    signalStorageUrls = arrayOf(SignalStorageUrl(BuildConfig.STORAGE_URL, serviceTrustStore)),
     networkInterceptors = interceptors,

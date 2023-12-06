@@ -15,19 +15,16 @@ public class SignalUrl {
   private final String                   url;
   private final Optional<String>         hostHeader;
   private final Optional<ConnectionSpec> connectionSpec;
-  private       TrustStore               trustStore;
 
-  public SignalUrl(String url, TrustStore trustStore) {
-    this(url, null, trustStore, null);
+  public SignalUrl(String url) {
+    this(url, null, null);
   }
 
   public SignalUrl(String url, String hostHeader,
-                   TrustStore trustStore,
                    ConnectionSpec connectionSpec)
   {
     this.url            = url;
     this.hostHeader     = Optional.ofNullable(hostHeader);
-    this.trustStore     = trustStore;
     this.connectionSpec = Optional.ofNullable(connectionSpec);
   }
 
@@ -38,10 +35,6 @@ public class SignalUrl {
 
   public String getUrl() {
     return url;
-  }
-
-  public TrustStore getTrustStore() {
-    return trustStore;
   }
 
   public Optional<List<ConnectionSpec>> getConnectionSpecs() {

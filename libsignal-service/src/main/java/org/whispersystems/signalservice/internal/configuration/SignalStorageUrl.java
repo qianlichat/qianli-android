@@ -7,11 +7,11 @@ import okhttp3.ConnectionSpec;
 
 public class SignalStorageUrl extends SignalUrl {
 
-  public SignalStorageUrl(String url, TrustStore trustStore) {
-    super(url, trustStore);
+  public SignalStorageUrl(String url) {
+    super(url);
   }
 
-  public SignalStorageUrl(String url, String hostHeader, TrustStore trustStore, ConnectionSpec connectionSpec) {
-    super(url, hostHeader, trustStore, connectionSpec);
+  public SignalStorageUrl(String url, String hostHeader, ConnectionSpec connectionSpec) {
+    super(url, hostHeader, connectionSpec);
   }
 }
