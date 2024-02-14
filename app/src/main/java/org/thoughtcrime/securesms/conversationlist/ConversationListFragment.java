@@ -1043,25 +1043,26 @@ public class ConversationListFragment extends MainFragment implements ActionMode
     Context context = requireContext();
 
     SimpleTask.run(getViewLifecycleOwner().getLifecycle(), () -> {
-      if (ExpiredBuildReminder.isEligible()) {
-        return Optional.of(new ExpiredBuildReminder(context));
-      } else if (UnauthorizedReminder.isEligible(context)) {
+//      if (ExpiredBuildReminder.isEligible()) {
+//        return Optional.of(new ExpiredBuildReminder(context));
+//      } else
+      if (UnauthorizedReminder.isEligible(context)) {
         return Optional.of(new UnauthorizedReminder());
       } else if (ServiceOutageReminder.isEligible(context)) {
         ApplicationDependencies.getJobManager().add(new ServiceOutageDetectionJob());
         return Optional.of(new ServiceOutageReminder());
-      } else if (OutdatedBuildReminder.isEligible()) {
-        return Optional.of(new OutdatedBuildReminder(context));
+//      } else if (OutdatedBuildReminder.isEligible()) {
+//        return Optional.of(new OutdatedBuildReminder(context));
       } else if (PushRegistrationReminder.isEligible()) {
         return Optional.of((new PushRegistrationReminder(context)));
       } else if (DozeReminder.isEligible(context)) {
         return Optional.of(new DozeReminder(context));
-      } else if (CdsTemporaryErrorReminder.isEligible()) {
-        return Optional.of(new CdsTemporaryErrorReminder());
-      } else if (CdsPermanentErrorReminder.isEligible()) {
-        return Optional.of(new CdsPermanentErrorReminder());
-      } else if (UsernameOutOfSyncReminder.isEligible()) {
-        return Optional.of(new UsernameOutOfSyncReminder());
+//      } else if (CdsTemporaryErrorReminder.isEligible()) {
+//        return Optional.of(new CdsTemporaryErrorReminder());
+//      } else if (CdsPermanentErrorReminder.isEligible()) {
+//        return Optional.of(new CdsPermanentErrorReminder());
+//      } else if (UsernameOutOfSyncReminder.isEligible()) {
+//        return Optional.of(new UsernameOutOfSyncReminder());
       } else {
         return Optional.<Reminder>empty();
       }
