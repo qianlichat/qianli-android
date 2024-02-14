@@ -26,7 +26,8 @@ class UsernameOutOfSyncReminder : Reminder(R.string.UsernameOutOfSyncReminder__s
   companion object {
     @JvmStatic
     fun isEligible(): Boolean {
-      return FeatureFlags.usernames() && SignalStore.account().usernameOutOfSync
+//      return FeatureFlags.usernames() && SignalStore.account().usernameOutOfSync
+      return false
     }
   }
 }
