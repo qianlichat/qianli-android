@@ -17,7 +17,7 @@ class InputReadyState(
   val conversationRecipient: Recipient,
   val messageRequestState: MessageRequestState,
   val groupRecord: GroupRecord?,
-  val isClientExpired: Boolean,
+//  val isClientExpired: Boolean,
   val isUnauthorized: Boolean
 ) {
   private val selfMemberLevel: GroupTable.MemberLevel? = groupRecord?.memberLevel(Recipient.self())
@@ -42,7 +42,7 @@ class InputReadyState(
     if (!conversationRecipient.hasSameContent(other.conversationRecipient)) return false
     if (messageRequestState != other.messageRequestState) return false
     if (groupRecord != other.groupRecord) return false
-    if (isClientExpired != other.isClientExpired) return false
+//    if (isClientExpired != other.isClientExpired) return false
     if (isUnauthorized != other.isUnauthorized) return false
 
     return true
@@ -52,7 +52,7 @@ class InputReadyState(
     var result = conversationRecipient.hashCode()
     result = 31 * result + messageRequestState.hashCode()
     result = 31 * result + (groupRecord?.hashCode() ?: 0)
-    result = 31 * result + isClientExpired.hashCode()
+//    result = 31 * result + isClientExpired.hashCode()
     result = 31 * result + isUnauthorized.hashCode()
     return result
   }

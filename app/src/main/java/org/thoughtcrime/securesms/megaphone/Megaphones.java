@@ -104,7 +104,7 @@ public final class Megaphones {
   private static Map<Event, MegaphoneSchedule> buildDisplayOrder(@NonNull Context context, @NonNull Map<Event, MegaphoneRecord> records) {
     return new LinkedHashMap<Event, MegaphoneSchedule>() {{
       put(Event.PINS_FOR_ALL, new PinsForAllSchedule());
-      put(Event.CLIENT_DEPRECATED, SignalStore.misc().isClientDeprecated() ? ALWAYS : NEVER);
+//      put(Event.CLIENT_DEPRECATED, SignalStore.misc().isClientDeprecated() ? ALWAYS : NEVER);
       put(Event.NOTIFICATIONS, shouldShowNotificationsMegaphone(context) ? RecurringSchedule.every(TimeUnit.DAYS.toMillis(30)) : NEVER);
       put(Event.GRANT_FULL_SCREEN_INTENT, shouldShowGrantFullScreenIntentPermission(context) ? RecurringSchedule.every(TimeUnit.DAYS.toMillis(3)) : NEVER);
       put(Event.SMS_EXPORT, new SmsExportReminderSchedule(context));
@@ -127,8 +127,8 @@ public final class Megaphones {
         return buildPinsForAllMegaphone(record);
 //      case PIN_REMINDER:
 //        return buildPinReminderMegaphone(context);
-      case CLIENT_DEPRECATED:
-        return buildClientDeprecatedMegaphone(context);
+//      case CLIENT_DEPRECATED:
+//        return buildClientDeprecatedMegaphone(context);
       case ONBOARDING:
         return buildOnboardingMegaphone();
       case NOTIFICATIONS:
@@ -214,12 +214,12 @@ public final class Megaphones {
 //        .build();
 //  }
 
-  private static @NonNull Megaphone buildClientDeprecatedMegaphone(@NonNull Context context) {
-    return new Megaphone.Builder(Event.CLIENT_DEPRECATED, Megaphone.Style.FULLSCREEN)
-        .disableSnooze()
-        .setOnVisibleListener((megaphone, listener) -> listener.onMegaphoneNavigationRequested(new Intent(context, ClientDeprecatedActivity.class)))
-        .build();
-  }
+//  private static @NonNull Megaphone buildClientDeprecatedMegaphone(@NonNull Context context) {
+//    return new Megaphone.Builder(Event.CLIENT_DEPRECATED, Megaphone.Style.FULLSCREEN)
+//        .disableSnooze()
+//        .setOnVisibleListener((megaphone, listener) -> listener.onMegaphoneNavigationRequested(new Intent(context, ClientDeprecatedActivity.class)))
+//        .build();
+//  }
 
   private static @NonNull Megaphone buildOnboardingMegaphone() {
     return new Megaphone.Builder(Event.ONBOARDING, Megaphone.Style.ONBOARDING)
@@ -510,7 +510,7 @@ public final class Megaphones {
   public enum Event {
     PINS_FOR_ALL("pins_for_all"),
 //    PIN_REMINDER("pin_reminder"),
-    CLIENT_DEPRECATED("client_deprecated"),
+//    CLIENT_DEPRECATED("client_deprecated"),
     ONBOARDING("onboarding"),
     NOTIFICATIONS("notifications"),
     ADD_A_PROFILE_PHOTO("add_a_profile_photo"),

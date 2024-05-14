@@ -213,7 +213,7 @@ class ConversationViewModel(
         conversationRecipient = recipient,
         messageRequestState = messageRequestRepository.getMessageRequestState(recipient, threadId),
         groupRecord = groupRecord.orNull(),
-        isClientExpired = SignalStore.misc().isClientDeprecated,
+//        isClientExpired = SignalStore.misc().isClientDeprecated,
         isUnauthorized = TextSecurePreferences.isUnauthorizedReceived(ApplicationDependencies.getApplication())
       )
     }.doOnNext {
