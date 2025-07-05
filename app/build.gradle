@@ -132,7 +132,7 @@ android {
     }
 
     composeOptions {
-        kotlinCompilerExtensionVersion = '1.4.4'
+        kotlinCompilerExtensionVersion = '1.5.10'
     }
 
     defaultConfig {
@@ -150,8 +150,8 @@ android {
 
         manifestPlaceholders = [mapsKey:"AIzaSyCSx9xea86GwDKGznCAULE9Y5a8b-TfN9U"]
 
-        buildConfigField "long", "BUILD_TIMESTAMP", getLastCommitTimestamp() + "L"
-        buildConfigField "String", "GIT_HASH", "\"${getGitHash()}\""
+        buildConfigField "long", "BUILD_TIMESTAMP", "${System.currentTimeMillis()}L"
+        buildConfigField "String", "GIT_HASH", '"' + (new File('.git').exists() ? new File('.git/HEAD').text.trim().replace('ref: refs/heads/', '') : 'unknown') + '"'
         buildConfigField "String", "SIGNAL_URL", "\"https://msg.qianli.chat\""
 //        buildConfigField "String", "STORAGE_URL", "\"https://storage.qianli.chat\""
         buildConfigField "String", "SIGNAL_CDN_URL", "\"https://cdn.qianli.chat\""
@@ -493,7 +493,7 @@ dependencies {
     }
     testImplementation testLibs.robolectric.shadows.multidex
     testImplementation (testLibs.bouncycastle.bcprov.jdk15on) { version { strictly "1.70" } } // Used by roboelectric
-    testImplementation (testLibs.bouncycastle.bcpkix.jdk15on) { version { strictly "1.70" } } // Used by roboelectric
+    testImplementation (testLibs.bouncycastle.bcpkix.jdk15on) { version { strictly "1.70" } } // Used by robolectric
     testImplementation testLibs.conscrypt.openjdk.uber // Used by robolectric
     testImplementation testLibs.hamcrest.hamcrest
     testImplementation testLibs.mockk

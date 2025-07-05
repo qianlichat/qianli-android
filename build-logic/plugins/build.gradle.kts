@@ -24,6 +24,7 @@ dependencies {
   implementation(libs.android.application)
   implementation(project(":tools"))
   implementation(libs.ktlint)
+  implementation("org.jetbrains.kotlin:kotlin-sam-with-receiver-compiler-plugin-embeddable:1.9.20")
 
   // These allow us to reference the dependency catalog inside of our compiled plugins
   implementation(files(libs.javaClass.superclass.protectionDomain.codeSource.location))
